@@ -18,4 +18,4 @@ public class MealCmntController {
 		
 		return mav;
 	}
-}
+} 
