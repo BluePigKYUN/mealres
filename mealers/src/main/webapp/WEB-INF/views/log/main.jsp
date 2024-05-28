@@ -8,13 +8,10 @@
         <meta charset="utf-8">
         <title>기록 - 기록의 기능들</title>
         <style type="text/css">
-        .rowspan {
-        	rowspan="2";
-        }
         .mScale{
-        	width: 80px; height: 80px;
+        	width: 100px; height: 100px;
         	object-fit: cover;
-			border-radious: 80px;
+			border-radious: 100px;
         }
         </style>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -148,98 +145,58 @@
                         <div class="col-md-12 col-lg-6 col-xl-7">
                         	<h3>기록에 대해...</h3>
                         	<p>오늘의 하루는 어떠셨나요? 밀러즈와 함께 하루를 간직해보는건 어떨까요?</p>
-                            <div class="form-item">
+                            <div>
 								<table>
 									<tr>
-										<td class="rowspan"><img class="mScale" src="/mealers/resources/img/diary_logo.png"></img></td>
+										<h5>&nbsp;&nbsp;&nbsp;일기 쓰기</h5>
+										<td rowspan = "2">
+										<a href = "${pageContext.request.contextPath}/log/diary">
+											<img class="mScale" src="/mealers/resources/img/diary_logo.png"></img>
+										</a>
+										</td>
 									</tr>
 									<tr>
-										<td></td>
-										<td></td>
+										<td>
+											<p><h6>일기를 작성할 수 있어요.</h6>매일 매일을 작성해보세요.	</p>
+										</td>
 									</tr>
 								</table>
-
                             </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Company Name<sup>*</sup></label>
-                                <input type="text" class="form-control">
+                            <div>
+                                <table>
+									<tr>
+										<td rowspan = "2">
+										<h5>&nbsp;&nbsp;&nbsp;식단 기록</h5>
+											<a href = "${pageContext.request.contextPath}/log/foodi">
+											<img class="mScale" src="/mealers/resources/img/meal_logo.png"></img>
+											</a>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<p><h6>식단을 기록해봐요.</h6>먹은 음식을 매일매일 작성할 수 있어요.</p>
+										</td>
+									</tr>
+								</table>
                             </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Address <sup>*</sup></label>
-                                <input type="text" class="form-control" placeholder="House Number Street Name">
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Town/City<sup>*</sup></label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Country<sup>*</sup></label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Postcode/Zip<sup>*</sup></label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Mobile<sup>*</sup></label>
-                                <input type="tel" class="form-control">
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label my-3">Email Address<sup>*</sup></label>
-                                <input type="email" class="form-control">
-                            </div>
-                            <div class="form-check my-3">
-                                <input type="checkbox" class="form-check-input" id="Account-1" name="Accounts" value="Accounts">
-                                <label class="form-check-label" for="Account-1">Create an account?</label>
-                            </div>
-                            <hr>
-                            <div class="form-check my-3">
-                                <input class="form-check-input" type="checkbox" id="Address-1" name="Address" value="Address">
-                                <label class="form-check-label" for="Address-1">Ship to a different address?</label>
-                            </div>
-                            <div class="form-item">
-                                <textarea name="text" class="form-control" spellcheck="false" cols="30" rows="11" placeholder="Oreder Notes (Optional)"></textarea>
-                            </div>
+                            <div>
+                            	<table>
+									<tr>
+										<td rowspan = "2">
+										<h5>&nbsp;&nbsp;&nbsp;일정 기록</h5>
+										<a href = "${pageContext.request.contextPath}/log/event">
+											<img class="mScale" src="/mealers/resources/img/event_logo.png"></img>
+										</a>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<p><h6>일정을 관리해보세요.</h6>달력을 통해 당신의 일정을 관리할 수 있어요.</p>
+										</td>
+									</tr>
+								</table>
                         </div>
-                        <div class="col-md-12 col-lg-6 col-xl-5">
-                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                                <div class="col-12">
-                                    <div class="form-check text-start my-3">
-                                        <input type="checkbox" class="form-check-input bg-primary border-0" id="Transfer-1" name="Transfer" value="Transfer">
-                                        <label class="form-check-label" for="Transfer-1">Direct Bank Transfer</label>
-                                    </div>
-                                    <p class="text-start text-dark">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
-                                </div>
-                            </div>
-                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                                <div class="col-12">
-                                    <div class="form-check text-start my-3">
-                                        <input type="checkbox" class="form-check-input bg-primary border-0" id="Payments-1" name="Payments" value="Payments">
-                                        <label class="form-check-label" for="Payments-1">Check Payments</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                                <div class="col-12">
-                                    <div class="form-check text-start my-3">
-                                        <input type="checkbox" class="form-check-input bg-primary border-0" id="Delivery-1" name="Delivery" value="Delivery">
-                                        <label class="form-check-label" for="Delivery-1">Cash On Delivery</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row g-4 text-center align-items-center justify-content-center border-bottom py-3">
-                                <div class="col-12">
-                                    <div class="form-check text-start my-3">
-                                        <input type="checkbox" class="form-check-input bg-primary border-0" id="Paypal-1" name="Paypal" value="Paypal">
-                                        <label class="form-check-label" for="Paypal-1">Paypal</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                                <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place Order</button>
-                            </div>
-                        </div>
-                    </div>
+                     </div>
             </div>
         </div>
         <!-- Checkout Page End -->
