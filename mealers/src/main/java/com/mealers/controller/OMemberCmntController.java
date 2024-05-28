@@ -20,4 +20,3 @@ public class OMemberCmntController {
 		return mav;
 	}
 } 
- 

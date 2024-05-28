@@ -11,7 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
- @Controller
+@Controller
 public class FreeCmntController {
 	@RequestMapping(value = "/freeCmnt/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
