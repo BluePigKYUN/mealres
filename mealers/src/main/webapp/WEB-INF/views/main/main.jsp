@@ -79,10 +79,10 @@
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">커뮤니티</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="${pageContext.request.contextPath}/mealCmnt/list" class="dropdown-item">식단커뮤니티</a>
-                                    <a href="mealers/exerCmnt/list" class="dropdown-item">운동커뮤니티</a>
-                                    <a href="mealers/freeCmnt/list"class="dropdown-item">자유커뮤니티</a>
-                                    <a href="mealers/oMemberCmnt/list"class="dropdown-item">우수회원커뮤니티</a>
-                                    <a href="mealers/concernCmnt/list"class="dropdown-item">고민상담커뮤니티</a>
+                                    <a href="${pageContext.request.contextPath}/exerCmnt/list" class="dropdown-item">운동커뮤니티</a>
+                                    <a href="${pageContext.request.contextPath}/freeCmnt/list"class="dropdown-item">자유커뮤니티</a>
+                                    <a href="${pageContext.request.contextPath}/oMemberCmnt/list"class="dropdown-item">우수회원커뮤니티</a>
+                                    <a href="${pageContext.request.contextPath}/concernCmnt/list"class="dropdown-item">고민상담커뮤니티</a>
                                     <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
                                 </div>
                             </div>
