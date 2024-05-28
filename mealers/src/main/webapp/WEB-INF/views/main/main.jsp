@@ -67,8 +67,25 @@
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
                             <a href="index.html" class="nav-item nav-link active">Home</a>
-                            <a href="mealers/member/login" class="nav-item nav-link">칼럼(서연)</a>
-                            <a href="mealers/member/login" class="nav-item nav-link">커뮤(예린)</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">컬럼</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="${pageContext.request.contextPath}/mealColumn/list" class="dropdown-item">식단컬럼</a>
+                                    <a href="${pageContext.request.contextPath}/mealColumn/list" class="dropdown-item">운동컬럼</a>
+                                    <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
+                                </div>
+                            </div>
+                             <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">커뮤니티</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="${pageContext.request.contextPath}/mealCmnt/list" class="dropdown-item">식단커뮤니티</a>
+                                    <a href="mealers/exerCmnt/list" class="dropdown-item">운동커뮤니티</a>
+                                    <a href="mealers/freeCmnt/list"class="dropdown-item">자유커뮤니티</a>
+                                    <a href="mealers/oMemberCmnt/list"class="dropdown-item">우수회원커뮤니티</a>
+                                    <a href="mealers/concernCmnt/list"class="dropdown-item">고민상담커뮤니티</a>
+                                    <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
+                                </div>
+                            </div>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">

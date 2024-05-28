@@ -130,7 +130,7 @@
         <!-- Fruits Shop Start-->
         <div class="container-fluid fruite py-5">
             <div class="container py-5">
-                <h1 class="mb-4">컬럼 모아보기</h1>
+                <h1 class="mb-4">우헤헤 컬럼 페이지지롱</h1>
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="row g-4">
