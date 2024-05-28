@@ -67,7 +67,14 @@
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
                             <a href="index.html" class="nav-item nav-link active">Home</a>
-                            <a href="mealers/member/login" class="nav-item nav-link">칼럼(서연)</a>
+                            <div class="nav-item dropdown">
+                                <a href="contact.html" class="nav-link dropdown-toggle nav-item active" data-bs-toggle="dropdown">컬럼</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="${pageContext.request.contextPath}/mealColumn/list" class="dropdown-item">전체 컬럼보기</a>
+                                    <a href="${pageContext.request.contextPath}/log/event" class="dropdown-item">식단컬럼</a>
+                                    <a href="${pageContext.request.contextPath}/log/diary" class="dropdown-item">운동컬럼</a>
+                                </div>
+                            </div>
                             <a href="mealers/member/login" class="nav-item nav-link">커뮤(예린)</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
