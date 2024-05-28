@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ConcernCmntController {
 	@RequestMapping(value = "/concernCmnt/list", method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ModelAndView mav = new ModelAndView("concern/list"); 
+		ModelAndView mav = new ModelAndView("concernCmnt/list");
 		
 		return mav;
 	}
