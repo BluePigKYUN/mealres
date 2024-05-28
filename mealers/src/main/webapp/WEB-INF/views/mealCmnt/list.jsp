@@ -21,8 +21,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
         <!-- Libraries Stylesheet -->
-        <link href="/mealers/resources/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-        <link href="/mealers/resources/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+        <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+        <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
 
         <!-- Customized Bootstrap Stylesheet -->
@@ -130,7 +130,7 @@
         <!-- Fruits Shop Start-->
         <div class="container-fluid fruite py-5">
             <div class="container py-5">
-                <h1 class="mb-4">컬럼 모아보기</h1>
+                <h1 class="mb-4">식단페이지이니리이이이이이</h1>
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="row g-4">
