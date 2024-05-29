@@ -19,6 +19,13 @@ public class ColumnController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/mealColumn/write")
+	public ModelAndView mealwrite(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ModelAndView mav = new ModelAndView("mealColumn/write");
+		
+		return mav;
+	}
+	
 	@RequestMapping(value = "/exersColumn/list")
 	public ModelAndView exerslist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("exersColumn/list");

@@ -12,13 +12,7 @@
     </header>
 
     <body>
-        <!-- Single Page Header start -->
-        <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">Mealers가 알려주는 건강 정보</h1>
-        </div>
-        <!-- Single Page Header End -->
-
-
+    <div class="container-fluid py-5 my-5">
         <!-- Fruits Shop Start-->
         <div class="container-fluid fruite py-5">
             <div class="container py-5">
@@ -26,7 +20,7 @@
                     <div class="col-lg-12">
                         <div class="row g-4">
                             <div class="col-xl-3">
-                                  <h1 class="mb-4 text-primary">식단 칼럼</h1>
+                                  <h1 class="mb-4 text-primary">글등록하기</h1>
                             </div>
                             <div class="col-6"></div>
                             <div class="col-xl-3">
@@ -137,6 +131,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
         <!-- Fruits Shop End-->
 
