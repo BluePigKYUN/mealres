@@ -13,8 +13,15 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 public class ColumnController {
 	@RequestMapping(value = "/mealColumn/list")
-	public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public ModelAndView meallist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("mealColumn/list");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/exersColumn/list")
+	public ModelAndView exerslist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ModelAndView mav = new ModelAndView("exersColumn/list");
 		
 		return mav;
 	}
