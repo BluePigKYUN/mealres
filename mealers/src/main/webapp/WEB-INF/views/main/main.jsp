@@ -3,7 +3,6 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
 <html lang="en">
-
     <head>
         <meta charset="utf-8">
         <title>Mealers - Vegetable Website Template</title>
@@ -31,48 +30,41 @@
         <!-- Template Stylesheet -->
         <link href="/mealers/resources/css/style_bootstrap.css" rel="stylesheet">
     </head>
-    
     <body>
-
-        <!-- Spinner Start -->
         <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
             <div class="spinner-grow text-primary" role="status"></div>
         </div>
-        <!-- Spinner End -->
 
 
-        <!-- Navbar start -->
         <div class="container-fluid fixed-top">
             <div class="container topbar bg-primary d-none d-lg-block">
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">서울특별시 마포구</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">mealers@mealers.com</a></small>
                     </div>
                     <div class="top-link pe-2">
-                        <!--
-                        <a href="#" class="text-white"><small class="text-white mx-2">링크1</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white mx-2">링크2</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white ms-2">링크3</small></a>
-                        -->
                     </div>
                 </div>
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6">Mealers</h1></a>
+                    <a href="${pageContext.request.contextPath}/main" class="navbar-brand"><h1 class="text-primary display-6">Mealers</h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="index.html" class="nav-item nav-link active">Home</a>
+                         <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">칼로리 검색</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="#" class="dropdown-item">음식 칼로리 검색</a>
+                                    <a href="#" class="dropdown-item">음식 등록하기</a>
+                                </div>
+                            </div>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">칼럼</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="${pageContext.request.contextPath}/mealColumn/list" class="dropdown-item">식단 칼럼</a>
                                     <a href="${pageContext.request.contextPath}/mealColumn/list" class="dropdown-item">운동 칼럼</a>
-                                    <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
                                 </div>
                             </div>
                              <div class="nav-item dropdown">
@@ -84,34 +76,28 @@
                                     <a href="${pageContext.request.contextPath}/oMemberCmnt/list"class="dropdown-item">우수회원 커뮤니티</a>
                                     <a href="${pageContext.request.contextPath}/concernCmnt/list"class="dropdown-item">고민상담 커뮤니티</a>
                                     <a href="#"class="dropdown-item">그룹방</a>
-                                    <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
                                 </div>
                             </div>
                             <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">목표</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="mealers/member/login" class="dropdown-item">Cart</a>
-                                    <a href="mealers/member/login" class="dropdown-item">Chackout</a>
-                                    <a href="mealers/member/login"class="dropdown-item">Testimonial</a>
-                                    <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
+                                    <a href="mealers/member/login" class="dropdown-item">카테고리1</a>
+                                    <a href="mealers/member/login" class="dropdown-item">카테고리1</a>
                                 </div>
                             </div>
                              <div class="nav-item dropdown">
-                                <a href="contact.html" class="nav-link dropdown-toggle nav-item active" data-bs-toggle="dropdown">기록</a>
+                                <a href="contact.html" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">기록</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="${pageContext.request.contextPath}/log/main" class="dropdown-item">소개</a>
                                     <a href="${pageContext.request.contextPath}/log/event" class="dropdown-item">일정기록</a>
                                     <a href="${pageContext.request.contextPath}/log/diary" class="dropdown-item">일상기록</a>
                                     <a href="${pageContext.request.contextPath}/log/foodi" class="dropdown-item">음식기록</a>
-                                    <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
                                 </div>
                             </div>
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="#" class="position-relative me-4 my-auto">
-                                <i class="fa fa-shopping-bag fa-2x"></i> 
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            <a href="mealers/member/login" class="position-relative me-4 my-auto">
+                                <i class="bi bi-box-arrow-in-right fa-2x"></i>
                             </a>
                             <a href="mealers/member/login" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>
@@ -121,10 +107,9 @@
                 </nav>
             </div>
         </div>
-        <!-- Navbar End -->
-
 
         <!-- Modal Search Start -->
+        <!--  
         <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content rounded-0">
@@ -141,6 +126,7 @@
                 </div>
             </div>
         </div>
+        -->
         <!-- Modal Search End -->
 
 
@@ -601,12 +587,11 @@
         <!-- Banner Section End -->
 
         <!-- Bestsaler Product Start -->
-        
+        <!--  
         <div class="container-fluid py-5">
             <div class="container py-5">
                 <div class="text-center mx-auto mb-5" style="max-width: 700px;">
                     <h1 class="display-4">Bestseller Products</h1>
-                    <!-- <p>Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p> -->
                 </div>
                 <div class="row g-4">
                     <div class="col-lg-6 col-xl-4">
@@ -805,7 +790,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div> -->
         <!-- Bestsaler Product End -->
 
 
