@@ -30,7 +30,6 @@
         <!-- Template Stylesheet -->
         <link href="/mealers/resources/css/style_bootstrap.css" rel="stylesheet">
     </head>
-
         <!-- Hero Start -->
         <div class="container-fluid py-5 mb-5 hero-header">
             <div class="container py-5">
@@ -351,11 +350,6 @@
             </div>
         </div>
         <!-- Vesitable Shop End -->
-
-
-
-
-
 
         <!-- Footer Start -->
         
