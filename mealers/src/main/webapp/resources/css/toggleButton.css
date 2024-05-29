@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+.mScale {
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	border-radious: 100px;
+}
+
+.fixed-button {
+	position: fixed;
+	top: 40%;
+	right: -84%;
+	transform: translateY(-50%);
+	z-index: 1000;
+}
+
+#right-buttons button {
+	display: block;
+	margin-top: 10px;
+}
+
+.hidden {
+	display: none;
+}
+
+@media ( max-width : 768px) {
+	.fixed-button {
+		display: none;
+	}
+}
