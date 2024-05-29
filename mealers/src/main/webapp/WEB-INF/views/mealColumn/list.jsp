@@ -46,45 +46,74 @@
             <div class="container topbar bg-primary d-none d-lg-block">
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
-                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
-                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Email@Example.com</a></small>
+                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">서울특별시 마포구</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">mealers@mealers.com</a></small>
                     </div>
                     <div class="top-link pe-2">
-                        <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
-                        <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
+                        <!--
+                        <a href="#" class="text-white"><small class="text-white mx-2">링크1</small>/</a>
+                        <a href="#" class="text-white"><small class="text-white mx-2">링크2</small>/</a>
+                        <a href="#" class="text-white"><small class="text-white ms-2">링크3</small></a>
+                        -->
                     </div>
                 </div>
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6">MealLog</h1></a>
+                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6">Mealers</h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="shop.html" class="nav-item nav-link active">Shop</a>
-                            <a href="shop-detail.html" class="nav-item nav-link">Shop Detail</a>
+                            <a href="index.html" class="nav-item nav-link active">Home</a>
                             <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">칼럼</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="cart.html" class="dropdown-item">Cart</a>
-                                    <a href="chackout.html" class="dropdown-item">Chackout</a>
-                                    <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+                                    <a href="${pageContext.request.contextPath}/mealColumn/list" class="dropdown-item">식단 칼럼</a>
+                                    <a href="${pageContext.request.contextPath}/mealColumn/list" class="dropdown-item">운동 칼럼</a>
                                     <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
                                 </div>
                             </div>
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                             <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">커뮤니티</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="${pageContext.request.contextPath}/mealCmnt/list" class="dropdown-item">식단 커뮤니티</a>
+                                    <a href="${pageContext.request.contextPath}/exerCmnt/list" class="dropdown-item">운동 커뮤니티</a>
+                                    <a href="${pageContext.request.contextPath}/freeCmnt/list"class="dropdown-item">자유 커뮤니티</a>
+                                    <a href="${pageContext.request.contextPath}/oMemberCmnt/list"class="dropdown-item">우수회원 커뮤니티</a>
+                                    <a href="${pageContext.request.contextPath}/concernCmnt/list"class="dropdown-item">고민상담 커뮤니티</a>
+                                    <a href="#"class="dropdown-item">그룹방</a>
+                                    <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
+                                </div>
+                            </div>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="mealers/member/login" class="dropdown-item">Cart</a>
+                                    <a href="mealers/member/login" class="dropdown-item">Chackout</a>
+                                    <a href="mealers/member/login"class="dropdown-item">Testimonial</a>
+                                    <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
+                                </div>
+                            </div>
+                             <div class="nav-item dropdown">
+                                <a href="contact.html" class="nav-link dropdown-toggle nav-item active" data-bs-toggle="dropdown">기록</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="${pageContext.request.contextPath}/log/main" class="dropdown-item">소개</a>
+                                    <a href="${pageContext.request.contextPath}/log/event" class="dropdown-item">일정기록</a>
+                                    <a href="${pageContext.request.contextPath}/log/diary" class="dropdown-item">일상기록</a>
+                                    <a href="${pageContext.request.contextPath}/log/foodi" class="dropdown-item">음식기록</a>
+                                    <!-- <a href="404.html" class="dropdown-item">404 Page</a> -->
+                                </div>
+                            </div>
                         </div>
                         <div class="d-flex m-3 me-0">
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                             <a href="#" class="position-relative me-4 my-auto">
-                                <!-- <i class="fa fa-shopping-bag fa-2x"></i> -->
-                                <!-- <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span> -->
+                                <i class="fa fa-shopping-bag fa-2x"></i> 
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
                             </a>
-                            <a href="#" class="my-auto">
+                            <a href="mealers/member/login" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                         </div>
@@ -304,7 +333,7 @@
                                     <div class="col-md-6 col-lg-6 col-xl-4">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
-                                                <img src="img/fruite-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                                <img src="https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/cnoC/image/R7FVHsxQscWuMqj6TtNhHLSH8do" class="img-fluid w-100 rounded-top" alt="">
                                             </div>
                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
                                             <div class="p-4 border border-secondary border-top-0 rounded-bottom">
@@ -320,7 +349,7 @@
                                     <div class="col-md-6 col-lg-6 col-xl-4">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
-                                                <img src="img/fruite-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                                <img src="https://i.namu.wiki/i/ESC_-sL2qz0XHQ0yfac2qEoNhWDo-qwLgRdqtyjeAiz_7ZxTdJ17KFWXqzEbm7dYA5G1uTTZECqTudyv-7hRmg.webp" class="img-fluid w-100 rounded-top" alt="">
                                             </div>
                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
                                             <div class="p-4 border border-secondary border-top-0 rounded-bottom">
