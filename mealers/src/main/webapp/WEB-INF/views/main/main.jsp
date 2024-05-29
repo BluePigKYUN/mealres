@@ -30,6 +30,9 @@
         <!-- Template Stylesheet -->
         <link href="/mealers/resources/css/style_bootstrap.css" rel="stylesheet">
     </head>
+    <header>
+    	<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
+    </header>
         <!-- Hero Start -->
         <div class="container-fluid py-5 mb-5 hero-header">
             <div class="container py-5">
@@ -352,7 +355,9 @@
         <!-- Vesitable Shop End -->
 
         <!-- Footer Start -->
-        
+        <footer>
+        	<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
+        </footer>
         <!-- Footer End -->
 
 
