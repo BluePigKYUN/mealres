@@ -7,6 +7,147 @@
 <meta charset="utf-8">
 <title>일기</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/util-jquery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/core.js"></script>
+
+<style type="text/css">
+
+</style>
+
+<script type="text/javascript">
+
+$(function(){
+	$("body").on("click", "#writeDiary", function(){
+		// 폼 reset
+		$("form[name=diaryForm]").each(function(){
+			this.reset();
+		});
+		
+		$("#form-repeat_cycle").hide();
+		$("#form-allDay").prop("checked", true);
+		$("#form-allDay").removeAttr("disabled");
+		$("#form-stime").hide();
+		$("#form-etime").hide();
+		$("#form-eday").closest("tr").show();
+		
+		$("form[name=diaryForm] input[name=sday]");
+		$("form[name=diaryForm] input[name=eday]");
+		
+		$("#myDialogModalLabel").html("스케쥴 등록");
+		$("#btnScheduleSendOk").attr("data-mode", "insert");
+		$("#btnScheduleSendOk").html(" 등록 완료 ");
+		$("#btnScheduleSendCancel").html(" 등록 취소 ");
+		
+		$("#diaryForm").modal("show");
+	});
+});
+
+//등록완료버튼
+$(function(){
+	$("#btnScheduleSendOk").click(function(){
+		if(! check()) {
+			return false;
+		}
+		
+		let mode = $("#btnScheduleSendOk").attr("data-mode");
+		let query = $("form[name=diaryForm]").serialize();
+		let url = "${pageContext.request.contextPath}/schedule/"+ mode +"";
+
+		const fn = function(data){
+			let state = data.state;
+			if(state === "true") {
+				if(mode === "insert") {
+					let dd = $("#form-sday").val().split("-");
+					let y = dd[0];
+					let m = dd[1];
+					if(m.substr(0,1) === "0") m = m.substr(1,1);
+				
+				    let url = "${pageContext.request.contextPath}/schedule/month";
+				    let query = "year="+y+"&month="+m;
+				    schedule(url, query, "#nav-1");
+				} else if(mode === "update") {
+					let num = $("#btnScheduleSendOk").attr("data-num");
+					let date = $("#btnScheduleSendOk").attr("data-date");
+					
+					let url = "${pageContext.request.contextPath}/schedule/day"
+					let query = "date="+date+"&num="+num;
+						
+					schedule(url, query, "#nav-2");
+				}
+			}
+			
+			$("#diaryForm").modal("hide");
+			
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);		
+	});
+});
+
+//취소버튼
+$(function(){
+	$("#btnScheduleSendCancel").click(function(){
+		$("#diaryForm").modal("hide");
+	});
+});
+
+//등록내용 유효성 검사
+function check() {
+	if(! $("#form-subject").val()) {
+		$("#form-subject").focus();
+		return false;
+	}
+
+	if(! $("#form-day").val()) {
+		$("#form-day").focus();
+		return false;
+	}
+
+	if($("#form-eday").val()) {
+		let s1 = $("#form-sday").val().replace("-", "");
+		let s2 = $("#form-eday").val().replace("-", "");
+		if(s1 > s2) {
+			$("#form-sday").focus();
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+//mordal에 날짜를 바로 출력해주는 설정
+$(function() {
+    $('#diaryForm').on('shown.bs.modal', function () {
+        let today = new Date().toISOString().split('T')[0];
+        $('#form-today').val(today);
+    });
+});
+
+$(function() {
+    $('#form-diary').keyup(function(e) {
+        let content = $(this).val();
+
+        if (content.length == 0 || content == '') {
+            $('.count').text('0자');
+        } else {
+            $('.count').text(content.length + '자');
+        }
+        
+    });
+});
+
+$
+
+$(function() {
+	$('#writeDiary').on('click', function() {
+		$('.count').text('0자');
+	})
+})
+
+</script>
+
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
@@ -29,9 +170,27 @@
                         <button type="button" class="btn ms-auto">일기 보기</button>
                     </div>
                 </div>
-				<div class="page-navigation">
-					페이지네이션 해야할 곳
-					${dataCount==0 ? "등록된 게시글이 없습니다." : paging}
+                <div class="d-flex justify-content-between">
+					<nav aria-label="Page navigation example">
+						<ul class="pagination d-flex justify-content-center pt-4">
+							<li class="page-item m_prev">
+								<a class="page-link" href="#" aria-label="Previous"> 
+								<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							<li class="page-item"><a class="page-link" href="#">1</a></li>
+							<li class="page-item"><a class="page-link" href="#">2</a></li>
+							<li class="page-item"><a class="page-link" href="#">3</a></li>
+							<li class="page-item m_next">
+								<a class="page-link" href="#" aria-label="Next"> 
+								<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						</ul>
+					</nav>
+					<div class="d-flex align-items-center">
+						<button type="button" class="btn btn-primary" id="writeDiary">일기 작성</button>
+					</div>
 				</div>
            	</div>
 	        <div class="col-lg-4">
@@ -104,6 +263,93 @@
 	    </div>
 	</div>
 </div>
+
+<!-- write Diary Modal Start -->
+<div class="modal fade" id="diaryForm" data-bs-backdrop="static" data-bs-keyboard="false" 
+		tabindex="-1" aria-labelledby="imyDialogModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="diaryFormLabel">일기 작성</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body pt-0 pb-0">
+        		<form name="diaryForm">
+        			<table class="table">
+        			
+						<tr>
+						    <td class="col-2">작성일자</td>
+						    <td>
+						        <div class="row">
+						            <div class="col col-sm-4 pe-1">
+						                <input type="date" name="today" id="form-today" class="form-control" readonly>
+						            </div>
+						        </div>
+						    </td>
+						</tr>
+        			
+						<tr>
+							<td class="col-2">제 목</td>
+							<td>
+								<input type="text" name="subject" id="form-subject" class="form-control" placeholder="일기제목을 작성해주세요.">
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="col-2">감정선택</td>
+							<td>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji1" value="option1">
+								  <label class="form-check-label" for="emoji1"><i class="bi bi-emoji-smile me-2"></i></label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji2" value="option2">
+								  <label class="form-check-label" for="emoji2"><i class="bi bi-emoji-laughing me-2"></i></label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji3" value="option3">
+								  <label class="form-check-label" for="emoji3"><i class="bi bi-emoji-frown me-2"></i></label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji4" value="option4">
+								  <label class="form-check-label" for="emoji4"><i class="bi bi-emoji-angry me-2"></i></label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji5" value="option5">
+								  <label class="form-check-label" for="emoji5"><i class="bi bi-emoji-neutral me-2"></i></label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji6" value="option6">
+								  <label class="form-check-label" for="emoji6"><i class="bi bi-cloud-drizzle me-2"></i></label>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="col-2">일기<br>
+							<span class="count"></span><br>
+							<span class="total">/1000자</span></td>
+							<td>
+								<textarea name="diary" id="form-diary" class="form-control" style="height: 300px; resize: none;"
+									maxlength="1000" placeholder="일기를 써주세요."></textarea>
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="2" class="text-center" style="border-bottom: none;">
+								<input type="hidden" name="num"id="form-num"  value="0">
+								<button type="button" class="btn btn-dark" id="btnScheduleSendOk"> 등록 완료 </button>
+								<button type="button" class="btn btn-light" id="btnScheduleSendCancel"> 등록 취소 </button>
+							</td>
+						</tr>
+						
+        			</table>
+        		</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- write Diary Modal End -->
 
 <footer>
    	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
