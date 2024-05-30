@@ -137,23 +137,43 @@
 				                    	<button type="button" class="text-white btn btn-primary m-3 py-2 rounded-pill">글등록하기</button>
 				                    </a>
 				                </div>
-                                 
-                                <div class="input-group w-75 mx-auto d-flex">
-                                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                                    <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                                </div>
-                                    <div class="col-12">
-                                        <div class="pagination d-flex justify-content-center mt-5">
-                                            <a href="#" class="rounded">&laquo;</a>
-                                            <a href="#" class="active rounded">1</a>
-                                            <a href="#" class="rounded">2</a>
-                                            <a href="#" class="rounded">3</a>
-                                            <a href="#" class="rounded">4</a>
-                                            <a href="#" class="rounded">5</a>
-                                            <a href="#" class="rounded">6</a>
-                                            <a href="#" class="rounded">&raquo;</a>
-                                        </div>
-                                    </div>
+				                
+                              <div class="justify-content-center row board-list-footer">
+								<div class="col-6 text-center">
+									<form class="row" name="searchForm" action="${pageContext.request.contextPath}/bbs/list" method="post">
+										<div class="col-auto p-1">
+											<select name="schType" class="form-select">
+												<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
+												<option value="userName" ${schType=="userName"?"selected":""}>작성자</option>
+												<option value="reg_date" ${schType=="reg_date"?"selected":""}>등록일</option>
+												<option value="subject" ${schType=="subject"?"selected":""}>제목</option>
+												<option value="content" ${schType=="content"?"selected":""}>내용</option>
+											</select>
+										</div>
+										<div class="col-auto p-1">
+											<input type="text" name="kwd" value="${kwd}" class="form-control">
+										</div>
+										<div class="col-auto p-1">
+											<button type="button" class="btn btn-light" onclick="searchList()"> <i class="bi bi-search"></i> </button>
+										</div>
+									</form>
+								</div>
+							</div>
+
+                                <nav aria-label="Page navigation example">
+								<ul class="pagination d-flex justify-content-center">
+									<li class="page-item m_prev"><a class="page-link" href="#"
+										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+									</a></li>
+									<li class="page-item"><a class="page-link" href="#">1</a></li>
+									<li class="page-item"><a class="page-link" href="#">2</a></li>
+									<li class="page-item"><a class="page-link" href="#">3</a></li>
+									<li class="page-item m_next"><a class="page-link" href="#"
+										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+									</a></li>
+								</ul>
+							    </nav>
+							    
                                 </div>
                             </div>
                         </div>
