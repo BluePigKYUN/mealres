@@ -56,7 +56,7 @@
                                     <div class="col-md-6 col-lg-6 col-xl-4">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
-                                                <img src="https://i.namu.wiki/i/ESC_-sL2qz0XHQ0yfac2qEoNhWDo-qwLgRdqtyjeAiz_7ZxTdJ17KFWXqzEbm7dYA5G1uTTZECqTudyv-7hRmg.webp" class="img-fluid w-100 rounded-top" alt="">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Cat_November_2010-1a.jpg/300px-Cat_November_2010-1a.jpg" class="img-fluid w-100 rounded-top" style="max-height: 390px;">
                                             </div>
                                             <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><i class="bi bi-eye" style="letter-spacing: 10px;"></i>12</div>
                                             <div class="p-4 border border-primary border-top-0 rounded-bottom">

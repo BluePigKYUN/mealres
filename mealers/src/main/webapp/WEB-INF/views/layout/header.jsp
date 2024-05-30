@@ -46,7 +46,7 @@
                                     <a href="${pageContext.request.contextPath}/freeCmnt/list"class="dropdown-item">자유 커뮤니티</a>
                                     <a href="${pageContext.request.contextPath}/oMemberCmnt/list"class="dropdown-item">우수회원 커뮤니티</a>
                                     <a href="${pageContext.request.contextPath}/concernCmnt/list"class="dropdown-item">고민상담 커뮤니티</a>
-                                    <a href="#"class="dropdown-item">그룹방</a>
+                                    <a href="${pageContext.request.contextPath}/group/list"class="dropdown-item">그룹방</a>
                                 </div>
                             </div>
                             <div class="nav-item dropdown">

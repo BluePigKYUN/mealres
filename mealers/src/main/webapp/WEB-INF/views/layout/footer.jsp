@@ -2,21 +2,22 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
+
+
 <!-- Footer Start -->
-<div class="bg-dark text-white-50 footer custom-container">
+<div class="bg-dark text-white-50 footer custom-container" style="margin-top: auto;">
     <div class="container py-5">
-        <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
-            <div class="row g-4">
-                <div class="col-lg-3">
-                    <a href="#">
-                        <h1 class="text-primary mb-0">MealLog</h1>
-                        <p class="text-secondary mb-0">Fresh products</p>
-                    </a>
-                </div>
-                <div class="col-lg-3">
-                </div>
+        <div class="row g-4">
+            <div class="col-lg-3">
+                <h2 class="text-primary mb-0"><a href="${pageContext.request.contextPath}/main" style="color: inherit; text-decoration: none;">MealLog</a></h2>
             </div>
+            <hr style="border-bottom: 1px solid rgb(32,201,151, 0.2);">
+        </div>
+        <div class="d-flex justify-content-between">
+            <div class="text-start">© DoubleDragons Corp.</div>
+            <div class="text-md-end">대표이사 BluePigKYUN | e. Mealers@mealers.com</div>
         </div>
     </div>
 </div>
+
 <!-- Footer End -->
