@@ -12,7 +12,7 @@
     width: 100%;
   }
 
-  .ratio-4x3 img {
+  .ratio-4x3 img {   
     position: absolute;
     top: 0;
     left: 0;
