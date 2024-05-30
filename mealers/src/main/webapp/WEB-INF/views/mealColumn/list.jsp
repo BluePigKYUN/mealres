@@ -30,7 +30,7 @@
 
     <body>
         <!-- Single Page Header start -->
-        <div class="container-fluid page-header py-5">
+        <div class="container-fluid page-header-mealColumn py-5">
             <h1 class="text-center text-white display-6">Mealers가 알려주는 건강 정보</h1>
         </div>
         <!-- Single Page Header End -->
@@ -139,8 +139,7 @@
 				                </div>
 				                
                               <div class="justify-content-center row board-list-footer">
-								<div class="col-6 text-center">
-									<form class="row" name="searchForm" action="${pageContext.request.contextPath}/bbs/list" method="post">
+									<form class="justify-content-center row" name="searchForm" action="${pageContext.request.contextPath}/bbs/list" method="post">
 										<div class="col-auto p-1">
 											<select name="schType" class="form-select">
 												<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
@@ -157,7 +156,6 @@
 											<button type="button" class="btn btn-light" onclick="searchList()"> <i class="bi bi-search"></i> </button>
 										</div>
 									</form>
-								</div>
 							</div>
 
                                 <nav aria-label="Page navigation example">

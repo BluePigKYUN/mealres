@@ -37,28 +37,28 @@
 				<form name="lectureForm" method="post"	enctype="multipart/form-data">
 					<table class="table write-form">
 						<tr>
-							<td class="bg-light col-sm-2" scope="row">제 목</td>
+							<td class="align-middle bg-light col-sm-2" scope="row">제 목</td>
 							<td>
 								<input type="text" name="subject" class="form-control" value="${dto.subject}">
 							</td>
 						</tr>
 	        
 						<tr>
-							<td class="bg-light col-sm-2" scope="row">카테고리</td>
+							<td class="align-middle bg-light col-sm-2" scope="row">카테고리</td>
 	 						<td>
-								<p class="form-control-plaintext">식단 칼럼</p>
+								<p class="text-start">식단 칼럼</p>
 							</td>
 						</tr>
 	
 						<tr>
-							<td class="bg-light col-sm-2" scope="row">내 용</td>
+							<td class="align-middle bg-light col-sm-2" scope="row">내 용</td>
 							<td>
 								<textarea name="content" id="ir1" class="form-control" style="width: 95%; height: 270px;">${dto.content}</textarea>
 							</td>
 						</tr>
 						
 						<tr>
-							<td class="bg-light col-sm-2">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
+							<td class="align-middle bg-light col-sm-2">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
 							<td> 
 								<input type="file" name="selectFile" class="form-control">
 							</td>
