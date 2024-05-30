@@ -25,3 +25,6 @@
 
   <!-- Template Stylesheet -->
   <link href="${pageContext.request.contextPath}/resources/css/style_bootstrap.css" rel="stylesheet">
+  
+  <!-- member -->
+  <link href="${pageContext.request.contextPath}/resources/css/member.css" rel="stylesheet">
