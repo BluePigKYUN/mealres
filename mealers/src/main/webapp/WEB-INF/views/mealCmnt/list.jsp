@@ -5,23 +5,26 @@
 <html lang="en">
 
 <head>
-	<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
 		 
-	<style type="text/css">
-	.ratio-4x3 {
-    position: relative;
+<style type="text/css">
+.ratio-4x3 {
+ 	position: relative;
     width: 100%;
-  }
+    height: 0;
+    padding-top: 75%;
+}
 
-  .ratio-4x3 img {   
+.ratio-4x3 img {   
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 이미지가 비율에 맞게 잘리도록 설정 */
-  }
-	</style>
+    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+</style>
 
 </head>
 	
@@ -63,7 +66,7 @@
 					<div class="row g-4">
 						<div class="col-lg-13">
 							<div class="row g-4 justify-content-center">
-								<div class="col-ms-4 col-lg-4 col-xl-3 pb-3">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-3">
 									<div class="rounded position-relative fruite-item">
 										<div class="fruite-img ratio ratio-4x3">
 											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top">
@@ -88,7 +91,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-ms-6 col-lg-6 col-xl-3 pb-3 ">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-3 ">
 									<div class="rounded position-relative fruite-item ">
 										<div class="fruite-img ratio ratio-4x3">
 											<img src="https://flexible.img.hani.co.kr/flexible/normal/970/777/imgdb/resize/2019/0926/00501881_20190926.JPG" class="img-fluid  rounded-top">
@@ -113,7 +116,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3 pb-3">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-3">
 									<div class="rounded position-relative fruite-item ">
 										<div class="fruite-img ratio ratio-4x3">
 											<img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
@@ -138,7 +141,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3 pb-3">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-3">
 									<div class="rounded position-relative fruite-item ">
 										<div class="fruite-img ratio ratio-4x3">
 											<img src="https://images.unsplash.com/photo-1582716454502-f0925ab107aa?q=80&w=2075&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -163,7 +166,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-ms-4 col-lg-4 col-xl-3 pb-2">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
 									<div class="rounded position-relative fruite-item">
 										<div class="fruite-img ratio ratio-4x3">
 											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top ">
@@ -188,7 +191,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-ms-4 col-lg-4 col-xl-3 pb-2">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
 									<div class="rounded position-relative fruite-item">
 										<div class="fruite-img ratio ratio-4x3">
 											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top ">
@@ -213,7 +216,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-ms-4 col-lg-4 col-xl-3 pb-2">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
 									<div class="rounded position-relative fruite-item">
 										<div class="fruite-img ratio ratio-4x3">
 											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top ">
@@ -238,7 +241,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-ms-4 col-lg-4 col-xl-3 pb-2">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
 									<div class="rounded position-relative fruite-item">
 										<div class="fruite-img ratio ratio-4x3">
 											<img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/472/5108241b97436af498bf14ba4ab3d68a_res.jpeg" class="img-fluid  rounded-top ">
