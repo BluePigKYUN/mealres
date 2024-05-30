@@ -12,9 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class SearchController {
-	@RequestMapping(value = "/search")
+	@RequestMapping(value = "/search/main")
 	public ModelAndView searchMain(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ModelAndView mav = new ModelAndView("/search/searchMain");
+		ModelAndView mav = new ModelAndView("/search/main");
 		
 		return mav;
 	}
