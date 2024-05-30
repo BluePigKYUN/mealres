@@ -27,7 +27,7 @@
                          <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">칼로리 검색</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="#" class="dropdown-item">음식 칼로리 검색</a>
+                                    <a href="${pageContext.request.contextPath}/search/main" class="dropdown-item">음식 칼로리 검색</a>
                                     <a href="#" class="dropdown-item">음식 등록하기</a>
                                 </div>
                             </div>
