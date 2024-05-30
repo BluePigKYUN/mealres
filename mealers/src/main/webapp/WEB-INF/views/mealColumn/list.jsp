@@ -114,7 +114,11 @@
                                         </div>
                                     </div>
                                     
-                                 <div><button type="button" class="text-white btn btn-primary m-2 py-2 rounded-pill">글등록하기</button></div>
+                                 <div id="right-buttons" class="hidden">
+				                    <a href = "${pageContext.request.contextPath}/mealColumn/write"> 
+				                    	<button type="button" class="text-white btn btn-primary m-2 py-2 rounded-pill">글등록하기</button>
+				                    </a>
+				                </div>
                                  
                                 <div class="input-group w-75 mx-auto d-flex">
                                     <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
