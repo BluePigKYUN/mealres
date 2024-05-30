@@ -1,3 +1,9 @@
+:root {
+	--bs-secondary: #F88264;
+}
+.bg-secondary {
+    background-color: var(--bs-secondary) !important;
+}
 
 /*** Spinner Start ***/
 #spinner {
