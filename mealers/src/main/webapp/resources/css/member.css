@@ -1,5 +1,25 @@
 @charset "UTF-8";
 
+/* 헤더공통 ---------------------------------- */
+@media (min-width: 992px) {
+    .hero-header,
+    .page-header {
+        margin-top: 0 !important;
+    }
+    body{padding-top:152px;}
+}
+
+@media (max-width: 992px) {
+    .hero-header,
+    .page-header {
+        margin-top: 0 !important;
+    }
+    body{padding-top: 97px;}
+}
+
+
+
+/* 상세페이지 --------------------------------- */
 .m_form {
 	display: flex;
 	flex-wrap: wrap;
@@ -99,3 +119,6 @@
 		display: none;
 	}
 }
+
+.g_btn_box{display:flex; align-items: flex-end;}
+.g_btn_box button{}

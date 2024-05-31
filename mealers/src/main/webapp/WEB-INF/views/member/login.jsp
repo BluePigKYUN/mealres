@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=UTF-8"%>
+﻿<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
@@ -65,9 +65,9 @@ h1 {
 .links li a {
 	text-decoration: none;
 	color: #0f132a;
-	font-weight: bolder;
 	text-align: center;
 	cursor: pointer;
+	font-family: 'JalnanGothic';
 }
 
 form {
@@ -112,12 +112,15 @@ form .input__block.signup-input__block::before {
 	transition: 0.2s linear;
 }
 
+form .input__block{display:flex;gap: 15px;}
+
 form .input__block input {
 	display: block;
-	width: 90%;
+	/* width: 90%; */
+	width: 100%;
 	max-width: 680px;
 	height: 50px;
-	margin: 0 auto;
+	/* margin: 0 auto; */
 	border-radius: 8px;
 	border: none;
 	background: rgba(15, 19, 42, 0.1);
@@ -127,23 +130,53 @@ form .input__block input {
 	font-family: "Montserrat", sans-serif;
 }
 
+#loginForm,
+#joinForm{}
+
+
+
+form .input_btn_box{}
+
+
+form .input_btn_box .btn_check{
+	background: #20c997;
+    color: white;
+    display: block;
+    width: 20%;
+    max-width: 100px;
+    height: 50px;
+    border-radius: 8px;
+    margin: 0 auto;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: "Montserrat", sans-serif;
+    box-shadow: 0 15px 30px rgba(0, 150, 136, 0.16);
+    transition: 0.2s linear;
+}
+
+
+
 form .input__block input:focus, form .input__block input:active {
 	outline: none;
 	border: none;
 	color: #0f132a;
 }
 
-form .input__block input.repeat__password {
+/* form .input__block input.repeat__password {
 	opacity: 0;
 	display: none;
 	transition: 0.2s linear;
-}
+} */
 
-form .signin__btn {
+/* form .signin__btn, */
+form .login__btn
+ {
 	background: #20c997;
 	color: white;
 	display: block;
-	width: 92.5%;
+	/* width: 92.5%; */
+	width: 100%;
 	max-width: 680px;
 	height: 50px;
 	border-radius: 8px;
@@ -152,11 +185,12 @@ form .signin__btn {
 	cursor: pointer;
 	font-size: 14px;
 	font-family: "Montserrat", sans-serif;
-	box-shadow: 0 15px 30px rgba(233, 30, 99, 0.36);
+	box-shadow: 0 15px 30px rgba(0, 150, 136, 0.16);
 	transition: 0.2s linear;
 }
 
-form .signin__btn:hover {
+/* form .signin__btn:hover, */
+form .login__btn:hover{
 	box-shadow: 0 0 0 rgba(233, 30, 99, 0);
 }
 
@@ -312,57 +346,91 @@ footer p a .fa-behance {
 				let first_input = $("form").find(".first-input");
 				let hidden_input = $("form").find(".input__block").find(
 						"#repeat__password");
-				let signin_btn = $("form").find(".signin__btn");
+				let nickname_block = $("#nickname_block"); // 닉네임 블록 선택자 추가
+				//let signin_btn = $("form").find(".signin__btn");
+
+				$("#joinForm").css({ // 블록 숨기기
+					"opacity" : "0",
+					"display" : "none"
+				});
 
 				//----------- sign up ---------------------
-			/* 	signup.on("click", function(e) {
+				signup.on("click", function(e) {
 					e.preventDefault();
+					/* $(this).closest(".container").find("h1").text("SIGN UP");
+					$(this).css("opacity", "1");
+					$(this).siblings().not($(this)).css("opacity", ".6"); */
+					
 					$(this).parent().parent().siblings("h1").text("SIGN UP");
 					$(this).parent().css("opacity", "1");
 					$(this).parent().siblings().css("opacity", ".6");
+					
 					first_input.removeClass("first-input__block").addClass(
 							"signup-input__block");
+					/* 
 					hidden_input.css({
+					    "opacity": "1",
+					    "display": "block"
+					});
+					nickname_block.css({ // 닉네임 블록 표시
+					    "opacity": "1",
+					    "display": "block"
+					}); */
+
+					//signin_btn.text("가입하기");
+					
+					$("#loginForm").css({ // 블록 표시
+						"opacity" : "0",
+						"display" : "none"
+					});
+					$("#joinForm").css({ // 블록 숨기기
 						"opacity" : "1",
 						"display" : "block"
 					});
-					signin_btn.text("Sign up");
-				}); */
-				
-				signup.on("click", function(e) {
-				    e.preventDefault();
-				    $(this).closest(".container").find("h1").text("SIGN UP");
-				    $(this).css("opacity", "1");
-				    $(this).siblings().not($(this)).css("opacity", ".6");
-				    first_input.removeClass("first-input__block").addClass("signup-input__block");
-				    hidden_input.css({
-				        "opacity": "1",
-				        "display": "block"
-				    });
-				    signin_btn.text("Sign up");
+					
 				});
 
 				//----------- sign in ---------------------
 				signin.on("click", function(e) {
 					e.preventDefault();
+					/* $(this).closest(".container").find("h1").text("SIGN IN");
+					$(this).css("opacity", "1");
+					$(this).siblings().not($(this)).css("opacity", ".6"); */
+					
 					$(this).parent().parent().siblings("h1").text("SIGN IN");
 					$(this).parent().css("opacity", "1");
 					$(this).parent().siblings().css("opacity", ".6");
+					
 					first_input.addClass("first-input__block").removeClass(
 							"signup-input__block");
+					/*
 					hidden_input.css({
+					   "opacity": "0",
+					   "display": "none"
+					});
+					nickname_block.css({ // 닉네임 블록 숨기기
+					   "opacity": "0",
+					   "display": "none"
+					}); */
+					//signin_btn.text("로그인");
+					
+					
+					$("#loginForm").css({ // 블록 표시
+						"opacity" : "1",
+						"display" : "block"
+					});
+					$("#joinForm").css({ // 블록 숨기기
 						"opacity" : "0",
 						"display" : "none"
 					});
-					signin_btn.text("Sign in");
 				});
 
 				//----------- reset ---------------------
 				reset.on("click", function(e) {
 					e.preventDefault();
-					$(this).parent().parent().siblings("form").find(
+					$(this).closest(".container").find("form").find(
 							".input__block").find(".input").val("");
-				})
+				});
 			});
 </script>
 </head>
@@ -375,31 +443,51 @@ footer p a .fa-behance {
 
 		<!-- Links -->
 		<ul class="links">
-			<li><a href="#" id="signin">SIGN IN</a></li>
-			<li><a href="#" id="signup">SIGN UP</a></li>
+			<li><a href="#" id="signin">로그인</a></li>
+			<li><a href="#" id="signup">회원가입</a></li>
 			<li><a href="#" id="reset">RESET</a></li>
 		</ul>
 
 		<!-- Form -->
-		<form name="loginForm" action="" method="post">
-			<!-- email input -->
+		<form name="loginForm" id="loginForm" action="" method="post">
 			<div class="first-input input__block first-input__block">
-				<input type="text" name="memberId" placeholder="ID" class="input"
-					id="email" />
+				<input type="text" name="memberId" placeholder="이메일"
+					class="input" id="email1" />
 			</div>
 
-			<!-- password input -->
 			<div class="input__block">
-				<input type="password" name="memberPwd" placeholder="Password"
-					class="input" id="password" />
+				<input type="password" name="memberPwd" placeholder="비밀번호"
+					class="input" id="password1" />
 			</div>
-			<!-- repeat password input -->
+
+			<button class="login__btn" onclick="sendLogin();">로그인</button>
+		</form>
+
+		<form name="joinForm" id="joinForm" action="" method="post">
+			<div class="first-input input__block first-input__block input_btn_box">
+				<input type="text" name="memberId" placeholder="이메일"
+					class="input" id="email2" />
+					<button type="button" class="btn_check">확인</button>
+			</div>
+
+			<div class="input__block input_btn_box" id="nickname_block">
+				<input type="text" placeholder="닉네임" class="input" id="nickname" />
+				<button type="button" class="btn_check">확인</button>
+			</div>
+
 			<div class="input__block">
-				<input type="password" placeholder="Repeat password"
+				<input type="password" name="memberPwd" placeholder="비밀번호"
+					class="input" id="password2" />
+			</div>
+
+			<div class="input__block">
+				<input type="password" placeholder="비밀번호 확인"
 					class="input repeat__password" id="repeat__password" />
 			</div>
+
+
 			<!-- sign in button -->
-			<button class="signin__btn" onclick="sendLogin();">Sign in</button>
+			<button class="login__btn" onclick="sendLogin();">회원가입</button>
 		</form>
 	</div>
 

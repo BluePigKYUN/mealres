@@ -19,4 +19,18 @@ public class GroupController {
 		
 		return mav;
 	}
+	
+	@RequestMapping(value="/group/write",method = RequestMethod.GET)
+	public ModelAndView groupWrite(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException{
+		ModelAndView mav = new ModelAndView("group/write");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/group/main",method = RequestMethod.GET)
+	public ModelAndView groupMain(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException{
+		ModelAndView mav = new ModelAndView("group/main");
+		
+		return mav;
+	}
 } 

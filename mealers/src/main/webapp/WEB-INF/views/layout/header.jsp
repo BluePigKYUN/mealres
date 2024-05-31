@@ -18,7 +18,7 @@
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="${pageContext.request.contextPath}/main" class="navbar-brand"><h1 class="text-primary display-6">Mealers</h1></a>
+                   <h1 class="navbar-brand"><a href="${pageContext.request.contextPath}/main" class="text-primary display-6">Mealers</a></h1>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
@@ -27,7 +27,7 @@
                          <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">칼로리 검색</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                    <a href="${pageContext.request.contextPath}/search/main" class="dropdown-item">음식 칼로리 검색</a>
+                                    <a href="#" class="dropdown-item">음식 칼로리 검색</a>
                                     <a href="#" class="dropdown-item">음식 등록하기</a>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
                                     <a href="${pageContext.request.contextPath}/freeCmnt/list"class="dropdown-item">자유 커뮤니티</a>
                                     <a href="${pageContext.request.contextPath}/oMemberCmnt/list"class="dropdown-item">우수회원 커뮤니티</a>
                                     <a href="${pageContext.request.contextPath}/concernCmnt/list"class="dropdown-item">고민상담 커뮤니티</a>
-                                    <a href="${pageContext.request.contextPath}/group/list"class="dropdown-item">그룹방</a>
+                                    <a href="${pageContext.request.contextPath}/group/list" class="dropdown-item">그룹방</a>
                                 </div>
                             </div>
                             <div class="nav-item dropdown">
