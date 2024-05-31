@@ -4,6 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
+	<title>Mealers</title>
+	<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 	<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 	
 	<style type="text/css">
@@ -12,6 +15,8 @@
 			content: "*";
 			color: red;
 		}
+		
+		label {color: black;}
 	</style>
 </head>
 
@@ -27,24 +32,121 @@
 		<div class="container">
        		<div class="row">
        		
-       			<div class="w-50 mx-auto">
+       			<div class="col-lg-6 col-md-10 mx-auto">
        				<div class="fs-3 mb-2">원하는 식품의 영양정보를 등록할 수 있습니다!</div>
 	       			<p class="must text-end fs-6"> : 필수입력</p>
 	       			<hr>
 					<form>
 						<div class="row mb-3">
-							<label for="inputEmail3" class="col-sm-2 col-form-label must">Email</label>
-							<div class="col-sm-10">
+							<label for="inputEmail3" class="col-3 col-form-label must">식품명</label>
+							<div class="col-sm-9">
 								<input type="email" class="form-control" id="inputEmail3">
 							</div>
 						</div>
 						<div class="row mb-3">
-							<label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-							<div class="col-sm-10">
+							<label for="inputPassword3" class="col-3 col-form-label">업체명</label>
+							<div class="col-sm-9">
 								<input type="password" class="form-control" id="inputPassword3">
 							</div>
 						</div>
-						<button type="submit" class="btn btn-primary float-md-end" style="color: white">등록하기</button>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label">식품 총 중량(g)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-4 col-form-label">영양성분함량단위(g)</label>
+							<div class="col-sm-8">
+								<input type="password" class="form-control" id="inputPassword3">
+								<p style="font-size: 14px;">예) 100g 당 30kcal → 100 입력</p>
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label must">칼로리(kcal)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label must">탄수화물(g)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label must">단백질(g)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label must">지방(g)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label">당류(g)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label">나트륨(mg)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label">칼슘(mg)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label">칼륨(mg)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label">콜레스테롤(mg)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label">포화지방산(g)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label">불포화지방(g)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label">오메가3(g)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label">카페인(mg)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="inputPassword3" class="col-3 col-form-label">아미노산(mg)</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="inputPassword3">
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary float-md-end float-sm-end" style="color: white">등록하기</button>
 					</form>
        			</div>
 

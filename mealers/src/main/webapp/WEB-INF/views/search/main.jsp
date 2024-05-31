@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Mealers</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 </head>
@@ -27,32 +27,61 @@
                             <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 2%;">검색하기</button>
                         </div>
 					</div>
-					<ul class="list-group my-4">
-						<li class="list-group-item list-group-item-action d-flex gap-2">
-							<div class="me-auto ">
-								  <a href="#" class="" style="color: black">
-								  	월드콘 (농심, 388kcal)
-								  </a>
-							</div>
-							<span class="badge bg-primary rounded-pill ">유저등록</span>
-						</li>
-						<li class="list-group-item list-group-item-action d-flex gap-2">
-							<div class="me-auto ">
-								  <a href="#" class="" style="color: black">
-								  	월드콘 (농심, 388kcal)
-								  </a>
-							</div>
-						</li>
-					</ul>
+					<div class="row">
+						<div class="col-6">
+							<h4 class="ms-3 pt-3"> 밀러 등록 </h4>
+							<ul class="list-group my-3">
+								<li class="list-group-item list-group-item-action d-flex gap-2">
+									<div class="me-auto ">
+										  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
+										  	월드콘 (농심, 388kcal)
+										  </a>
+									</div>
+								</li>
+								<li class="list-group-item list-group-item-action d-flex gap-2">
+									<div class="me-auto ">
+										  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
+										  	월드콘 (농심, 388kcal)
+										  </a>
+									</div>
+								</li>
+							</ul>
+						</div>
+						
+						<div class=" col-6">
+							<h4 class="ms-3 pt-3"> 유저 등록 </h4>
+							<ul class="list-group my-3">
+								<li class="list-group-item list-group-item-action d-flex gap-2">
+									<div class="me-auto ">
+										  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
+										  	월드콘 (농심, 388kcal)
+										  </a>
+									</div>
+									<span class="badge bg-primary rounded-pill ">유저등록</span>
+								</li>
+								<li class="list-group-item list-group-item-action d-flex gap-2">
+									<div class="me-auto ">
+										  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
+										  	월드콘 (농심, 388kcal)
+										  </a>
+									</div>
+									<span class="badge bg-primary rounded-pill ">유저등록</span>
+								</li>
+							</ul>
+						</div>
+					</div>
 					
-					<div class="mx-auto mb-4">
-						원하는 결과가 없다면? 
-						<a href="${pageContext.request.contextPath}/search/reg">눌러서 식품 영양정보 등록하러 가기</a>					
+					<div class="my-3">
+						검색결과가 없습니다...&nbsp;
+						<a href="${pageContext.request.contextPath}/search/reg">눌러서 영양정보 등록하기</a>
 					</div>
-					<div class="mx-auto mb-4">
-						검색결과가 없습니다...
-						<a href="${pageContext.request.contextPath}/search/reg">눌러서 식품 영양정보 등록하러 가기</a>					
+					
+					<div class="my-3">
+						원하는 식품이 없다면 ? &nbsp;
+						<a href="${pageContext.request.contextPath}/search/reg">눌러서 영양정보 등록하기</a>
 					</div>
+					
+
 
            		</div>
            		
@@ -61,7 +90,7 @@
 					<ul class="list-group list-group-numbered mt-4">
 						<li class="list-group-item list-group-item-action d-flex gap-2">
 							<div class="me-auto ">
-								  <a href="#" class="" style="color: black">
+								  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
 								  	월드콘 (농심, 388kcal)
 								  </a>
 							</div>
@@ -70,7 +99,7 @@
 						
 						<li class="list-group-item list-group-item-action d-flex gap-2">
 							<div class="me-auto ">
-								  <a href="#" class="" style="color: black">
+								  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
 								  	월드콘 (농심, 388kcal)
 								  </a>
 							</div>
@@ -78,7 +107,7 @@
 						
 						<li class="list-group-item list-group-item-action d-flex gap-2">
 							<div class="me-auto ">
-								  <a href="#" class="" style="color: black">
+								  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
 								  	월드콘 (농심, 388kcal)
 								  </a>
 							</div>
