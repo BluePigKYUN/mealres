@@ -23,7 +23,20 @@
     color: #F88264 !important;
 }
 
+.page-header-mealColumn {
+    position: relative;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(https://www.pulmuone-lohas.com/upload/webimage/202212/20221205PxgL-.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
+
+@media (max-width: 992px) {
+	.page-header-mealColumn{
+        margin-top: 97px !important;
+    }
+}
 
 /* 상세페이지 --------------------------------- */
 .m_form {

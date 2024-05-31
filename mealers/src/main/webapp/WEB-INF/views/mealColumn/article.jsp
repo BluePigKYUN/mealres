@@ -37,7 +37,7 @@
 					    <thead class="align-middle text-center bg-light">
 					        <tr>
 					            <td colspan="2" class="align-middle text-center rounded-top">
-					                <h3 class="text-primary py-2 text-center">제목입니다.</h3>
+					                <h3 class="text-primary m-3 text-center">제목입니다.</h3>
 					            </td>
 							</tr>
 						</thead>
@@ -60,7 +60,8 @@
 							
 							<tr>
 								<td colspan="2" class="text-center p-3" style="border-bottom: none;">
-									<button type="button" class="btn btn-outline-primary btnSendLectureLike" title="좋아요"><i class="bi bi-hand-thumbs-up-fill" style="color: ${isUserLike?'gray':'text-primary'}"></i>&nbsp;&nbsp;<span id="boardLikeCount">${dto.likeCount}</span></button>
+									<button type="button" class="btn btn-outline-primary btnSendLectureLike" title="좋아요">
+										<i class="bi bi-hand-thumbs-up-fill" style="color: ${isUserLike?'text-primary':'gray'}"></i>&nbsp;&nbsp;<span id="boardLikeCount">${dto.likeCount}</span></button>
 								</td>
 							</tr>
 							
