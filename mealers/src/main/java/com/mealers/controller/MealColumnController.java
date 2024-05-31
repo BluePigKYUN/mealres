@@ -72,6 +72,9 @@ public class MealColumnController {
 			dto.setContent(req.getParameter("content"));
 			
 			List<MyMultipartFile> listfile = filemanager.doFileUpload(req.getParts(), pathname);
+			dto.setListFile(listfile);
+			
+			dao.insertMealColumn(dto);
 			
 			
 		} catch (Exception e) {
