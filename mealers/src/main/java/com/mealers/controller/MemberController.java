@@ -38,19 +38,19 @@ public class MemberController {
 
 		MemberDTO dto = dao.loginMember(memberId, memberPwd);
 		if (dto != null) {
-			// 로그인 성공 : 로그인정보를 서버에 저장
-			// 세션의 유지시간을 20분설정(기본 30분)
+			
 			session.setMaxInactiveInterval(20 * 60);
 
-			// 세션에 저장할 내용
+			//세션에 ID와 닉네임, userNum 을 담아줌
 			SessionInfo info = new SessionInfo();
 			info.setUserId(dto.getMemberId());
 			info.setUserName(dto.getMem_Nick());
+			info.setUserNum(dto.getUserNum());
 
-			// 세션에 member이라는 이름으로 저장
+			//세션에 member이라는 이름으로 저장
 			session.setAttribute("member", info);
 
-			// 메인화면으로 리다이렉트
+			//메인화면으로 리다이렉트
 			return new ModelAndView("redirect:/");
 		}
 

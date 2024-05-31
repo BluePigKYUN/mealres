@@ -3,8 +3,15 @@ package com.mealers.domain;
 public class SessionInfo {
 	private String userId;
 	private String userName;
+	private String userNum;
 	private int userRoll;
 	
+	public String getUserNum() {
+		return userNum;
+	}
+	public void setUserNum(String userNum) {
+		this.userNum = userNum;
+	}
 	public String getUserId() {
 		return userId;
 	}

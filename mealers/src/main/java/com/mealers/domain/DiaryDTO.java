@@ -6,10 +6,14 @@ public class DiaryDTO {
 	private String subject;
 	private String content;
 	private Long userNum;
-	private int status;
+	private String status;
 	private String memberId;
-	
-	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public long getDiary_Num() {
 		return diary_Num;
 	}
@@ -39,12 +43,6 @@ public class DiaryDTO {
 	}
 	public void setUserNum(Long userNum) {
 		this.userNum = userNum;
-	}
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
 	}
 	public String getMemberId() {
 		return memberId;

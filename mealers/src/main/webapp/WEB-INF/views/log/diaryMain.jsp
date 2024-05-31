@@ -12,12 +12,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/util-jquery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/core.js"></script>
 
-<style type="text/css">
-
-</style>
-
 <script type="text/javascript">
-
 $(function(){
 	$("body").on("click", "#writeDiary", function(){
 		// 폼 reset
@@ -25,20 +20,11 @@ $(function(){
 			this.reset();
 		});
 		
-		$("#form-repeat_cycle").hide();
-		$("#form-allDay").prop("checked", true);
-		$("#form-allDay").removeAttr("disabled");
-		$("#form-stime").hide();
-		$("#form-etime").hide();
-		$("#form-eday").closest("tr").show();
-		
-		$("form[name=diaryForm] input[name=sday]");
-		$("form[name=diaryForm] input[name=eday]");
 		
 		$("#myDialogModalLabel").html("스케쥴 등록");
-		$("#btnScheduleSendOk").attr("data-mode", "insert");
-		$("#btnScheduleSendOk").html(" 등록 완료 ");
-		$("#btnScheduleSendCancel").html(" 등록 취소 ");
+		$("#btnDiarySendOk").attr("data-mode", "insert");
+		$("#btnDiarySendOk").html(" 등록 완료 ");
+		$("#btnDiarySendCancel").html(" 등록 취소 ");
 		
 		$("#diaryForm").modal("show");
 	});
@@ -46,14 +32,14 @@ $(function(){
 
 //등록완료버튼
 $(function(){
-	$("#btnScheduleSendOk").click(function(){
+	$("#btnDiarySendOk").click(function(){
 		if(! check()) {
 			return false;
 		}
 		
-		let mode = $("#btnScheduleSendOk").attr("data-mode");
+		let mode = $("#btnDiarySendOk").attr("data-mode");
 		let query = $("form[name=diaryForm]").serialize();
-		let url = "${pageContext.request.contextPath}/schedule/"+ mode +"";
+		let url = "${pageContext.request.contextPath}/diary/"+ mode +"";
 
 		const fn = function(data){
 			let state = data.state;
@@ -68,8 +54,8 @@ $(function(){
 				    let query = "year="+y+"&month="+m;
 				    schedule(url, query, "#nav-1");
 				} else if(mode === "update") {
-					let num = $("#btnScheduleSendOk").attr("data-num");
-					let date = $("#btnScheduleSendOk").attr("data-date");
+					let num = $("#btnDiarySendOk").attr("data-num");
+					let date = $("#btnDiarySendOk").attr("data-date");
 					
 					let url = "${pageContext.request.contextPath}/schedule/day"
 					let query = "date="+date+"&num="+num;
@@ -88,7 +74,7 @@ $(function(){
 
 //취소버튼
 $(function(){
-	$("#btnScheduleSendCancel").click(function(){
+	$("#btnDiarySendCancel").click(function(){
 		$("#diaryForm").modal("hide");
 	});
 });
@@ -99,25 +85,21 @@ function check() {
 		$("#form-subject").focus();
 		return false;
 	}
-
-	if(! $("#form-day").val()) {
-		$("#form-day").focus();
+	
+	if (! $("input[name='emotion']:checked").val()) {
+		alert("감정상태를 선택해주세요.");
 		return false;
 	}
-
-	if($("#form-eday").val()) {
-		let s1 = $("#form-sday").val().replace("-", "");
-		let s2 = $("#form-eday").val().replace("-", "");
-		if(s1 > s2) {
-			$("#form-sday").focus();
-			return false;
-		}
+	
+	if(! $("#form-diary").val()){
+		$("#form-diary").focus();
+		return false;
 	}
 	
 	return true;
 }
 
-//mordal에 날짜를 바로 출력해주는 설정
+//modal에 날짜를 바로 출력해주는 설정
 $(function() {
     $('#diaryForm').on('shown.bs.modal', function () {
         let today = new Date().toISOString().split('T')[0];
@@ -146,6 +128,32 @@ $(function() {
 	})
 })
 
+function ajaxFun(url, method, formData, dataType, fn, file = false) {
+	const settings = {
+			type: method, 
+			data: formData,
+			dataType:dataType,
+			success:function(data) {
+				fn(data);
+			},
+			beforeSend: function(jqXHR) {
+				jqXHR.setRequestHeader('AJAX', true);
+			},
+			complete: function () {
+			},
+			error: function(jqXHR) {
+				if(jqXHR.status === 403) {
+					login();
+					return false;
+				} else if(jqXHR.status === 400) {
+					alert('요청 처리가 실패 했습니다.');
+					return false;
+		    	}
+		    	
+				console.log(jqXHR.responseText);
+			}
+	};
+};
 </script>
 
 </head>
@@ -299,27 +307,27 @@ $(function() {
 							<td class="col-2">감정선택</td>
 							<td>
 								<div class="form-check form-check-inline">
-								  <input class="form-check-input" name = "emotion" type="radio" id="emoji1" value="option1">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji1" value="bi-emoji-smile">
 								  <label class="form-check-label" for="emoji1"><i class="bi bi-emoji-smile me-2"></i></label>
 								</div>
 								<div class="form-check form-check-inline">
-								  <input class="form-check-input" name = "emotion" type="radio" id="emoji2" value="option2">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji2" value="bi-emoji-laughing">
 								  <label class="form-check-label" for="emoji2"><i class="bi bi-emoji-laughing me-2"></i></label>
 								</div>
 								<div class="form-check form-check-inline">
-								  <input class="form-check-input" name = "emotion" type="radio" id="emoji3" value="option3">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji3" value="bi-emoji-frown">
 								  <label class="form-check-label" for="emoji3"><i class="bi bi-emoji-frown me-2"></i></label>
 								</div>
 								<div class="form-check form-check-inline">
-								  <input class="form-check-input" name = "emotion" type="radio" id="emoji4" value="option4">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji4" value="bi-emoji-angry">
 								  <label class="form-check-label" for="emoji4"><i class="bi bi-emoji-angry me-2"></i></label>
 								</div>
 								<div class="form-check form-check-inline">
-								  <input class="form-check-input" name = "emotion" type="radio" id="emoji5" value="option5">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji5" value="bi-emoji-neutral">
 								  <label class="form-check-label" for="emoji5"><i class="bi bi-emoji-neutral me-2"></i></label>
 								</div>
 								<div class="form-check form-check-inline">
-								  <input class="form-check-input" name = "emotion" type="radio" id="emoji6" value="option6">
+								  <input class="form-check-input" name = "emotion" type="radio" id="emoji6" value="bi-cloud-drizzle">
 								  <label class="form-check-label" for="emoji6"><i class="bi bi-cloud-drizzle me-2"></i></label>
 								</div>
 							</td>
@@ -338,8 +346,8 @@ $(function() {
 						<tr>
 							<td colspan="2" class="text-center" style="border-bottom: none;">
 								<input type="hidden" name="num"id="form-num"  value="0">
-								<button type="button" class="btn btn-dark" id="btnScheduleSendOk"> 등록 완료 </button>
-								<button type="button" class="btn btn-light" id="btnScheduleSendCancel"> 등록 취소 </button>
+								<button type="button" class="btn btn-dark" id="btnDiarySendOk"> 등록 완료 </button>
+								<button type="button" class="btn btn-light" id="btnDiarySendCancel"> 등록 취소 </button>
 							</td>
 						</tr>
 						
