@@ -17,6 +17,12 @@
     body{padding-top: 97px;}
 }
 
+/* Main ---------------------------------- */
+
+.text-secondary {
+    color: #F88264 !important;
+}
+
 
 
 /* 상세페이지 --------------------------------- */
@@ -71,9 +77,7 @@
 	border-bottom-right-radius: 50%;
 }
 
-.pagination a.m_prev, .pagination a.m_next {
-	
-}
+
 
 .pagination li:not(.m_prev, .m_next) a {
 	border: 0px solid #000;
@@ -120,5 +124,7 @@
 	}
 }
 
-.g_btn_box{display:flex; align-items: flex-end;}
-.g_btn_box button{}
+.g_btn_box{
+	display:flex; align-items: flex-end;
+}
+
