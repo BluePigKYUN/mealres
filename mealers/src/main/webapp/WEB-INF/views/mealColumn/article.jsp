@@ -47,7 +47,7 @@
 								<td align="left" style="text-align: left;">
 									이름 : 관리자
 								</td>
-								<td align="right">
+								<td class="text-end">
 									YYYY-MM-DD | 조회 ${dto.hitCount}
 								</td>
 							</tr>
@@ -60,7 +60,7 @@
 							
 							<tr>
 								<td colspan="2" class="text-center p-3" style="border-bottom: none;">
-									<button type="button" class="btn btn-outline-secondary btnSendLectureLike" title="좋아요"><i class="far fa-hand-point-up" style="color: ${isUserLike?'blue':'black'}"></i>&nbsp;&nbsp;<span id="boardLikeCount">${dto.likeCount}</span></button>
+									<button type="button" class="btn btn-outline-primary btnSendLectureLike" title="좋아요"><i class="bi bi-hand-thumbs-up-fill" style="color: ${isUserLike?'gray':'text-primary'}"></i>&nbsp;&nbsp;<span id="boardLikeCount">${dto.likeCount}</span></button>
 								</td>
 							</tr>
 							
@@ -77,7 +77,7 @@
 							</tr>
 	
 							<tr>
-								<td colspan="2">
+								<td class="text-start" colspan="2">
 									이전글 :
 									<c:if test="${not empty prevDto}">
 										<a href="${pageContext.request.contextPath}/lecture/article?${query}&num=${prevDto.num}">${prevDto.subject}</a>
@@ -85,7 +85,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2">
+								<td class="text-start" colspan="2">
 									다음글 :
 									<c:if test="${not empty nextDto}">
 										<a href="${pageContext.request.contextPath}/lecture/article?${query}&num=${nextDto.num}">${nextDto.subject}</a>
@@ -97,27 +97,27 @@
 				</div>
 				<table class="table table-borderless">
 					<tr>
-						<td width="50%">
-							<c:choose>
-								<c:when test="${sessionScope.member.userId==dto.userId}">
-									<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/update?num=${dto.num}&category=${category}&page=${page}';">수정</button>
-								</c:when>
-								<c:otherwise>
-									<button type="button" class="btn btn-light" disabled>수정</button>
-								</c:otherwise>
-							</c:choose>
-					    	
-							<c:choose>
-					    		<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
-					    			<button type="button" class="btn btn-light" onclick="deleteLecture();">삭제</button>
-					    		</c:when>
-					    		<c:otherwise>
-					    			<button type="button" class="btn btn-light" disabled>삭제</button>
-					    		</c:otherwise>
-					    	</c:choose>
+						<td class="text-start">
+								<c:choose>
+									<c:when test="${sessionScope.member.userId==dto.userId}">
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/update?num=${dto.num}&category=${category}&page=${page}';">수정</button>
+									</c:when>
+									<c:otherwise>
+										<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" disabled>수정</button>
+									</c:otherwise>
+								</c:choose>
+						    	
+								<c:choose>
+						    		<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
+						    			<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" onclick="deleteLecture();">삭제</button>
+						    		</c:when>
+						    		<c:otherwise>
+						    			<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" disabled>삭제</button>
+						    		</c:otherwise>
+						    	</c:choose>
 						</td>
 						<td class="text-end">
-							<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/list?${query}';">리스트</button>
+							<button type="button" class="btn btn-primary m-2 py-2 rounded-pill text-white" onclick="location.href='${pageContext.request.contextPath}/lecture/list?${query}';">리스트</button>
 						</td>
 					</tr>
 				</table>
@@ -125,7 +125,7 @@
 				<div class="reply">
 					<form name="replyForm" method="post">
 						<div class='form-header'>
-							<span class="bold">질문/답변</span><span> - 타인을 비방하거나 개인정보를 유출하는 글의 게시를 삼가해 주세요.</span>
+							<span class="text-secondary bold">질문/답변</span><span> - 타인을 비방하거나 개인정보를 유출하는 글의 게시를 삼가해 주세요.</span>
 						</div>
 						
 						<table class="table table-borderless reply-form">
@@ -136,7 +136,7 @@
 							</tr>
 							<tr>
 							   <td align='right'>
-							        <button type='button' class='btn btn-light btnSendReply'>질문 등록</button>
+							        <button type='button' class='btn btn-primary m-2 py-2 px-4 rounded-pill text-white btnSendReply'>질문 등록</button>
 							    </td>
 							 </tr>
 						</table>
