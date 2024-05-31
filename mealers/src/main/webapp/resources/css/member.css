@@ -38,6 +38,10 @@
     }
 }
 
+.border-secondary-main {
+		border-color:#F88264 !important;
+}
+
 /* 상세페이지 --------------------------------- */
 .m_form {
 	display: flex;

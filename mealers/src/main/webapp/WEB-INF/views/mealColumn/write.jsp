@@ -31,7 +31,7 @@
          <div class="container">
          	<div class="body-container mb-5">
          		<div class="body-title">
-					<h1 class="text-primary py-5 text-center">글등록하기</h1>	
+					<h1 class="text-primary p-3 m-1 text-center">글등록하기</h1>	
 				</div>
 				<div class="body-main">
 				<form name="lectureForm" method="post"	enctype="multipart/form-data">

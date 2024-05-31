@@ -19,8 +19,8 @@
                         <h1 class="mb-5 display-3 text-primary" style="font-family: Pretendard-Regular">원하는 식품 검색
                         </h1>
                         <div class="position-relative mx-auto">
-                            <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
-                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">영양성분 검색하기 </button>
+                            <input class="form-control border-2 border-secondary-main w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
+                            <button type="submit" class="btn btn-primary border-2 border-secondary-main py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">영양성분 검색하기 </button>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-5">
@@ -89,7 +89,7 @@
                                                     <img src="/mealers/resources/img/fruite-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
                                                 </div>
                                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <div class="p-4 border border-secondary-main border-top-0 rounded-bottom">
                                                     <h4>Grapes</h4>
                                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
@@ -105,7 +105,7 @@
                                                     <img src="/mealers/resources/img/fruite-item-5.jpg" class="img-fluid w-100 rounded-top" alt="">
                                                 </div>
                                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <div class="p-4 border border-secondary-main border-top-0 rounded-bottom">
                                                     <h4>Grapes</h4>
                                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
@@ -121,7 +121,7 @@
                                                     <img src="/mealers/resources/img/fruite-item-2.jpg" class="img-fluid w-100 rounded-top" alt="">
                                                 </div>
                                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <div class="p-4 border border-secondary-main border-top-0 rounded-bottom">
                                                     <h4>Raspberries</h4>
                                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
@@ -137,7 +137,7 @@
                                                     <img src="/mealers/resources/img/fruite-item-4.jpg" class="img-fluid w-100 rounded-top" alt="">
                                                 </div>
                                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <div class="p-4 border border-secondary-main border-top-0 rounded-bottom">
                                                     <h4>Apricots</h4>
                                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
@@ -153,7 +153,7 @@
                                                     <img src="/mealers/resources/img/fruite-item-3.jpg" class="img-fluid w-100 rounded-top" alt="">
                                                 </div>
                                                 <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">Fruits</div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <div class="p-4 border border-secondary-main border-top-0 rounded-bottom">
                                                     <h4>Banana</h4>
                                                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
@@ -269,7 +269,7 @@
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
                                 <!-- <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p> -->
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"> 자세히보기</a>
+                                <a href="#" class="btn border border-primary rounded-pill px-3 text-primary"> 자세히보기</a>
                             </div>
 
                         </div>
@@ -283,7 +283,7 @@
                             <h4>Banana</h4>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                <a href="#" class="btn border border-primary rounded-pill px-3 text-primary"> 자세히보기</a>
                             </div>
                         </div>
                     </div>
@@ -296,7 +296,7 @@
                             <h4>Bell Papper</h4>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                <a href="#" class="btn border border-primary rounded-pill px-3 text-primary"> 자세히보기</a>
                             </div>
                         </div>
                     </div>
@@ -309,7 +309,7 @@
                             <h4>Potatoes</h4>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                <a href="#" class="btn border border-primary rounded-pill px-3 text-primary"> 자세히보기</a>
                             </div>
                         </div>
                     </div>
@@ -322,7 +322,7 @@
                             <h4>Parsely</h4>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
-                                <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                             <a href="#" class="btn border border-primary rounded-pill px-3 text-primary"> 자세히보기</a>
                             </div>
                         </div>
                     </div>
