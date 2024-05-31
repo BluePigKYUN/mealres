@@ -130,11 +130,6 @@ form .input__block input {
 	font-family: "Montserrat", sans-serif;
 }
 
-#loginForm,
-#joinForm{}
-
-
-
 form .input_btn_box{}
 
 
@@ -154,8 +149,6 @@ form .input_btn_box .btn_check{
     box-shadow: 0 15px 30px rgba(0, 150, 136, 0.16);
     transition: 0.2s linear;
 }
-
-
 
 form .input__block input:focus, form .input__block input:active {
 	outline: none;
@@ -452,12 +445,12 @@ footer p a .fa-behance {
 		<form name="loginForm" id="loginForm" action="" method="post">
 			<div class="first-input input__block first-input__block">
 				<input type="text" name="memberId" placeholder="이메일"
-					class="input" id="email1" />
+					class="input" id="email1" value="admin"/>
 			</div>
 
 			<div class="input__block">
 				<input type="password" name="memberPwd" placeholder="비밀번호"
-					class="input" id="password1" />
+					class="input" id="password1" value="admin" />
 			</div>
 
 			<button class="login__btn" onclick="sendLogin();">로그인</button>
