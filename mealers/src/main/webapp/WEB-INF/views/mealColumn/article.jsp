@@ -6,7 +6,11 @@
 
     <head>
     	<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
-    	
+    	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/util-jquery.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/core.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.ui.datepicker-ko.js"></script>
 <style type="text/css">
     	
     .body-container {
@@ -149,7 +153,53 @@
 			</div>
 		</div>
 	</div>
-	
+
+<script type="text/javascript">
+
+// 게시물 공감 여부
+$(function(){
+	$(".btnSendLectureLike").click(function(){
+		alert("ggg");
+	});
+});
+
+$(function(){
+	$(".btnSendLectureLike").click(function(){
+		const $i = $(this).find("i");
+		let isNoLike = $i.css("color") == "rgb(0, 0, 0)";
+		let msg = isNoLike ? "게시글에 공감하십니까 ? " : "게시글 공감을 취소하시겠습니까 ? ";
+		
+		if(! confirm( msg )) {
+			return false;
+		}
+		
+		let url = "${pageContext.request.contextPath}/mealColumn/insertLectureLike";
+		let num = "${dto.num}";
+		// var query = {num:num, isNoLike:isNoLike};
+		let query = "num=" + num + "&isNoLike=" + isNoLike;;
+
+		const fn = function(data) {
+			let state = data.state;
+			if(state === "true") {
+				let color = "black";
+				if( isNoLike ) {
+					color = "blue";
+				}
+				$i.css("color", color);
+				
+				let count = data.likeCount;
+				$("#boardLikeCount").text(count);
+			} else if(state === "liked") {
+				alert("좋아요는 한번만 가능합니다. !!!");
+			}
+		};
+		
+		ajaxFun(url, "post", query, "json", fn);
+	});
+});
+
+
+</script>
 	
         <!-- Footer Start -->
         <footer>
