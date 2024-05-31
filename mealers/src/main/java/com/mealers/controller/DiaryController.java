@@ -44,10 +44,10 @@ public class DiaryController {
 			DiaryDTO dto = new DiaryDTO();
 			
 			dto.setMemberId(info.getUserId());
-			dto.setStatus(req.getParameter("status"));
+			dto.setStatus(req.getParameter("emotion"));
 			dto.setSubject(req.getParameter("subject"));
 			dto.setContent(req.getParameter("diary"));
-			dto.setUserNum(dao.findByUserNum(info.getUserId()));
+			dto.setUserNum(info.getUserNum());
 			
 			dao.insertDiary(dto);
 			

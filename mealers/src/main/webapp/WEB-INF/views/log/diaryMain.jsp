@@ -11,6 +11,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/util-jquery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/core.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.ui.datepicker-ko.js"></script>
 
 <script type="text/javascript">
 $(function(){
@@ -33,36 +35,18 @@ $(function(){
 //등록완료버튼
 $(function(){
 	$("#btnDiarySendOk").click(function(){
+		
 		if(! check()) {
 			return false;
 		}
 		
-		let mode = $("#btnDiarySendOk").attr("data-mode");
+		const diaryCount = document.querySelector('#diary-count');
+		
 		let query = $("form[name=diaryForm]").serialize();
-		let url = "${pageContext.request.contextPath}/diary/"+ mode +"";
+		let url = "${pageContext.request.contextPath}/log/diaryInsert";
 
 		const fn = function(data){
 			let state = data.state;
-			if(state === "true") {
-				if(mode === "insert") {
-					let dd = $("#form-sday").val().split("-");
-					let y = dd[0];
-					let m = dd[1];
-					if(m.substr(0,1) === "0") m = m.substr(1,1);
-				
-				    let url = "${pageContext.request.contextPath}/schedule/month";
-				    let query = "year="+y+"&month="+m;
-				    schedule(url, query, "#nav-1");
-				} else if(mode === "update") {
-					let num = $("#btnDiarySendOk").attr("data-num");
-					let date = $("#btnDiarySendOk").attr("data-date");
-					
-					let url = "${pageContext.request.contextPath}/schedule/day"
-					let query = "date="+date+"&num="+num;
-						
-					schedule(url, query, "#nav-2");
-				}
-			}
 			
 			$("#diaryForm").modal("hide");
 			
@@ -153,7 +137,15 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 				console.log(jqXHR.responseText);
 			}
 	};
-};
+	
+	if(file) {
+		settings.processData = false;  // file 전송시 필수. 서버로전송할 데이터를 쿼리문자열로 변환여부
+		settings.contentType = false;  // file 전송시 필수. 서버에전송할 데이터의 Content-Type. 기본:application/x-www-urlencoded
+	}
+	
+	$.ajax(url, settings);
+}
+
 </script>
 
 </head>
@@ -166,6 +158,7 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 		<div class="row">
 			<div class="col-lg-8">
 				<h2 class="mb-4">작은 서랍장(일기)</h2>
+				<p id="diaryCount">작성한 일기 0개</p>
 				<div class="list-group">
 					<div class="list-group-item d-flex align-items-start">
 						<div class="me-3">

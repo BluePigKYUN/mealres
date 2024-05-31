@@ -5,9 +5,16 @@ public class DiaryDTO {
 	private String reg_date_diary;
 	private String subject;
 	private String content;
-	private Long userNum;
+	private String userNum;
 	private String status;
 	private String memberId;
+	
+	public String getUserNum() {
+		return userNum;
+	}
+	public void setUserNum(String userNum) {
+		this.userNum = userNum;
+	}
 	public String getStatus() {
 		return status;
 	}
@@ -37,12 +44,6 @@ public class DiaryDTO {
 	}
 	public void setContent(String content) {
 		this.content = content;
-	}
-	public Long getUserNum() {
-		return userNum;
-	}
-	public void setUserNum(Long userNum) {
-		this.userNum = userNum;
 	}
 	public String getMemberId() {
 		return memberId;

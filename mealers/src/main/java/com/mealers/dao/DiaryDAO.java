@@ -19,13 +19,13 @@ public class DiaryDAO {
 		try {
 			sb.append("Insert Into Diary(diary_num, reg_date_diary, subject, ");
 			sb.append("content, userNum, memberId) ");
-			sb.append("Values(diary_seq, sysDate, ?, ?, ?, ?)");
+			sb.append("Values(diary_seq.nextval, sysDate, ?, ?, ?, ?)");
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			
 			pstmt.setString(1, dto.getSubject());
 			pstmt.setString(2, dto.getContent());
-			pstmt.setLong(3, dto.getUserNum());
+			pstmt.setString(3, dto.getUserNum());
 			pstmt.setString(4, dto.getMemberId());
 			
 			pstmt.executeUpdate();
