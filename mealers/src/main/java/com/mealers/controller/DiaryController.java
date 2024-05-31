@@ -2,6 +2,7 @@ package com.mealers.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.mealers.annotation.Controller;
@@ -12,6 +13,8 @@ import com.mealers.dao.DiaryDAO;
 import com.mealers.domain.DiaryDTO;
 import com.mealers.domain.SessionInfo;
 import com.mealers.servlet.ModelAndView;
+import com.mealers.util.MyUtil;
+import com.mealers.util.MyUtilBootstrap;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,9 +56,59 @@ public class DiaryController {
 			
 			state = "true";
 		} catch (Exception e) {
-			e.printStackTrace();
+			model.put("state", "false");
 		}
 		model.put("state", state);
+		
+		return model;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/log/list", method = RequestMethod.GET)
+	public Map<String, Object> printList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//화면에 출력
+		//[페이지 번호 파라미터]
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		DiaryDAO dao = new DiaryDAO();
+		MyUtil util = new MyUtilBootstrap();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		try {
+			String page = req.getParameter("pageNo");
+			int current_page = 1;
+			if(page != null) {
+				current_page = Integer.parseInt(page);
+			}
+			
+			int dataCount = dao.dataCount();
+			int size = 5;
+			int total_page = util.pageCount(dataCount, size);
+			
+		 	if(current_page > total_page) {
+		 		current_page = total_page;
+		 	}
+		 	
+		 	int offset = (current_page - 1) * size;
+		 	
+		 	List<DiaryDTO> list = dao.listDiary(offset, size, info.getUserId());
+		 	
+		 	for(DiaryDTO dto : list) {
+		 		dto.setSubject(dto.getSubject().replaceAll(">", "&gt;"));
+		 		dto.setSubject(dto.getSubject().replaceAll("<", "&lt;"));
+		 	}
+		 	
+		 	model.put("list", list);
+		 	model.put("pageNo", current_page);
+		 	model.put("total_page", total_page);
+		 	model.put("dataCount", dataCount);
+		 	
+		 	model.put("state", "true");
+		} catch (Exception e) {
+			model.put("state", "false");
+		}
 		
 		return model;
 	}

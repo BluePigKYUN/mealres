@@ -25,4 +25,11 @@ public class SearchController {
 		
 		return mav;
 	}
+	
+	@RequestMapping(value = "/search/item")
+	public ModelAndView searchItem(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ModelAndView mav = new ModelAndView("/search/item");
+		
+		return mav;
+	}
 }
