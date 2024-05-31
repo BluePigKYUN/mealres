@@ -28,11 +28,11 @@
 
 </head>
 	
+
+<body>
 <header>
 	<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
 </header>
-
-<body>
 
 	<!-- Single Page Header start -->
 	<div class="container-fluid page-header py-5">
@@ -47,19 +47,19 @@
 			<div class="row g-4">
 				<div class="col-lg-12">
 					<div class="row g-4 my-2">
-						<div class="col-xl-3">
+						<div class="d-flex justify-content-between">
 							<div>
 								<h2>식단 커뮤니티</h2>
 							</div>	
-						</div>
-						<div class="col-6"></div>
-						<div class="col-xl-3">
-							<div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-								<label for="meals ml-2">정렬</label> <select id="meals" name="meallist" class="border-0 form-select-md bg-light me-4" form="mealform">
-									<option value="recent">최신순</option>
-									<option value="hitcount">조회순</option>
-									<option value="popular">인기순</option>
-								</select>
+							<div >
+								<div class="bg-light ps-3 py-3 rounded mb-4">
+									<label for="meals ">정렬</label> 
+									<select id="meals" name="meallist" class="border-0 form-select-md bg-light mx-3" form="mealform">
+										<option value="recent">최신순</option>
+										<option value="hitcount">조회순</option>
+										<option value="popular">인기순</option>
+									</select>
+								</div>
 							</div>
 						</div>
 					</div>
