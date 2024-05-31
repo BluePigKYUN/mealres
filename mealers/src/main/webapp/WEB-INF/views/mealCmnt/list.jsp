@@ -5,7 +5,27 @@
 <html lang="en">
 
 <head>
-	 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
+		 
+<style type="text/css">
+.ratio-4x3 {
+ 	position: relative;
+    width: 100%;
+    height: 0;
+    padding-top: 75%;
+}
+
+.ratio-4x3 img {   
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+</style>
+
 </head>
 	
 <header>
@@ -26,7 +46,7 @@
 		<div class="container py-5">
 			<div class="row g-4">
 				<div class="col-lg-12">
-					<div class="row g-4">
+					<div class="row g-4 my-2">
 						<div class="col-xl-3">
 							<div>
 								<h2>식단 커뮤니티</h2>
@@ -46,16 +66,17 @@
 					<div class="row g-4">
 						<div class="col-lg-13">
 							<div class="row g-4 justify-content-center">
-								<div class="col-ms-6 col-lg-6 col-xl-3">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-3">
 									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img h-50">
-											<img src="https://images.unsplash.com/photo-1619371042685-827b1c646923?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid w-100 rounded-top" alt="">
+										<div class="fruite-img ratio ratio-4x3">
+											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top">
 										</div>
+										
 										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램</div>
-											
+											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램1</div>
 										</div>
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
+										
+										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom ">
 											<div class="d-flex justify-content-between mt-2">
 												<p class="py-1">2시간전</p>
 												<p class="py-1">2024-05-29</p>
@@ -70,17 +91,17 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img h-50">
-											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-												class="img-fluid w-100 rounded-top">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-3 ">
+									<div class="rounded position-relative fruite-item ">
+										<div class="fruite-img ratio ratio-4x3">
+											<img src="https://flexible.img.hani.co.kr/flexible/normal/970/777/imgdb/resize/2019/0926/00501881_20190926.JPG" class="img-fluid  rounded-top">
 										</div>
+										
 										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램</div>
-											
+											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램2</div>
 										</div>
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
+										
+										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom ">
 											<div class="d-flex justify-content-between mt-2">
 												<p class="py-1">2시간전</p>
 												<p class="py-1">2024-05-29</p>
@@ -95,17 +116,17 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img h-50">
-											<img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-												class="img-fluid w-100 rounded-top object-fit-cover">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-3">
+									<div class="rounded position-relative fruite-item ">
+										<div class="fruite-img ratio ratio-4x3">
+											<img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+												class="img-fluid w-100 rounded-top " >
 										</div>
 										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램</div>
+											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute " style="top: 10px; left: 10px; ">웃지마민병관</div>
 											
 										</div>
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
+										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom ">
 											<div class="d-flex justify-content-between mt-2">
 												<p class="py-1">2시간전</p>
 												<p class="py-1">2024-05-29</p>
@@ -120,16 +141,41 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img h-50">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-3">
+									<div class="rounded position-relative fruite-item ">
+										<div class="fruite-img ratio ratio-4x3">
 											<img src="https://images.unsplash.com/photo-1582716454502-f0925ab107aa?q=80&w=2075&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-												class="img-fluid w-100 rounded-top" alt="">
+												class="img-fluid w-100 rounded-top " >
 										</div>
 										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램</div>
+											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램3</div>
 											
 										</div>
+										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom " >
+											<div class="d-flex justify-content-between mt-2">
+												<p class="py-1">2시간전</p>
+												<p class="py-1">2024-05-29</p>
+											</div>
+											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
+											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
+											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
+												<p class="text-dark mb-2 pe-2">댓글10</p> 
+												<p class="text-dark mb-2 pe-2">좋아요8</p>
+												<p class="text-dark mb-3">조회수20</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
+									<div class="rounded position-relative fruite-item">
+										<div class="fruite-img ratio ratio-4x3">
+											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top ">
+										</div>
+										
+										<div>
+											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램1</div>
+										</div>
+										
 										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
 											<div class="d-flex justify-content-between mt-2">
 												<p class="py-1">2시간전</p>
@@ -145,109 +191,115 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
 									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img">
-											<img src=""
-												class="img-fluid w-100 rounded-top" alt="">
+										<div class="fruite-img ratio ratio-4x3">
+											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top ">
 										</div>
-										<div
-											class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-											style="top: 10px; left: 10px;">Fruits</div>
-										<div
-											class="p-4 border border-secondary border-top-0 rounded-bottom">
-											<h4>Banana</h4>
-											<p>Lorem ipsum dolor sit amet consectetur adipisicing
-												elit sed do eiusmod te incididunt</p>
-											<div class="d-flex justify-content-between flex-lg-wrap">
-												<p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-												<!-- <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a> -->
+										
+										<div>
+											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램1</div>
+										</div>
+										
+										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom ">
+											<div class="d-flex justify-content-between mt-2">
+												<p class="py-1">2시간전</p>
+												<p class="py-1">2024-05-29</p>
+											</div>
+											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
+											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
+											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
+												<p class="text-dark mb-2 pe-2">댓글10</p> 
+												<p class="text-dark mb-2 pe-2">좋아요8</p>
+												<p class="text-dark mb-3">조회수20</p>
 											</div>
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
 									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img">
-											<img src=""
-												class="img-fluid w-100 rounded-top" alt="">
+										<div class="fruite-img ratio ratio-4x3">
+											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top ">
 										</div>
-										<div
-											class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-											style="top: 10px; left: 10px;">Fruits</div>
-										<div
-											class="p-4 border border-secondary border-top-0 rounded-bottom">
-											<h4>Oranges</h4>
-											<p>Lorem ipsum dolor sit amet consectetur adipisicing
-												elit sed do eiusmod te incididunt</p>
-											<div class="d-flex justify-content-between flex-lg-wrap">
-												<p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-												<!-- <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a> -->
+										
+										<div>
+											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램1</div>
+										</div>
+										
+										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
+											<div class="d-flex justify-content-between mt-2">
+												<p class="py-1">2시간전</p>
+												<p class="py-1">2024-05-29</p>
+											</div>
+											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
+											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
+											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
+												<p class="text-dark mb-2 pe-2">댓글10</p> 
+												<p class="text-dark mb-2 pe-2">좋아요8</p>
+												<p class="text-dark mb-3">조회수20</p>
 											</div>
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
+								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
 									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img">
-											<img src=""
-												class="img-fluid w-100 rounded-top" alt="">
+										<div class="fruite-img ratio ratio-4x3">
+											<img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/472/5108241b97436af498bf14ba4ab3d68a_res.jpeg" class="img-fluid  rounded-top ">
 										</div>
-										<div
-											class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-											style="top: 10px; left: 10px;">Fruits</div>
-										<div
-											class="p-4 border border-secondary border-top-0 rounded-bottom">
-											<h4>Raspberries</h4>
-											<p>Lorem ipsum dolor sit amet consectetur adipisicing
-												elit sed do eiusmod te incididunt</p>
-											<div class="d-flex justify-content-between flex-lg-wrap">
-												<p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-												<!-- <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a> -->
+										
+										<div>
+											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램1</div>
+										</div>
+										
+										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
+											<div class="d-flex justify-content-between mt-2">
+												<p class="py-1">2시간전</p>
+												<p class="py-1">2024-05-29</p>
+											</div>
+											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
+											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
+											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
+												<p class="text-dark mb-2 pe-2">댓글10</p> 
+												<p class="text-dark mb-2 pe-2">좋아요8</p>
+												<p class="text-dark mb-3">조회수20</p>
 											</div>
 										</div>
 									</div>
 								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img">
-											<img src=""
-												class="img-fluid w-100 rounded-top" alt="">
-										</div>
-										<div
-											class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-											style="top: 10px; left: 10px;">Fruits</div>
-										<div
-											class="p-4 border border-secondary border-top-0 rounded-bottom">
-											<h4>Grapes</h4>
-											<p>Lorem ipsum dolor sit amet consectetur adipisicing
-												elit sed do eiusmod te incididunt</p>
-											<div class="d-flex justify-content-between flex-lg-wrap">
-												<p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-												<!-- <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a> -->
-											</div>
-										</div>
-									</div>
+								
+								<div style="text-align: right">
+									<button type="button" class="text-white bg-secondary px-3 pt-1 rounded border-secondary" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/write';">글쓰기</button>
 								</div>
-								<div class="col-12 d-flex justify-content-evenly">
-									<div class="input-group w-50 mx-auto d-flex">
-										<input type="search" class="form-control p-3 h-50" placeholder="검색" aria-describedby="search-icon-1"> 
-										<span id="search-icon-1" class="input-group-text p-3 h-50">
+								
+								<div class="col-6 d-flex justify-content-evenly mt-3">
+									<select name="schCategory" class="rounded drop-down h-50 p-4 w-25 me-2">
+										<option value="subcon">제목+내용</option>
+										<option value="subject">제목</option>
+										<option value="content">내용</option>
+										<option value="writer">작성자</option>
+									</select>
+										 
+									<div class="input-group w-75  d-flex">
+										<input type="search" class="form-control p-4 h-50" placeholder="검색" aria-describedby="search-icon-1"> 
+										<span id="search-icon-1" class="input-group-text p-4 h-50">
 											<i class="fa fa-search"></i>
 										</span>
 									</div>
-								
-									<div class="pagination d-flex justify-content-center mt-5">
-										<a href="#" class="rounded">&laquo;</a> 
-										<a href="#" class="active rounded">1</a> 
-										<a href="#" class="rounded">2</a>
-										<a href="#" class="rounded">3</a> 
-										<a href="#" class="rounded">4</a>
-										<a href="#" class="rounded">5</a> 
-										<a href="#" class="rounded">6</a>
-										<a href="#" class="rounded">&raquo;</a>
-									</div>
 								</div>
+								
+								<nav aria-label="Page navigation example">
+									<ul class="pagination d-flex justify-content-center">
+										<li class="page-item m_prev"><a class="page-link" href="#"
+											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+										</a></li>
+										<li class="page-item"><a class="page-link" href="#">1</a></li>
+										<li class="page-item"><a class="page-link" href="#">2</a></li>
+										<li class="page-item"><a class="page-link" href="#">3</a></li>
+										<li class="page-item m_next"><a class="page-link" href="#"
+											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+										</a></li>
+									</ul>
+								</nav>
 							</div>
 						</div>
 					</div>

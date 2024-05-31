@@ -19,4 +19,12 @@ public class MealCmntController {
 		
 		return mav;
 	}
+	
+	@RequestMapping(value = "/mealCmnt/write", method = RequestMethod.GET)
+	public ModelAndView write(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ModelAndView mav = new ModelAndView("mealCmnt/write");
+		mav.addObject("mode", "write");
+		
+		return mav;
+	}
 } 

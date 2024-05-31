@@ -6,6 +6,19 @@
 
     <head>
     	<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
+    	
+    	<style type="text/css">
+    	
+    	.body-container {
+    		max-width: 1000px;
+    		margin: 0 auto;
+    	}
+    	
+    	.write-form tr:first-child {
+    		border-top: 1px solid;
+    	}
+    	
+    	</style>
     </head>
     <header>
     	<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
@@ -13,38 +26,39 @@
 
     <body>
     <div class="container-fluid py-3">
-            <div class="container py-5">
-            </div>
+            <div class="container py-5"></div>
      </div>
          <div class="container">
-		<div class="body-container">
-			<h2 class="text-primary py-3">글등록하기</h2>	
-			<div class="body-main">
+         	<div class="body-container mb-5">
+         		<div class="body-title">
+					<h1 class="text-primary py-5 text-center">글등록하기</h1>	
+				</div>
+				<div class="body-main">
 				<form name="lectureForm" method="post"	enctype="multipart/form-data">
 					<table class="table write-form">
 						<tr>
-							<td class="bg-light col-sm-2" scope="row">제 목</td>
+							<td class="align-middle bg-light col-sm-2" scope="row">제 목</td>
 							<td>
 								<input type="text" name="subject" class="form-control" value="${dto.subject}">
 							</td>
 						</tr>
 	        
 						<tr>
-							<td class="bg-light col-sm-2" scope="row">작성자명</td>
+							<td class="align-middle bg-light col-sm-2" scope="row">카테고리</td>
 	 						<td>
-								<p class="form-control-plaintext">${sessionScope.member.userName}</p>
+								<p class="text-start">식단 칼럼</p>
 							</td>
 						</tr>
 	
 						<tr>
-							<td class="bg-light col-sm-2" scope="row">내 용</td>
+							<td class="align-middle bg-light col-sm-2" scope="row">내 용</td>
 							<td>
 								<textarea name="content" id="ir1" class="form-control" style="width: 95%; height: 270px;">${dto.content}</textarea>
 							</td>
 						</tr>
 						
 						<tr>
-							<td class="bg-light col-sm-2">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
+							<td class="align-middle bg-light col-sm-2">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
 							<td> 
 								<input type="file" name="selectFile" class="form-control">
 							</td>
@@ -69,9 +83,9 @@
 					<table class="table table-borderless">
 	 					<tr>
 							<td class="text-center">
-								<button type="button" class="btn btn-dark" onclick="submitContents(this.form);">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
-								<button type="reset" class="btn btn-light">다시입력</button>
-								<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/list?category=${category}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
+								<button type="button" class="text-white btn btn-primary m-2 py-2 rounded-pill" onclick="submitContents(this.form);">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
+								<button type="reset" class="btn btn-light m-2 py-2 rounded-pill">다시입력</button>
+								<button type="button" class="btn btn-light m-2 py-2 rounded-pill" onclick="location.href='${pageContext.request.contextPath}/lecture/list?category=${category}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 								<input type="hidden" name="category" value="${category}">
 								<c:if test="${mode=='update'}">
 									<input type="hidden" name="num" value="${dto.num}">
@@ -87,10 +101,37 @@
 			</div>
 		</div>
 	</div>
-   </div>
-        
+	
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
+<script type="text/javascript">
+var oEditors = [];
+nhn.husky.EZCreator.createInIFrame({
+	oAppRef: oEditors,
+	elPlaceHolder: "ir1",
+	sSkinURI: "${pageContext.request.contextPath}/resources/se2/SmartEditor2Skin.html",
+	fCreator: "createSEditor2"
+});
 
-        <!-- Footer Start -->
+function submitContents(elClickedObj) {
+	 oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
+	 try {
+		if(! check()) {
+			return;
+		}
+
+		elClickedObj.submit();
+	} catch(e) {
+	}
+}
+
+function setDefaultFont() {
+	var sDefaultFont = '돋움';
+	var nFontSize = 12;
+	oEditors.getById["ir1"].setDefaultFont(sDefaultFont, nFontSize);
+}
+</script>       
+
+      <!-- Footer Start -->
         <footer>
         	<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
         </footer>

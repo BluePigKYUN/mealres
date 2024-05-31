@@ -26,9 +26,9 @@ public class ColumnController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/exersColumn/list")
+	@RequestMapping(value = "/mealColumn/article")
 	public ModelAndView exerslist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ModelAndView mav = new ModelAndView("exersColumn/list");
+		ModelAndView mav = new ModelAndView("mealColumn/article");
 		
 		return mav;
 	}
