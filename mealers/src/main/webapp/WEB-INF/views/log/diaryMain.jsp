@@ -6,13 +6,9 @@
 <head>
 <meta charset="utf-8">
 <title>일기</title>
-<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/util-jquery.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/core.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery-ui.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.ui.datepicker-ko.js"></script>
+<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
+<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
 
 <script type="text/javascript">
 $(function(){
@@ -22,11 +18,9 @@ $(function(){
 			this.reset();
 		});
 		
-		
-		$("#myDialogModalLabel").html("스케쥴 등록");
 		$("#btnDiarySendOk").attr("data-mode", "insert");
-		$("#btnDiarySendOk").html(" 등록 완료 ");
-		$("#btnDiarySendCancel").html(" 등록 취소 ");
+		$("#btnDiarySendOk").html("등록 완료 ");
+		$("#btnDiarySendCancel").html("등록 취소 ");
 		
 		$("#diaryForm").modal("show");
 	});
@@ -104,13 +98,27 @@ $(function() {
     });
 });
 
-$
 
 $(function() {
 	$('#writeDiary').on('click', function() {
 		$('.count').text('0자');
 	})
 })
+
+function loadCoontent(page) {
+	let url = "${pageContext.request.contextPath}/log/diaryMain";
+	let query = "pageNo=" + page;
+	
+	const fn = function(data) {
+		addNewContent(data);
+	}
+	
+	ajaxFun(url, "get", query, "json", fn);
+}
+
+function addNewContent(data) {
+	const item;
+}
 
 function ajaxFun(url, method, formData, dataType, fn, file = false) {
 	const settings = {
