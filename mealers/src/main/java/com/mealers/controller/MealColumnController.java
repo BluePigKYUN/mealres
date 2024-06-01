@@ -2,7 +2,6 @@ package com.mealers.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import com.mealers.annotation.Controller;
 import com.mealers.annotation.RequestMapping;
@@ -18,6 +17,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @Controller
 public class MealColumnController {
@@ -32,14 +32,8 @@ public class MealColumnController {
 	@RequestMapping(value = "/mealColumn/write", method = RequestMethod.GET)
 	public ModelAndView mealwriteForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		HttpSession session = req.getSession();
-		SessionInfo info = (SessionInfo) session.getAttribute("member");
-		
-		if(! info.getUserId().equals("admin")) {
-			return new ModelAndView("redirect:/mealColumn/list");
-		}
-		
 		ModelAndView mav = new ModelAndView("mealColumn/write");
+		
 		mav.addObject("mode", "write");
 		
 		return mav;
@@ -49,18 +43,18 @@ public class MealColumnController {
 	@RequestMapping(value = "/mealColumn/write", method = RequestMethod.POST)
 	public ModelAndView mealwriteSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 넘어온 파라미터 : 제목, 내용 [, 파일]
+		MealColumnDAO dao = new MealColumnDAO();
 		
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
-		if(! info.getUserId().equals("admin")) {
+		if(! "1".equals(info.getUserNum()) ) {
 			return new ModelAndView("redirect:/mealColumn/list");
 		}
 		
-		String path = session.getServletContext().getRealPath("/");
-		String pathname = path + "uploads" + File.separator + "mealColumn";
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "mealColumn";
 		
-		MealColumnDAO dao = new MealColumnDAO();
 		FileManager filemanager = new FileManager();
 		
 		try {
@@ -71,11 +65,17 @@ public class MealColumnController {
 			dto.setSubject(req.getParameter("subject"));
 			dto.setContent(req.getParameter("content"));
 			
-			List<MyMultipartFile> listfile = filemanager.doFileUpload(req.getParts(), pathname);
-			dto.setListFile(listfile);
+			
+			Part p = req.getPart("selectFile");
+			MyMultipartFile multiFile = filemanager.doFileUpload(p, pathname);
+			if (multiFile != null) {
+				String saveFilename = multiFile.getSaveFilename();
+				String originalFilename = multiFile.getOriginalFilename();
+				dto.setSaveFilename(saveFilename);
+				dto.setOriginalFilename(originalFilename);
+			}
 			
 			dao.insertMealColumn(dto);
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

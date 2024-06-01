@@ -13,10 +13,27 @@ public class MealColumnDTO {
 	private String userNum; 
 	
 	private long filenum;
-	private String fileName;
+	private String saveFilename;
+	private String originalFilename;
 	
 	private List<MyMultipartFile> listFile;
 	
+	public String getSaveFilename() {
+		return saveFilename;
+	}
+
+	public void setSaveFilename(String saveFilename) {
+		this.saveFilename = saveFilename;
+	}
+
+	public String getOriginalFilename() {
+		return originalFilename;
+	}
+
+	public void setOriginalFilename(String originalFilename) {
+		this.originalFilename = originalFilename;
+	}
+
 	public List<MyMultipartFile> getListFile() {
 		return listFile;
 	}
@@ -83,13 +100,6 @@ public class MealColumnDTO {
 		this.filenum = filenum;
 	}
 
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
 
 	public int getLikeCount() {
 		return likeCount;

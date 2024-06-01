@@ -6,11 +6,6 @@
 
     <head>
     	<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
-    	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/util-jquery.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/core.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/js/jquery.ui.datepicker-ko.js"></script>
     	<style type="text/css">
     	
     	.body-container {
@@ -23,39 +18,7 @@
     	}
     	
     	</style>
-    	<script type="text/javascript">
-function check() {
-    const f = document.mealColForm;
-	let str;
-	
-    str = f.subject.value.trim();
-    if(!str) {
-        alert("제목을 입력하세요. ");
-        f.subject.focus();
-        return false;
-    }
 
-    str = f.content.value.trim();
-    if(! str || str === "<p><br></p>") {
-        alert("내용을 입력하세요. ");
-        f.content.focus();
-        return false;
-    }
-
-    f.action = "${pageContext.request.contextPath}/mealColumn/${mode}";
-    return true;
-}
-
-<c:if test="${mode=='update'}">
-	function deleteFile(num) {
-		if( !confirm("파일을 삭제하시겠습니까 ?") ) {
-			return;
-		}
-		let url = "${pageContext.request.contextPath}/mealColumn/deleteFile?num=" + num + "&category=${category}&page=${page}";
-		location.href = url;
-	}
-</c:if>
-</script>
     </head>
     <header>
     	<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
@@ -122,7 +85,7 @@ function check() {
 							<td class="text-center">
 								<button type="button" class="text-white btn btn-primary m-2 py-2 rounded-pill" onclick="submitContents(this.form);">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
 								<button type="reset" class="btn btn-light m-2 py-2 rounded-pill">다시입력</button>
-								<button type="button" class="btn btn-light m-2 py-2 rounded-pill" onclick="location.href='${pageContext.request.contextPath}/mealColumn/list?category=${category}';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
+								<button type="button" class="btn btn-light m-2 py-2 rounded-pill" onclick="location.href='${pageContext.request.contextPath}/mealColumn/list';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 								<input type="hidden" name="category" value="${category}">
 								<c:if test="${mode=='update'}">
 									<input type="hidden" name="num" value="${dto.num}">
@@ -142,7 +105,48 @@ function check() {
 	<div class="container-fluid py-4">
             <div class="container py-1"></div>
      </div>
+     
+  <!-- Footer Start -->
+        <footer>
+        	<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
+			<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
+        </footer>
+   <!-- Footer End -->
+   
+<script type="text/javascript">
+function check() {
+    const f = document.mealColForm;
+	let str;
 	
+    str = f.subject.value.trim();
+    if(!str) {
+        alert("제목을 입력하세요. ");
+        f.subject.focus();
+        return false;
+    }
+
+    str = f.content.value.trim();
+    if(! str || str === "<p><br></p>") {
+        alert("내용을 입력하세요. ");
+        f.content.focus();
+        return false;
+    }
+
+    f.action = "${pageContext.request.contextPath}/mealColumn/${mode}";
+    return true;
+}
+
+<c:if test="${mode=='update'}">
+	function deleteFile(num) {
+		if( !confirm("파일을 삭제하시겠습니까 ?") ) {
+			return;
+		}
+		let url = "${pageContext.request.contextPath}/mealColumn/deleteFile?num=" + num + "&page=${page}";
+		location.href = url;
+	}
+</c:if>
+</script>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
 var oEditors = [];
@@ -171,16 +175,5 @@ function setDefaultFont() {
 	oEditors.getById["ir1"].setDefaultFont(sDefaultFont, nFontSize);
 }
 </script>       
-
-      <!-- Footer Start -->
-        <footer>
-        	<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
-        </footer>
-        <!-- Footer End -->
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
-		<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
     </body>
-
 </html>
