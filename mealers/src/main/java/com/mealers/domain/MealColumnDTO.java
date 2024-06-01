@@ -12,6 +12,7 @@ public class MealColumnDTO {
 	private String saveFilename;
 	private String originalFilename;
 	
+	private int likeCount;
 	
 	public String getSaveFilename() {
 		return saveFilename;
@@ -29,8 +30,6 @@ public class MealColumnDTO {
 		this.originalFilename = originalFilename;
 	}
 
-
-	private int likeCount;
 
 	public long getNum() {
 		return num;
@@ -97,7 +96,35 @@ public class MealColumnDTO {
 		this.likeCount = likeCount;
 	}
 	
+	public String getShortSubject() {
+	    if (this.subject != null && this.subject.length() > 12) {
+	        return this.subject.substring(0, 12) + "...";
+	    }
+	    return this.subject;
+	}
+	
+	 // HTML 태그 제거후 텍스트만 추출
+    public String getTextOnlyContent() {
+        if (this.content != null) {
+            // HTML 태그 제거
+            String noHtml = this.content.replaceAll("<[^>]*>", " ");
+            // 여러 공백을 하나로 줄임
+            String normalizedSpaces = noHtml.replaceAll("&nbsp;", " ").replaceAll("\\s+", " ");
+            return normalizedSpaces.trim();
+        }
+        return this.content;
+    }
+
+    // 텍스트만 추출하고, 20자로 제한하는 메소드
+    public String getShortTextContent() {
+        String textOnly = getTextOnlyContent();
+        if (textOnly != null && textOnly.length() > 25) {
+            return textOnly.substring(0, 25) + "...";
+        }
+        return textOnly;
+    }
 	
 	
+
 
 }
