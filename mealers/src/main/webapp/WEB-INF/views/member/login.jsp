@@ -6,7 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>spring</title>
+
+
+<title>로그인/회원가입</title>
 
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -310,179 +312,243 @@ footer p a .fa-behance {
 }
 </style>
 
-<script type="text/javascript">
-	function sendLogin() {
-		const f = document.loginForm;
-		let str;
-
-		str = f.memberId.value;
-		if (!str) {
-			f.memberId.focus();
-			return;
-		}
-
-		str = f.memberPwd.value;
-		if (!str) {
-			f.memberPwd.focus();
-			return;
-		}
-
-		f.action = "${pageContext.request.contextPath}/member/login";
-		f.submit();
-	}
-
-	$(document).ready(
-			function() {
-				let signup = $(".links").find("li").find("#signup");
-				let signin = $(".links").find("li").find("#signin");
-				let reset = $(".links").find("li").find("#reset");
-				let first_input = $("form").find(".first-input");
-				let hidden_input = $("form").find(".input__block").find(
-						"#repeat__password");
-				let nickname_block = $("#nickname_block"); // 닉네임 블록 선택자 추가
-				//let signin_btn = $("form").find(".signin__btn");
-
-				$("#joinForm").css({ // 블록 숨기기
-					"opacity" : "0",
-					"display" : "none"
-				});
-
-				//----------- sign up ---------------------
-				signup.on("click", function(e) {
-					e.preventDefault();
-					/* $(this).closest(".container").find("h1").text("SIGN UP");
-					$(this).css("opacity", "1");
-					$(this).siblings().not($(this)).css("opacity", ".6"); */
-					
-					$(this).parent().parent().siblings("h1").text("SIGN UP");
-					$(this).parent().css("opacity", "1");
-					$(this).parent().siblings().css("opacity", ".6");
-					
-					first_input.removeClass("first-input__block").addClass(
-							"signup-input__block");
-					/* 
-					hidden_input.css({
-					    "opacity": "1",
-					    "display": "block"
-					});
-					nickname_block.css({ // 닉네임 블록 표시
-					    "opacity": "1",
-					    "display": "block"
-					}); */
-
-					//signin_btn.text("가입하기");
-					
-					$("#loginForm").css({ // 블록 표시
-						"opacity" : "0",
-						"display" : "none"
-					});
-					$("#joinForm").css({ // 블록 숨기기
-						"opacity" : "1",
-						"display" : "block"
-					});
-					
-				});
-
-				//----------- sign in ---------------------
-				signin.on("click", function(e) {
-					e.preventDefault();
-					/* $(this).closest(".container").find("h1").text("SIGN IN");
-					$(this).css("opacity", "1");
-					$(this).siblings().not($(this)).css("opacity", ".6"); */
-					
-					$(this).parent().parent().siblings("h1").text("SIGN IN");
-					$(this).parent().css("opacity", "1");
-					$(this).parent().siblings().css("opacity", ".6");
-					
-					first_input.addClass("first-input__block").removeClass(
-							"signup-input__block");
-					/*
-					hidden_input.css({
-					   "opacity": "0",
-					   "display": "none"
-					});
-					nickname_block.css({ // 닉네임 블록 숨기기
-					   "opacity": "0",
-					   "display": "none"
-					}); */
-					//signin_btn.text("로그인");
-					
-					
-					$("#loginForm").css({ // 블록 표시
-						"opacity" : "1",
-						"display" : "block"
-					});
-					$("#joinForm").css({ // 블록 숨기기
-						"opacity" : "0",
-						"display" : "none"
-					});
-				});
-
-				//----------- reset ---------------------
-				reset.on("click", function(e) {
-					e.preventDefault();
-					$(this).closest(".container").find("form").find(
-							".input__block").find(".input").val("");
-				});
-			});
-</script>
+<!-- <head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .container {
+            width: 300px;
+            margin: 0 auto;
+        }
+        .input__block {
+            margin-bottom: 10px;
+        }
+        .help-block {
+            color: red;
+            font-size: 12px;
+        }
+    </style> -->
 </head>
 <body>
+    <div class="container">
+        <h1>Mealers</h1>
+        <ul class="links">
+            <li><a href="#" id="signin">로그인</a></li>
+            <li><a href="#" id="signup">회원가입</a></li>
+            <li><a href="#" id="reset">RESET</a></li>
+        </ul>
+		
+		
+		<!-- 로그인 -->		
+        <form name="loginForm" id="loginForm" action="" method="post">
+            <div class="first-input input__block">
+                <input type="text" name="memberId" placeholder="아이디" class="input" id="memberId" value="admin"/>
+            </div>
+            <div class="input__block">
+                <input type="password" name="memberPwd" placeholder="비밀번호" class="input" id="password1" value="admin" />
+            </div>
+            <button class="login__btn" type="button" onclick="sendLogin();">로그인</button>
+        </form>
 
 
-	<div class="container">
-		<!-- Heading -->
-		<h1>Mealers</h1>
+		<!-- 회원가입 -->
+        <form name="joinForm" id="joinForm" method="post">
+            <div class="first-input input__block">
+                <input type="text" name="email" placeholder="이메일" class="input" id="email" />
+            </div>
+            <div class="input__block">
+                <input type="text" name="memberId" placeholder="ID" class="input" id="memberId2" />
+                <button type="button" class="btn_check" onclick="userIdCheck()">확인</button>
+                <span class="help-block" id="idCheckResult"></span>
+                <input type="hidden" name="userIdValid" id="userIdValid" value="false">
+            </div>
+            <div class="input__block">
+                <input type="text" name="nickname" placeholder="닉네임" class="input" id="nickname" />
+            </div>
+            <div class="input__block">
+                <input type="password" name="memberPwd" placeholder="비밀번호" class="input" id="password2" />
+            </div>
+            <div class="input__block">
+                <input type="password" placeholder="비밀번호 확인" class="input repeat__password" id="repeat__password" />
+            </div>
+            <button class="login__btn" type="button" onclick="sendJoin();">회원가입</button>
+        </form>
+    </div>
 
-		<!-- Links -->
-		<ul class="links">
-			<li><a href="#" id="signin">로그인</a></li>
-			<li><a href="#" id="signup">회원가입</a></li>
-			<li><a href="#" id="reset">RESET</a></li>
-		</ul>
+    <script type="text/javascript">
+        function validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
 
-		<!-- Form -->
-		<form name="loginForm" id="loginForm" action="" method="post">
-			<div class="first-input input__block first-input__block">
-				<input type="text" name="memberId" placeholder="이메일"
-					class="input" id="email1" value="admin"/>
-			</div>
+        function validatePassword(password) {
+            const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+            return passwordPattern.test(password);
+        }
+		
+        //로그인
+        function sendLogin() {
+            const f = document.loginForm;
+            let str;
 
-			<div class="input__block">
-				<input type="password" name="memberPwd" placeholder="비밀번호"
-					class="input" id="password1" value="admin" />
-			</div>
+            str = f.memberId.value;
+            if (!str) {
+                alert("이메일을 입력하세요.");
+                f.memberId.focus();
+                return;
+            }
 
-			<button class="login__btn" onclick="sendLogin();">로그인</button>
-		</form>
+            str = f.memberPwd.value;
+            if (!str) {
+                alert("비밀번호를 입력하세요.");
+                f.memberPwd.focus();
+                return;
+            }
 
-		<form name="joinForm" id="joinForm" action="" method="post">
-			<div class="first-input input__block first-input__block input_btn_box">
-				<input type="text" name="memberId" placeholder="이메일"
-					class="input" id="email2" />
-					<button type="button" class="btn_check">확인</button>
-			</div>
+            f.action = "${pageContext.request.contextPath}/member/login";
+            f.submit();
+        }
+		
+        //회원가입
+        function sendJoin() {
+            const f = document.joinForm;
+            let str;
 
-			<div class="input__block input_btn_box" id="nickname_block">
-				<input type="text" placeholder="닉네임" class="input" id="nickname" />
-				<button type="button" class="btn_check">확인</button>
-			</div>
+            str = f.email.value;
+            if (!str || !validateEmail(str)) {
+                alert("유효한 이메일을 입력하세요.");
+                f.email.focus();
+                return;
+            }
 
-			<div class="input__block">
-				<input type="password" name="memberPwd" placeholder="비밀번호"
-					class="input" id="password2" />
-			</div>
+            str = f.memberId2.value;
+            if (!str) {
+                alert("ID를 입력하세요.");
+                f.userId2.focus();
+                return;
+            }
+            
+            str = f.nickname.value;
+            if (!str) {
+                alert("닉네임을 입력하세요.");
+                f.nickname.focus();
+                return;
+            }
 
-			<div class="input__block">
-				<input type="password" placeholder="비밀번호 확인"
-					class="input repeat__password" id="repeat__password" />
-			</div>
+            str = f.memberPwd.value;
+            if (!str || !validatePassword(str)) {
+                alert("비밀번호는 최소 8자 이상, 대문자, 소문자, 숫자를 포함해야 합니다.");
+                f.memberPwd.focus();
+                return;
+            }
 
+            const repeatPwd = document.getElementById("repeat__password").value;
+            if (str !== repeatPwd) {
+                alert("비밀번호가 일치하지 않습니다.");
+                document.getElementById("repeat__password").focus();
+                return;
+            }
 
-			<!-- sign in button -->
-			<button class="login__btn" onclick="sendLogin();">회원가입</button>
-		</form>
-	</div>
+            if (f.userIdValid.value === "false") {
+                alert("아이디 중복 검사를 실행하세요.");
+                f.userId.focus();
+                return;
+            }
+            
+            f.action = "${pageContext.request.contextPath}/member/member";
+            f.submit();
+        }
 
+        function userIdCheck() {
+            let memberId2 = $("#memberId2").val();
+
+            if (!memberId2) {
+                alert("ID를 입력하세요.");
+                return;
+            }
+
+            let url = "${pageContext.request.contextPath}/member/userIdCheck";
+            let query =  "memberId=" + memberId2;
+
+            $.ajax({
+                type: "post",
+                url: url,
+                data: query,
+                dataType: "json",
+                success: function(data) {
+                    let passed = data.passed;
+
+                    if (passed === "true") {
+                        let s = "<span style='color:blue; font-weight:700;'>사용 가능한 ID입니다.</span>";
+                        $("#idCheckResult").html(s);
+                        $("#userIdValid").val("true");
+                    } else {
+                        let s = "<span style='color:red; font-weight:700;'>사용할 수 없는 ID입니다.</span>";
+                        $("#idCheckResult").html(s);
+                        $("#userIdValid").val("false");
+                    }
+                },
+                error: function(e) {
+                    console.log(e.responseText);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            let signup = $(".links").find("li").find("#signup");
+            let signin = $(".links").find("li").find("#signin");
+            let reset = $(".links").find("li").find("#reset");
+            let first_input = $("form").find(".first-input");
+            let hidden_input = $("form").find(".input__block").find("#repeat__password");
+            let nickname_block = $("#nickname_block");
+
+            $("#joinForm").css({
+                "opacity": "0",
+                "display": "none"
+            });
+
+            signup.on("click", function(e) {
+                e.preventDefault();
+                $(this).parent().parent().siblings("h1").text("SIGN UP");
+                $(this).parent().css("opacity", "1");
+                $(this).parent().siblings().css("opacity", ".6");
+
+                first_input.removeClass("first-input__block").addClass("signup-input__block");
+
+                $("#loginForm").css({
+                    "opacity": "0",
+                    "display": "none"
+                });
+                $("#joinForm").css({
+                    "opacity": "1",
+                    "display": "block"
+                });
+            });
+
+            signin.on("click", function(e) {
+                e.preventDefault();
+                $(this).parent().parent().siblings("h1").text("SIGN IN");
+                $(this).parent().css("opacity", "1");
+                $(this).parent().siblings().css("opacity", ".6");
+
+                first_input.addClass("first-input__block").removeClass("signup-input__block");
+
+                $("#loginForm").css({
+                    "opacity": "1",
+                    "display": "block"
+                });
+                $("#joinForm").css({
+                    "opacity": "0",
+                    "display": "none"
+                });
+            });
+
+            reset.on("click", function(e) {
+                e.preventDefault();
+                $(this).closest(".container").find("form").find(".input__block").find(".input").val("");
+            });
+        });
+    </script>
 </body>
 </html>
