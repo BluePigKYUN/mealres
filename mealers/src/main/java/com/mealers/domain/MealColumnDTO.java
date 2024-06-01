@@ -1,9 +1,5 @@
 package com.mealers.domain;
 
-import java.util.List;
-
-import com.mealers.util.MyMultipartFile;
-
 public class MealColumnDTO {
 	private long num;
 	private String subject;
@@ -16,7 +12,6 @@ public class MealColumnDTO {
 	private String saveFilename;
 	private String originalFilename;
 	
-	private List<MyMultipartFile> listFile;
 	
 	public String getSaveFilename() {
 		return saveFilename;
@@ -34,13 +29,6 @@ public class MealColumnDTO {
 		this.originalFilename = originalFilename;
 	}
 
-	public List<MyMultipartFile> getListFile() {
-		return listFile;
-	}
-
-	public void setListFile(List<MyMultipartFile> listFile) {
-		this.listFile = listFile;
-	}
 
 	private int likeCount;
 

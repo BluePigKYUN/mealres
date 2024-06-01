@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import com.mealers.domain.MealColumnDTO;
 import com.mealers.util.DBConn;
 import com.mealers.util.DBUtil;
-import com.mealers.util.MyMultipartFile;
 
 public class MealColumnDAO {
 	private Connection conn = DBConn.getConnection();
@@ -35,11 +34,10 @@ public class MealColumnDAO {
 					+ "VALUES(mealColFile_seq.NEXTVAL, mealCol_seq.CURRVAL, ?, ? ) ";
 			pstmt = conn.prepareStatement(sql);
 			
-			for(MyMultipartFile mf : dto.getListFile()) {
-				pstmt.setString(1, mf.getSaveFilename());
-				pstmt.setString(2, mf.getOriginalFilename());
-				pstmt.executeUpdate();
-			}
+			pstmt.setString(1, dto.getSaveFilename());
+			pstmt.setString(2, dto.getOriginalFilename());
+			
+			pstmt.executeUpdate();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
