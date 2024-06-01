@@ -1,10 +1,14 @@
 package com.mealers.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.mealers.annotation.Controller;
 import com.mealers.annotation.RequestMapping;
 import com.mealers.annotation.RequestMethod;
+import com.mealers.annotation.ResponseBody;
 import com.mealers.dao.MemberDAO;
 import com.mealers.domain.MemberDTO;
 import com.mealers.domain.SessionInfo;
@@ -76,6 +80,70 @@ public class MemberController {
 
 		return new ModelAndView("redirect:/");
 	}
+	@RequestMapping(value="/member/member",method = RequestMethod.GET)
+	public ModelAndView singupForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException{	
+		ModelAndView mav = new ModelAndView("member/login");
+		
+		mav.addObject("title", "회원 가입");
+		mav.addObject("mode", "member");
+		
+		return mav;
+	}
 	
-	
+	//회원가입
+	@RequestMapping(value="/member/member",method = RequestMethod.POST)
+	  public ModelAndView memberSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	      MemberDAO dao = new MemberDAO();
+	        String message = "";	     
+
+	        try {
+	            MemberDTO dto = new MemberDTO();
+	            dto.setMemberId(req.getParameter("memberId"));
+	            dto.setMemberPwd(req.getParameter("memberPwd"));
+	            dto.setMem_Nick(req.getParameter("nickname"));
+	            dto.setMem_Email(req.getParameter("email"));
+
+	            // 디버깅을 위해 로그 추가
+	            System.out.println("MEMBERID: " + dto.getMemberId());
+	            System.out.println("MEMBERPWD: " + dto.getMemberPwd());
+	            System.out.println("MEM_NICK: " + dto.getMem_Nick());
+	            System.out.println("MEM_EMAIL: " + dto.getMem_Email());
+
+	            dao.insertMember(dto);
+
+	            return new ModelAndView("redirect:/");
+
+	        } catch (SQLException e) {
+	            message = "회원 가입 실패";
+	            e.printStackTrace();
+	        }
+
+	        ModelAndView mav = new ModelAndView("member/member");
+	        mav.addObject("title", "회원 가입");
+	        mav.addObject("mode", "member");
+	        mav.addObject("message", message);
+
+	        return mav;
+	    }
+
+	@ResponseBody
+	@RequestMapping(value="/member/userIdCheck",method = RequestMethod.POST)
+	public Map<String, Object> userIdCheck(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException{
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		MemberDAO dao = new MemberDAO();
+		
+		String memberId = req.getParameter("memberId");
+		MemberDTO dto = dao.findById(memberId);
+		
+		String passed = "false";
+		if(dto==null) {
+			passed="true";
+		}
+		map.put("passed", passed);
+		
+		return map;
+		
+	}
+
 }
