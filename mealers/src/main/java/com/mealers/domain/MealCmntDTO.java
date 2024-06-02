@@ -1,8 +1,11 @@
 package com.mealers.domain;
 
+import java.util.List;
+
 public class MealCmntDTO {
-	private int num;
-	private int userNum;
+	private long num;
+	private String userNum;
+	private String mem_Nick;
 	private String subject;
 	private String content;
 	private String reg_date;
@@ -10,17 +13,29 @@ public class MealCmntDTO {
 	
 	private int likeCount;
 	private int replyCount;
-	public int getNum() {
+	private long timeGap;
+
+	private long fileNum;
+	private String fileName;
+	private List<String> fileList;
+	
+	public long getNum() {
 		return num;
 	}
-	public void setNum(int num) {
+	public void setNum(long num) {
 		this.num = num;
 	}
-	public int getUserNum() {
+	public String getUserNum() {
 		return userNum;
 	}
-	public void setUserNum(int userNum) {
+	public void setUserNum(String userNum) {
 		this.userNum = userNum;
+	}
+	public String getMem_Nick() {
+		return mem_Nick;
+	}
+	public void setMem_Nick(String mem_Nick) {
+		this.mem_Nick = mem_Nick;
 	}
 	public String getSubject() {
 		return subject;
@@ -58,7 +73,30 @@ public class MealCmntDTO {
 	public void setReplyCount(int replyCount) {
 		this.replyCount = replyCount;
 	}
-	
+	public long getTimeGap() {
+		return timeGap;
+	}
+	public void setTimeGap(long timeGap) {
+		this.timeGap = timeGap;
+	}
+	public long getFileNum() {
+		return fileNum;
+	}
+	public void setFileNum(long fileNum) {
+		this.fileNum = fileNum;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public List<String> getFileList() {
+		return fileList;
+	}
+	public void setFileList(List<String> fileList) {
+		this.fileList = fileList;
+	}
 	
 	
 	
