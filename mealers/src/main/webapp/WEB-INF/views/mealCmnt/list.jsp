@@ -28,6 +28,14 @@
 .input-group-text:hover, .content-box:hover {
 	cursor: pointer;
 }
+
+.content-control {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
 </style>
 
 </head>
@@ -68,11 +76,13 @@
 							<div class="row g-4 justify-content-start">
 								<c:choose>
 									<c:when test="${empty list}">
-										<p class="text-center fw-bold">게시물이 존재하지 않습니다.</p>
+										<div class="d-flex">
+											<div class=" d-flex fw-bold justify-content-center align-content-center" style="height: 500px">게시물이 존재하지 않습니다.</div>
+										</div>
 									</c:when>
 									<c:otherwise>
 										<c:forEach var="dto" items="${list}" varStatus="status">
-											<div class="col-md-4 col-lg-4 col-xl-3 pb-3">
+											<div class="col-md-4 col-lg-4 col-xl-3 pb-3" style="max-height: 400px">
 												<div class="rounded position-relative fruite-item content-box" onclick="location.href='${articleUrl}&num=${dto.num}';">
 													<div class="fruite-img ratio ratio-4x3">
 														<img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid  rounded-top">
@@ -99,8 +109,8 @@
 															</c:choose>
 															<p class="py-1">${dto.reg_date}</p>
 														</div>
-														<h4 class="pb-2 pt-3 text-center">${dto.subject}</h4>
-														<p>${dto.content}</p>
+														<h5 class="pb-2 pt-3 text-center">${dto.subject}</h5>
+														<div class="content-control" style="min-height: 72px">${dto.content}</div>
 														<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
 															<p class="text-dark mb-2 pe-2">댓글10</p> 
 															<p class="text-dark mb-2 pe-2">좋아요${dto.likeCount}</p>
