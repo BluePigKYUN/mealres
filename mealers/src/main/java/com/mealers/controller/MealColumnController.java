@@ -170,6 +170,7 @@ public class MealColumnController {
 	}
 	
 	@RequestMapping(value = "/mealColumn/article")
+	// d
 	public ModelAndView exerslist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("mealColumn/article");
 		

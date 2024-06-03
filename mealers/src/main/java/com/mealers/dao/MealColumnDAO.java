@@ -257,7 +257,7 @@ public class MealColumnDAO {
 		}
 	}
 	
-	// 해당 강좌 보기
+	// 해당 칼럼 보기
 	public MealColumnDTO findByColumn(long num) {
 		MealColumnDTO dto = null;
 		PreparedStatement pstmt = null;
@@ -265,11 +265,29 @@ public class MealColumnDAO {
 		String sql;
 		
 		try {
-			sql = "";
+			sql = "SELECT n.num, subject, content, saveFilename, originalFilename, hitCount, "
+					+ " TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, "
+					+ " NVL(likeCount, 0) likeCount "
+					+ "FROM  mealColumn n "
+					+ "JOIN member m ON n.userNum = m.userNum "
+					+ "JOIN mealcolumnfile f ON n.num = f.num "
+					+ " LEFT OUTER JOIN ( SELECT num, COUNT(*) likeCount FROM mealColumnLike GROUP BY num )"
+					+ " bc ON n.num = bc.num "
+					+ " WHERE n.num = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
+			pstmt.setLong(1, num);
+			
 			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new MealColumnDTO();
+				
+				
+			}
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
