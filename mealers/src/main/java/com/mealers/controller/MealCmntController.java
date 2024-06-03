@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -174,5 +175,67 @@ public class MealCmntController {
 		}
 		
 		return new ModelAndView("redirect:/mealCmnt/list");
+	}
+	
+	@RequestMapping(value = "/mealCmnt/article", method = RequestMethod.GET)
+	public ModelAndView article(HttpServletRequest req, HttpRequest resp) throws ServletException, IOException {
+		// 페이지, 글번호, [,검색컬럼, 검색값, 정렬컬럼]
+		MealCmntDAO dao = new MealCmntDAO();
+		String page = req.getParameter("page");
+		String query = "page=" + page;
+		
+		try {
+			long num = Long.parseLong(req.getParameter("num"));
+			String schCategory = req.getParameter("schCategory");
+			String schContent = req.getParameter("schContent");
+			String mealSort = req.getParameter("mealSort");
+			
+			if(schCategory == null) {
+				schCategory = "subcon";
+				schContent = "";
+			}
+			
+			if(mealSort == null) {
+				mealSort = "recent";
+			}
+			
+			 schContent = URLDecoder.decode(schContent, "utf-8");
+			 if(schContent.length() != 0) {
+			 	query += "&schCategory=" + schCategory + "&schContent=" + URLEncoder.encode(schContent, "utf-8");
+				if(mealSort.equals("popular") | mealSort.equals("hitcount")) {
+					query += "&mealSort=" + mealSort;
+				}
+			 } else {
+				if(mealSort.equals("popular") | mealSort.equals("hitcount")) {
+					query += "&mealSort=" + mealSort;
+				}
+			 }
+			
+			dao.hitCountCal(num);
+			
+			CmntDTO dto = dao.findContent(num);
+			if(dto == null) {
+				return new ModelAndView("/mealCmnt/list?" + query);
+			}
+			
+			dto.setContent(dto.getContent().replace("\n", "<br>"));
+			
+			// HttpSession session = req.getSession();
+			// SessionInfo info = (SessionInfo)session.getAttribute("member");
+			// boolean isLikeCmnt = dao.isLikeCmnt(num, info.getUserNum());
+			
+			ModelAndView mav = new ModelAndView("mealCmnt/article");
+			
+			mav.addObject("dto", dto);
+			mav.addObject("page", page);
+			mav.addObject("query", query);
+			// mav.addObject("isLikeCmnt", isLikeCmnt);
+
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect/mealCmnt/list");
 	}
 } 
