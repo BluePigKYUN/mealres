@@ -30,11 +30,11 @@
 	<div class="container">
 		<div class="container-fluid fruite py-5">	
 			<div class="body-main">
-			   <div class="table-responsive rounded">
-					<table class="table table-article rounded border border-1">
+			   <div class="table-responsive">
+					<table class="table table-article border border-1">
 					    <thead class="align-middle text-center bg-light">
 					        <tr>
-					            <td colspan="2" class="align-middle text-center rounded-top">
+					            <td colspan="2" class="align-middle text-center">
 					                <h3 class="text-primary m-3 text-center">${dto.subject }</h3>
 					            </td>
 							</tr>
@@ -43,7 +43,7 @@
 						<tbody>
 							<tr>
 								<td align="left" style="text-align: left;">
-									이름 : 관리자
+									이름 : 밀티쥬
 								</td>
 								<td class="text-end">
 									YYYY-MM-DD | 조회 ${dto.hitCount}
@@ -75,22 +75,6 @@
 								</td>
 							</tr>
 	
-							<tr>
-								<td class="text-start" colspan="2">
-									이전글 :
-									<c:if test="${not empty prevDto}">
-										<a href="${pageContext.request.contextPath}/lecture/article?${query}&num=${prevDto.num}">${prevDto.subject}</a>
-									</c:if>
-								</td>
-							</tr>
-							<tr>
-								<td class="text-start" colspan="2">
-									다음글 :
-									<c:if test="${not empty nextDto}">
-										<a href="${pageContext.request.contextPath}/lecture/article?${query}&num=${nextDto.num}">${nextDto.subject}</a>
-									</c:if>
-								</td>
-							</tr>
 						</tbody>
 					</table>
 				</div>

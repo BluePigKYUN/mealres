@@ -235,6 +235,54 @@ public class MealColumnDAO {
 	
 	}
 	
+	// 조회수 증가하기
+	public void updateHitCount(long num) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		
+		try {
+			sql = "UPDATE mealColumn SET hitCount = hitCount+1 WHERE num = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, num);
+			
+			pstmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
+	}
+	
+	// 해당 강좌 보기
+	public MealColumnDTO findByColumn(long num) {
+		MealColumnDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return dto;
+		
+		
+	}
+	
+	
 	
 	
 	public long findByUserNum(String memberId) {

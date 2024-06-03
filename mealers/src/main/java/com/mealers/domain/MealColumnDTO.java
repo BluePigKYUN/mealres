@@ -1,5 +1,8 @@
 package com.mealers.domain;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MealColumnDTO {
 	private long num;
 	private String subject;
@@ -115,13 +118,29 @@ public class MealColumnDTO {
         return this.content;
     }
 
-    // 텍스트만 추출하고, 20자로 제한하는 메소드
+    // 텍스트만 추출하고, 20자로 제한
     public String getShortTextContent() {
         String textOnly = getTextOnlyContent();
         if (textOnly != null && textOnly.length() > 25) {
             return textOnly.substring(0, 25) + "...";
         }
         return textOnly;
+    }
+    
+    
+    public String getFirstImageSrc() {
+        if (this.content != null) {
+            // 첫 번째 <img> 태그의 src 값을 추출하기 위한 정규 표현식
+            String imgSrcRegex = "<img[^>]+src\\s*=\\s*\"([^\"]+)\"";
+            Pattern pattern = Pattern.compile(imgSrcRegex);
+            Matcher matcher = pattern.matcher(this.content);
+
+            if (matcher.find()) {
+                // 첫 번째 그룹이 src 값
+                return matcher.group(1);
+            }
+        }
+        return null;
     }
 	
 	
