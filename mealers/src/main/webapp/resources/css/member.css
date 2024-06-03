@@ -153,3 +153,46 @@
 	display:flex; align-items: flex-end;
 }
 
+/*------------------------헤더 드롭다운 
+
+.profile-pic {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.dropdown-menu {
+	min-width: 250px;
+}
+
+.dropdown-header {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+}
+
+.dropdown-header img {
+	margin-right: 10px;
+}
+
+.dropdown-header .user-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.dropdown-header .user-info .user-name {
+	font-weight: bold;
+}
+
+.dropdown-header .user-info .user-points {
+	font-size: 0.9em;
+	color: gray;
+}
+
+.bg-light {
+	background-color: transparent !important;
+}
+
+
+
