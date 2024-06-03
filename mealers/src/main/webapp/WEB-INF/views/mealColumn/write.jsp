@@ -31,7 +31,7 @@
          <div class="container">
          	<div class="body-container mb-2">
          		<div class="body-title">
-					<h1 class="text-primary p-3 m-3 text-center">글등록하기</h1>	
+					<h1 class="text-primary p-3 m-3 text-center">${mode=='update'?'글 수정하기':'글 등록하기'}</h1>	
 				</div>
 				<div class="body-main">
 				<form name="mealColForm" method="post"	enctype="multipart/form-data">
