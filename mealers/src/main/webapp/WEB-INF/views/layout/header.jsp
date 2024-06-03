@@ -119,21 +119,21 @@
 											${pageContext.request.contextPath}/resources/img/50.png"
 										alt="Profile Picture" class="profile-pic">
 										<div class="user-info">
-											<span class="user-name"></span> <span class="user-points">포인트:
+											<span class="user-name">${sessionScope.member.userName}</span><span class="user-points">포인트:
 												1000</span>
 										</div></li>
 									<li><hr class="dropdown-divider"></li>
 									<li><a class="dropdown-item"
 										href="${pageContext.request.contextPath}/member/mypage"><i
-											class="fas fa-user-cog"></i> 정보 변경</a></li>
+											class="fas fa-user-cog me-2"></i>정보 변경</a></li>
 									<li><a class="dropdown-item" href="${pageContext.request.contextPath}/group/main"><i
-											class="fas fa-users"></i> 나의 그룹</a></li>
+											class="fas fa-users me-2"></i>나의 그룹</a></li>
 									<li><a class="dropdown-item"
 										href="${pageContext.request.contextPath}/member/post"><i
-											class="fas fa-file-alt"></i> 작성한 게시물</a></li>
+											class="fas fa-file-alt me-2"></i>작성한 게시물</a></li>
 												<li><a class="dropdown-item"
 										href="${pageContext.request.contextPath}/member/logout"><i
-											class="fas fa-file-alt"></i>로그아웃</a></li>
+											class="fas fa-sign-out-alt me-2"></i>로그아웃</a></li>
 								</ul>
 							</div>
 						</div>

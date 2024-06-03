@@ -17,6 +17,15 @@
     body{padding-top: 97px;}
 }
 
+.dropdown .dropdown-menu a:hover {
+    background: #fff;
+    color: var(--bs-primary);
+}
+
+.navbar-expand-xl .navbar-nav .dropdown-menu{
+	background-color: #fff !important;
+}
+
 /* Main ---------------------------------- */
 
 .text-secondary {
