@@ -103,7 +103,7 @@
 				                </div>
 				                
                               <div class="justify-content-center row board-list-footer">
-									<form class="justify-content-center row" name="searchForm" action="${pageContext.request.contextPath}/bbs/list" method="post">
+									<form class="mb-4 justify-content-center row" name="searchForm" action="${pageContext.request.contextPath}/bbs/list" method="post">
 										<div class="col-auto p-1">
 											<select name="schType" class="form-select">
 												<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>

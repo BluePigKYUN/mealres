@@ -244,7 +244,7 @@ public class MealColumnDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("Select userNum From member Where memberId = ?");
+			sb.append("SELECT userNum FROM member WHERE memberId = ?");
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			
@@ -261,7 +261,6 @@ public class MealColumnDAO {
 		} finally {
 			DBUtil.close(pstmt);
 		}
-		
 		
 		return num;
 	}

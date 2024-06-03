@@ -35,7 +35,7 @@
 					    <thead class="align-middle text-center bg-light">
 					        <tr>
 					            <td colspan="2" class="align-middle text-center rounded-top">
-					                <h3 class="text-primary m-3 text-center">제목입니다.</h3>
+					                <h3 class="text-primary m-3 text-center">${dto.subject }</h3>
 					            </td>
 							</tr>
 						</thead>
