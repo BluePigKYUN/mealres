@@ -17,7 +17,7 @@ public class MemberDAO {
 	 * @param memberId
 	 * @param memberPwd
 	 * @return memberDTO
-	 */
+	 */ 
 	public MemberDTO loginMember(String memberId, String memberPwd) {
 		MemberDTO dto = null;
 		PreparedStatement pstmt = null;

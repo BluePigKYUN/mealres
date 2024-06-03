@@ -14,14 +14,33 @@ import com.mealers.util.DBUtil;
 public class DiaryDAO {
 	private Connection conn = DBConn.getConnection();
 	
-	public void insertDiary(DiaryDTO dto) {
+	public void insertDiary(DiaryDTO dto) throws SQLException{
 		PreparedStatement pstmt = null;
 		StringBuilder sb = new StringBuilder();
+		ResultSet rs = null;
 		
 		try {
+			/*
+			sb.append("Select Count(*) From Diary Where userNum = ? And to_char(reg_date_diary, 'yyyy-mm-dd') = to_char(sysDate, 'yyyy-mm-dd')");
+			
+	        pstmt = conn.prepareStatement(sb.toString());
+	        pstmt.setString(1, dto.getUserNum());
+	        
+	        rs = pstmt.executeQuery();
+	        
+	        // 이미 오늘의 기록이 있는 경우
+	        if (rs.next() && rs.getInt(1) > 0) {
+	            throw new SQLException("이미 오늘의 일기가 있습니다.");
+	        }
+	        
+	        DBUtil.close(pstmt);
+	        */
+	        
+	        // 새로운 일기 입력
+	        sb.setLength(0);
 			sb.append("Insert Into Diary(diary_num, reg_date_diary, subject, ");
-			sb.append("content, userNum, memberId) ");
-			sb.append("Values(diary_seq.nextval, sysDate, ?, ?, ?, ?)");
+			sb.append("content, userNum, memberId, emoji) ");
+			sb.append("Values(diary_seq.nextval, sysDate, ?, ?, ?, ?, ?)");
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			
@@ -29,24 +48,25 @@ public class DiaryDAO {
 			pstmt.setString(2, dto.getContent());
 			pstmt.setString(3, dto.getUserNum());
 			pstmt.setString(4, dto.getMemberId());
+			pstmt.setString(5, dto.getEmoji());
 			
 			pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw e;
 		} finally {
 			DBUtil.close(pstmt);
 		}
 	}
 	
-	public long findByUserNum(String memberId) {
+	public long findByDiaryNum(String memberId) {
 		long num = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("Select userNum From member Where memberId = ?");
+			sb.append("Select DIARY_NUM From Diary Where memberId = ? Order By Diary_Num Desc");
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			
@@ -55,7 +75,7 @@ public class DiaryDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				num = rs.getLong("userNum");
+				num = rs.getLong("DIARY_NUM");
 			}
 			
 		} catch (SQLException e) {
@@ -75,11 +95,12 @@ public class DiaryDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("Select diary_num, reg_date_diary, subject, content, userNum, memberId ");
+			sb.append("Select diary_num, reg_date_diary, subject, content, d.userNum, d.memberId ");
 			sb.append("From diary d ");
 			sb.append("Join Member m On d.userNum = m.userNum ");
-			sb.append("Where memberId = ? ");
-			sb.append("Offset ? Rows Fetch First ? Rows only");
+			sb.append("Where d.memberId = ? ");
+			sb.append("Order By Diary_num Desc ");
+			sb.append("Offset ? Rows Fetch First ? Rows only ");
 			
 			pstmt = conn.prepareStatement(sb.toString());
 			
@@ -92,12 +113,12 @@ public class DiaryDAO {
 			while(rs.next()) {
 				DiaryDTO dto = new DiaryDTO();
 				
+				dto.setDiary_Num(rs.getLong("diary_num"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setReg_date_diary(rs.getString("reg_date_diary"));
 				
 				list.add(dto);
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -109,15 +130,39 @@ public class DiaryDAO {
 		
 	}
 	
-	public int dataCount() {
+	@Deprecated
+	public DiaryDTO oneDiary(String memberId) {
+		DiaryDTO dto = new DiaryDTO();
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			sb.append("Select diary_num, reg_date_diary, subject, content, d.userNum, d.memberId ");
+			sb.append("From diary d ");
+			sb.append("Join Member m On d.userNum = m.userNum ");
+			sb.append("Where d.memberId = ? ");
+			sb.append("Offset ? Rows Fetch First ? Rows only");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto;
+	}
+	
+	public int dataCount(String memberId) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 		
 		try {
-			sql = "Select Nvl(Count(*), 0), From diary Where MemberId = ?";
+			sql = "Select Nvl(Count(*), 0) From diary Where MemberId = ?";
 			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, memberId);
 			
 			rs = pstmt.executeQuery();
 			
@@ -133,6 +178,36 @@ public class DiaryDAO {
 		}
 		
 		return result;
+	}
+	
+	public List<DiaryDTO> emojiList(String date, String memberId) {
+		List<DiaryDTO> list = new ArrayList<DiaryDTO>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "Select Nvl(emoji, 0) From diary d";
+			sql += "Join Member m On m.memberId = d.memberId ";
+			sql += "Where to_char(?, 'yyyy/mm/dd') = To_Char(sysDate, 'yyyy/mm/dd') And d.MemberId = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, date);
+			pstmt.setString(2, memberId);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				DiaryDTO dto = new DiaryDTO();
+				
+				dto.setEmoji(rs.getString("emoji"));
+				
+				list.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 
 }

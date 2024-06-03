@@ -26,7 +26,59 @@ public class DiaryController {
 	
 	@RequestMapping(value = "/log/diary", method = RequestMethod.GET)
 	public ModelAndView main(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//넘어올 파라미터: 페이지 번호
 		ModelAndView mav = new ModelAndView("log/diaryMain");
+		
+		DiaryDAO dao = new DiaryDAO();
+		MyUtil util = new MyUtilBootstrap();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		try {
+			String page = req.getParameter("pageNo");
+			int current_page = 1;
+			if(page != null  && ! page.isEmpty()) {
+				current_page = Integer.parseInt(page);
+			}
+			
+			int dataCount = dao.dataCount(info.getUserId());
+			int size = 5;
+			int total_page = util.pageCount(dataCount, size);
+			
+	        int startPage = ((current_page - 1) / size * size) + 1;
+	        int endPage = ((current_page - 1) / size * size) + size;
+	        if (endPage > total_page) {
+	            endPage = total_page;
+	        }
+			
+			if(current_page > total_page) {
+				current_page = total_page;
+			}
+			
+			int offset = (current_page - 1) * size;
+			
+			List<DiaryDTO> list = dao.listDiary(offset, size, info.getUserId());
+			
+			String cp = req.getContextPath();
+			String listUrl = cp + "/log/diary";
+			String articleUrl = cp + "/log/diary?pageNo=" + current_page;
+			
+			String paging = util.paging(current_page, total_page, listUrl);
+			
+			mav.addObject("list", list);
+			mav.addObject("pageNo", current_page);
+			mav.addObject("total_page", total_page);
+			mav.addObject("dataCount", dataCount);
+			mav.addObject("size", size);
+			mav.addObject("articleUrl", articleUrl);
+			mav.addObject("paging", paging);
+	        mav.addObject("startPage", startPage);
+	        mav.addObject("endPage", endPage);
+			
+		 	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return mav;
 	}
@@ -47,7 +99,7 @@ public class DiaryController {
 			DiaryDTO dto = new DiaryDTO();
 			
 			dto.setMemberId(info.getUserId());
-			dto.setStatus(req.getParameter("emotion"));
+			dto.setEmoji(req.getParameter("emotion"));
 			dto.setSubject(req.getParameter("subject"));
 			dto.setContent(req.getParameter("diary"));
 			dto.setUserNum(info.getUserNum());
@@ -57,6 +109,7 @@ public class DiaryController {
 			state = "true";
 		} catch (Exception e) {
 			model.put("state", "false");
+			model.put("error", e.getMessage());
 		}
 		model.put("state", state);
 		
@@ -65,9 +118,10 @@ public class DiaryController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/log/list", method = RequestMethod.GET)
-	public Map<String, Object> printList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	public Map<String, Object> printDiaryList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//화면에 출력
 		//[페이지 번호 파라미터]
+		
 		Map<String, Object> model = new HashMap<String, Object>();
 		
 		DiaryDAO dao = new DiaryDAO();
@@ -83,7 +137,7 @@ public class DiaryController {
 				current_page = Integer.parseInt(page);
 			}
 			
-			int dataCount = dao.dataCount();
+			int dataCount = dao.dataCount(info.getUserId());
 			int size = 5;
 			int total_page = util.pageCount(dataCount, size);
 			
@@ -106,6 +160,7 @@ public class DiaryController {
 		 	model.put("dataCount", dataCount);
 		 	
 		 	model.put("state", "true");
+		 	
 		} catch (Exception e) {
 			model.put("state", "false");
 		}

@@ -2,7 +2,7 @@ package com.mealers.domain;
 
 import java.util.List;
 
-public class MealCmntDTO {
+public class CmntDTO {
 	private long num;
 	private String userNum;
 	private String mem_Nick;
@@ -13,7 +13,7 @@ public class MealCmntDTO {
 	
 	private int likeCount;
 	private int replyCount;
-	private long timeGap;
+	private int timeGap;
 
 	private long fileNum;
 	private String fileName;
@@ -73,10 +73,10 @@ public class MealCmntDTO {
 	public void setReplyCount(int replyCount) {
 		this.replyCount = replyCount;
 	}
-	public long getTimeGap() {
+	public int getTimeGap() {
 		return timeGap;
 	}
-	public void setTimeGap(long timeGap) {
+	public void setTimeGap(int timeGap) {
 		this.timeGap = timeGap;
 	}
 	public long getFileNum() {
