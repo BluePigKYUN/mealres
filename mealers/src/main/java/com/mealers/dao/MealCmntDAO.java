@@ -114,9 +114,9 @@ public class MealCmntDAO {
 			if(mealSort.equals("recent")) {
 				sb.append(" ORDER BY num DESC");				
 			} else if(mealSort.equals("hitcount")) {
-				sb.append(" ORDER BY hitCount DESC ");
+				sb.append(" ORDER BY hitCount DESC, num DESC");
 			} else {
-				sb.append(" ORDER BY likeCount DESC ");
+				sb.append(" ORDER BY likeCount DESC, num DESC");
 			}
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
@@ -237,7 +237,36 @@ public class MealCmntDAO {
 		}
 	}
 	
-	public void likeCmnt(long num, String userNum) throws SQLException {
+	public boolean isLikeCmnt(long num, String userNum) {
+		boolean result = false;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT num, userNum FROM mealCmntLike WEHRE num = ?AND userNum = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, num);
+			pstmt.setString(2, userNum);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = true;
+			}
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		return result;
+	}
+	
+	
+	public void addlikeCmnt(long num, String userNum) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
@@ -302,6 +331,44 @@ public class MealCmntDAO {
 			DBUtil.close(pstmt);
 		}
 		return countLike;
+	}
+	
+	public CmntDTO findContent(long num) {
+		CmntDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT num, m.userNum, subject, content, TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
+					+ " hitCount, likeCount, fileName "
+					+ " FROM mealCmnt c "
+					+ " JOIN member m ON c.userNum = c.userNum "
+					+ " WHERE num = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(0, num);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new CmntDTO();
+				
+				dto.setNum(rs.getLong("num"));
+				dto.setUserNum(rs.getString("userNum"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg_date(rs.getString("reg_date"));
+				dto.setHitCount(rs.getInt("hitCount"));
+				dto.setLikeCount(rs.getInt("hitCount"));
+				dto.setFileName(rs.getString("fileName"));
+			}						
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		return dto;
 	}
 	
 	
