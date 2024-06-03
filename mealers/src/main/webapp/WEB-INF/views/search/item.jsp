@@ -21,7 +21,10 @@ canvas {
 </style>
 
 <script type="text/javascript">
-
+function searchList() {
+	const f = document.searchForm;
+	f.submit();
+}
 </script>
 
 </head>
@@ -111,10 +114,10 @@ canvas {
 	                    </div>
 	                    
 	                    <div class="col-lg-4">
-	                        <div class="position-relative mx-auto">
-	                            <input class="form-control border-2 border-secondary py-3 px-4 rounded-pill" type="text" placeholder="음식 이름 검색">
-	                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 0%;">검색하기</button>
-	                        </div>
+	                        <form class="position-relative mx-auto" name="searchForm" action="${pageContext.request.contextPath}/search/main" method="post">
+	                            <input name="kwd" value="${kwd}" class="form-control border-2 border-secondary py-3 px-4 rounded-pill" type="text" placeholder="음식 이름 검색">
+	                            <button type="button" onclick="searchList()" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 0%;">검색하기</button>
+	                        </form>
 	                        <div  class="p-3 my-4" style="border: solid 5px #eee;">
 	                        	<h4>영양 정보</h4>
 	                        	<hr class="mt-3">
@@ -278,6 +281,7 @@ canvas {
 			      radius: '50%'
 			    },
 			    {
+			      name: ' ',
 			      type: 'pie',
 			      label: {
 			        position: 'inside',
