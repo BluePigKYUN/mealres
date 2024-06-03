@@ -109,7 +109,7 @@
 								<a class="nav-link dropdown-toggle" href="#"
 									id="profileDropdown" role="button" data-bs-toggle="dropdown"
 									aria-expanded="false"> <img
-									src="https://via.placeholder.com/50" alt="Profile Picture"
+									src="${pageContext.request.contextPath}/resources/images/50.png" alt="Profile Picture"
 									class="profile-pic">
 								</a>
 								<ul class="dropdown-menu dropdown-menu-end"
@@ -124,9 +124,9 @@
 										</div></li>
 									<li><hr class="dropdown-divider"></li>
 									<li><a class="dropdown-item"
-										href=""><i
+										href="${pageContext.request.contextPath}/member/mypage"><i
 											class="fas fa-user-cog"></i> 정보 변경</a></li>
-									<li><a class="dropdown-item" href="#"><i
+									<li><a class="dropdown-item" href="${pageContext.request.contextPath}/group/main"><i
 											class="fas fa-users"></i> 나의 그룹</a></li>
 									<li><a class="dropdown-item"
 										href="${pageContext.request.contextPath}/member/post"><i

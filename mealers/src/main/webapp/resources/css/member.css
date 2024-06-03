@@ -153,7 +153,7 @@
 	display:flex; align-items: flex-end;
 }
 
-/*------------------------헤더 드롭다운 
+/*------------------------헤더 드롭다운*/ 
 
 .profile-pic {
 	width: 50px;
@@ -194,5 +194,7 @@
 	background-color: transparent !important;
 }
 
-
-
+/* .navbar.navbar-light.bg-light{
+	background-color: transparent !important;
+}
+ */

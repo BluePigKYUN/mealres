@@ -4,342 +4,209 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>마이페이지</title>
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
+
+<style type="text/css">
+.h4 {
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.hidden {
+	display: none;
+}
+
+.button-container {
+	margin-top: 20px;
+}
+
+.button-container button {
+	margin-right: 10px;
+}
+
+.bg-danger {
+	background-color: #F88264 !important;
+}
+
+.btn-danger {
+	color: #1b1919;
+	background-color: #756d6e91;
+	border-color: #7c5559;
+}
+
+.btn-danger:hover {
+	color: #3a3a3a;
+	background-color: #baaeaf;
+	border-color: #080808;
+}
+</style>
 </head>
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
-</header>
-
-
 <body>
-	<div class="container-fluid page-header py-5">
-		<h1 class="text-center text-white display-6">Mypage</h1>
-	</div>
-
-	<!-- Mypage -->
-	<div class="container-fluid contact py-5">
-		<div class="container py-5">
-			<div class="p-5 bg-light rounded">
-				<div class="row g-4">
-					<div class="col-12">
-						<div class="text-center mx-auto" style="max-width: 700px;">
-							<!-- <img class="d-block mx-auto mb-4"
-								src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg"
-								alt="" width="72" height="72"> -->
-							<h1 class="text-primary">요거트맛젤리</h1>
+	<div class="container py-5">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="bg-light rounded p-5">
+					<!-- 프로필 사진 업로드 -->
+					<div class="text-center mb-4">
+						<div class="profile-picture-container">
+							<img id="profile-picture-preview" src="default-profile.png"
+								alt="Profile Picture" class="rounded-circle"
+								style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;">
+							<input type="file" id="profile-picture" class="form-control mt-2"
+								accept="image/*" style="display: none;">
 						</div>
 					</div>
-					<div class="col-lg-12 m_form">
-						<div class="d-flex p-4 rounded bg-white">
-							<i class="bi bi-person-fill fa-2x text-primary me-4"></i>
+
+					<h1 class="text-primary text-center mb-4">${dto.mem_Nick}</h1>
+					<form action="" id="pwdForm" name="pwdForm" method="post">
+						<div class="mb-3">
+							<i class="bi bi-person-fill fa-2x text-primary me-4"></i> <label
+								for="m_name" class="h4">ID</label> <input type="text"
+								class="form-control" id="memberId" name="memberId"
+								value="${dto.memberId}" readonly>
+						</div>
+						<div class="mb-3">
+							<i class="bi bi-person-fill fa-2x text-primary me-4"></i> <label
+								for="m_name" class="h4">닉네임</label> <input type="text"
+								class="form-control" id="mem_Nick" name="mem_Nick"
+								value="${dto.mem_Nick}">
+						</div>
+						<div class="mb-3">
+							<i class="fas fa-envelope fa-2x text-primary me-4"></i> <label
+								for="nickname" class="form-label fw-bold">이메일</label> <input
+								type="text" class="form-control" id="mem_Email" name="mem_Email"
+								value="${dto.mem_Email}">
+						</div>
+						<div class="mb-3">
+							<label for="current_password" class="form-label fw-bold">
+								<i class="bi bi-file-lock2 text-primary me-2"></i> 현재 비밀번호
+							</label> <input type="password" class="form-control" id="memberPwd"
+								name="memberPwd" autocomplete="current-password">
+							<button type="button" class="btn btn-link"
+								id="change-password-btn">비밀번호 변경</button>
+						</div>
+
+						<div id="new-password-container" class="hidden">
 							<div class="mb-3">
-								<label for="m_name"><h4>닉네임</h4></label> <input type="text"
-									class="form-control" id="m_name">
+								<label for="newpassword" class="form-label fw-bold"> <i
+									class="bi bi-file-lock2 text-primary me-2"></i> 비밀번호 변경
+								</label> <input type="password" class="form-control" id="newpassword">
+							</div>
+
+							<div class="mb-3">
+								<label for="confirmpassword" class="form-label fw-bold">
+									<i class="bi bi-file-lock2 text-primary me-2"></i> 비밀번호 확인
+								</label> <input type="password" class="form-control"
+									id="confirmpassword" name="confirmpassword">
 							</div>
 						</div>
-						<div class="d-flex p-4 rounded bg-white">
-							<i class="fas fa-envelope fa-2x text-primary me-4"></i>
-							<div class="mb-3">
-								<label for="m_email"><h4>이메일</h4></label>
-								<!-- <div class="m_txt">you@example.com</div> -->
-								<input type="text"
-									class="form-control <%-- form-control-plaintext --%>"
-									id="m_email"
-									<%-- readonly --%>
-									placeholder="you@example.com">
-								<!-- readonly class="form-control-plaintext" -->
-							</div>
-						</div>
-						<div class="d-flex p-4 rounded bg-white">
-							<i class="bi bi-file-lock2 fa-2x text-primary me-4"></i>
-							<div class="mb-3">
-								<label for="m_pwd"><h4>비밀번호</h4></label> <input type="password"
-									class="form-control" id="m_pwd">
-							</div>
-						</div>
-						<div class="d-flex p-4 rounded bg-white">
-							<i class="bi bi-file-lock2 fa-2x text-primary me-4"></i>
-							<div class="mb-3">
-								<label for="m_pwd2"><h4>비밀번호 변경</h4></label> <input
-									type="password" class="form-control<%--  border-0 --%>"
-									id="m_pwd2">
-							</div>
-						</div>
+						<input type="hidden" name="mode" id="mode" value="">
+					</form>
+					<div class="text-center button-container">
+						<button type="submit" class="btn btn-primary" id="submit-btn"
+							onclick="sendOk(1)">변경</button>
+						<button type="button" class="btn btn-danger" onclick="sendOk(2)">회원
+							탈퇴</button>
+					</div>
+					<div class="d-grid">
+						<p class="form-control-plaintext text-center">${message}</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- //Mypage -->
-
-	<!-- 내 활동 -->
-	<div class="container-fluid fruite py-5">
-		<div class="container py-5">
-			<div class="tab-class text-center">
-				<div class="row g-4">
-					<div class="col-lg-4 text-start">
-						<h1 class="mb-0">내 활동</h1>
-					</div>
-					<div class="col-lg-8 text-end">
-						<ul class="nav nav-pills d-inline-flex text-center mb-5">
-							<li class="nav-item"><a
-								class="d-flex m-2 py-2 bg-light rounded-pill active"
-								data-bs-toggle="pill" href="#tab-1"> <span class="text-dark"
-									style="width: 130px;">게시물</span>
-							</a></li>
-							<li class="nav-item"><a
-								class="d-flex py-2 m-2 bg-light rounded-pill"
-								data-bs-toggle="pill" href="#tab-2"> <span class="text-dark"
-									style="width: 130px;">댓글</span>
-							</a></li>
-							<li class="nav-item"><a
-								class="d-flex m-2 py-2 bg-light rounded-pill"
-								data-bs-toggle="pill" href="#tab-3"> <span class="text-dark"
-									style="width: 130px;">좋아요</span>
-							</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="tab-content">
-					<!-- 탭 1 나의 게시물 -->
-					<div id="tab-1" class="tab-pane fade show p-0 active">
-						<table class="table table-hover mob_table">
-							<thead>
-								<tr>
-									<th scope="col">번호</th>
-									<th scope="col">제목</th>
-									<th scope="col">게시판</th>
-									<th scope="col">작성일</th>
-									<th scope="col">상태</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td><a href="#">제목입니다. 제목입니다.</a></td>
-									<td>식단</td>
-									<td>2099-99-99</td>
-									<td><span class="badge text-bg-secondary">대기</span></td>
-								</tr>
-								<tr>
-									<th scope="row">2</th>
-									<td><a href="#">제목입니다. 제목입니다.</a></td>
-									<td>운동</td>
-									<td>2099-99-99</td>
-									<td><span class="badge text-bg-success">활동중</span></td>
-								</tr>
-								<tr>
-									<th scope="row">3</th>
-									<td><a href="#">제목입니다. 제목입니다.</a></td>
-									<td>식단</td>
-									<td>2099-99-99</td>
-									<td><span class="badge text-bg-success">활동중</span></td>
-								</tr>
-							</tbody>
-						</table>
-
-						<nav aria-label="Page navigation example">
-							<ul class="pagination d-flex justify-content-center pt-4">
-								<li class="page-item m_prev"><a class="page-link" href="#"
-									aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-								</a></li>
-								<li class="page-item"><a class="page-link" href="#">1</a></li>
-								<li class="page-item"><a class="page-link" href="#">2</a></li>
-								<li class="page-item"><a class="page-link" href="#">3</a></li>
-								<li class="page-item m_next"><a class="page-link" href="#"
-									aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-								</a></li>
-							</ul>
-						</nav>
-					</div>
-					<!-- //탭 1 -->
-
-					<!-- 탭 2 댓글 -->
-					<div id="tab-2" class="tab-pane fade show p-0">
-						<table class="table table-hover mob_table">
-							<thead>
-								<tr>
-									<th scope="col">번호</th>
-									<th scope="col">내용</th>
-									<th scope="col">게시판</th>
-									<th scope="col">작성일</th>
-									<th scope="col">상태</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td><a href="#">제목입니다. 제목입니다.</a></td>
-									<td>식단</td>
-									<td>2099-99-99</td>
-									<td><span class="badge text-bg-secondary">대기</span></td>
-								</tr>
-								<tr>
-									<th scope="row">2</th>
-									<td><a href="#">제목입니다. 제목입니다.</a></td>
-									<td>운동</td>
-									<td>2099-99-99</td>
-									<td><span class="badge text-bg-success">활동중</span></td>
-								</tr>
-								<tr>
-									<th scope="row">3</th>
-									<td><a href="#">제목입니다. 제목입니다.</a></td>
-									<td>식단</td>
-									<td>2099-99-99</td>
-									<td><span class="badge text-bg-success">활동중</span></td>
-								</tr>
-							</tbody>
-						</table>
-
-						<nav aria-label="Page navigation example">
-							<ul class="pagination d-flex justify-content-center pt-4">
-								<li class="page-item m_prev"><a class="page-link" href="#"
-									aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-								</a></li>
-								<li class="page-item"><a class="page-link" href="#">1</a></li>
-								<li class="page-item"><a class="page-link" href="#">2</a></li>
-								<li class="page-item"><a class="page-link" href="#">3</a></li>
-								<li class="page-item m_next"><a class="page-link" href="#"
-									aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-								</a></li>
-							</ul>
-						</nav>
-					</div>
-					<!-- //탭 2 -->
-					<!-- 탭 3 -->
-					<div id="tab-3" class="tab-pane fade show p-0">
-						<table class="table table-hover mob_table">
-							<thead>
-								<tr>
-									<th scope="col">번호</th>
-									<th scope="col">제목</th>
-									<th scope="col">작성자</th>
-									<th scope="col">작성일</th>
-									<th scope="col">상태</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td><a href="#">제목입니다. 제목입니다.</a></td>
-									<td>행복이</td>
-									<td>2099-99-99</td>
-									<td><span class="badge text-bg-secondary">대기</span></td>
-								</tr>
-								<tr>
-									<th scope="row">2</th>
-									<td><a href="#">제목입니다. 제목입니다.</a></td>
-									<td>불행이</td>
-									<td>2099-99-99</td>
-									<td><span class="badge text-bg-success">활동중</span></td>
-								</tr>
-								<tr>
-									<th scope="row">3</th>
-									<td><a href="#">제목입니다. 제목입니다.</a></td>
-									<td>슬픔이</td>
-									<td>2099-99-99</td>
-									<td><span class="badge text-bg-success">활동중</span></td>
-								</tr>
-							</tbody>
-						</table>
-
-						<nav aria-label="Page navigation example">
-							<ul class="pagination d-flex justify-content-center pt-4">
-								<li class="page-item m_prev"><a class="page-link" href="#"
-									aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-								</a></li>
-								<li class="page-item"><a class="page-link" href="#">1</a></li>
-								<li class="page-item"><a class="page-link" href="#">2</a></li>
-								<li class="page-item"><a class="page-link" href="#">3</a></li>
-								<li class="page-item m_next"><a class="page-link" href="#"
-									aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-								</a></li>
-							</ul>
-						</nav>
-					</div>
-					<!-- //탭 3 -->
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- //내 활동 -->
-
-	<!-- 내 활동 -->
-	<div class="container-fluid fruite py-5">
-		<div class="container py-5">
-			<div class="row g-4">
-				<div class="col-lg-4 text-start">
-					<h1 class="mb-0">내 그룹</h1>
-				</div>
-				<table class="table table-hover mob_table">
-					<thead>
-						<tr>
-							<th scope="col">번호</th>
-							<th scope="col">제목</th>
-							<th scope="col">작성자</th>
-							<th scope="col">작성일</th>
-							<th scope="col">상태</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td><a href="#">제목입니다. 제목입니다.</a></td>
-							<td>행복이</td>
-							<td>2099-99-99</td>
-							<td><span class="badge text-bg-secondary">대기</span></td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td><a href="#">제목입니다. 제목입니다.</a></td>
-							<td>불행이</td>
-							<td>2099-99-99</td>
-							<td><span class="badge text-bg-success">활동중</span></td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td><a href="#">제목입니다. 제목입니다.</a></td>
-							<td>슬픔이</td>
-							<td>2099-99-99</td>
-							<td><span class="badge text-bg-success">활동중</span></td>
-						</tr>
-					</tbody>
-				</table>
-
-				<nav aria-label="Page navigation example">
-					<ul class="pagination d-flex justify-content-center pt-4">
-						<li class="page-item m_prev"><a class="page-link" href="#"
-							aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-						</a></li>
-						<li class="page-item"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item m_next"><a class="page-link" href="#"
-							aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-						</a></li>
-					</ul>
-				</nav>
-			</div>
-		</div>
-	</div>
-	</div>
-	<!-- //내 활동 -->
 
 
-
-
-	<!-- Footer Start -->
 	<footer>
 		<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
+		<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
 	</footer>
-	<!-- Footer End -->
 
+	<script>
+		//비밀번호 확인
+		function sendOk(flag) {
+			const f = document.pwdForm;
 
-	<!-- Back to Top -->
-	<a href="#"
-		class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
-		class="fa fa-arrow-up"></i></a>
-	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
+			let str = f.memberPwd.value;
+			if (!str) {
+				alert("패스워드를 입력하세요. ");
+				f.memberPwd.focus();
+				return;
+			}
+
+			if (flag == 1) {
+
+				let strpwd = f.confirmpassword.value;
+
+				if (strpwd == "") {
+					f.mode.value = "update";
+					console.log(strpwd);
+				} else {
+					f.mode.value = "pwdupdate";
+					console.log(strpwd);
+				}
+			}
+
+			else if (flag == 2) {
+				alert("탈퇴 시 복구할 수 없습니다. 진행하시겠습니까?")
+				f.mode.value = "delete";
+			}
+
+			f.action = "${pageContext.request.contextPath}/member/pwd";
+			f.submit();
+		}
+
+		$(document).ready(function() {
+			/* $('#submit-btn').click(function(event) {
+			    event.preventDefault();
+			    validatePassword();
+			}); */
+
+			$('#change-password-btn').click(function() {
+				$('#new-password-container').toggleClass('hidden');
+			});
+		});
+
+		function cancel() {
+			// 취소 버튼 클릭 시 동작
+			alert('취소되었습니다.');
+		}
+
+		function deleteAccount() {
+			// 회원 탈퇴 버튼 클릭 시 동작
+			if (confirm('정말로 회원 탈퇴하시겠습니까?')) {
+				alert('회원 탈퇴가 완료되었습니다.');
+			}
+		}
+
+		function previewProfilePicture(event) {
+			const reader = new FileReader();
+			reader.onload = function() {
+				const output = document
+						.getElementById('profile-picture-preview');
+				output.src = reader.result;
+			};
+			reader.readAsDataURL(event.target.files[0]);
+		}
+
+		$(document).ready(function() {
+			$('#profile-picture-preview').click(function() {
+				$('#profile-picture').click();
+			});
+
+			$('#profile-picture').change(function(event) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					$('#profile-picture-preview').attr('src', e.target.result);
+				};
+				reader.readAsDataURL(event.target.files[0]);
+			});
+		});
+	</script>
 </body>
-
 </html>
