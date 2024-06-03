@@ -5,7 +5,8 @@
 <html lang="en">
 
 <head>
-<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
+<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
 		 
 <style type="text/css">
 .ratio-4x3 {
@@ -24,24 +25,30 @@
     max-height: 100%;
 }
 
+.input-group-text:hover, .content-box:hover {
+	cursor: pointer;
+}
+
+.content-control {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
 </style>
 
 </head>
 	
-
 <body>
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
-</header>
+	<header>
+		<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+	</header>
 
-	<!-- Single Page Header start -->
-	<div class="container-fluid page-header py-5">
+	<div class="container-fluid page-header-cmnt py-5">
 		<h1 class="text-center text-white display-6">커뮤니티</h1>
 	</div>
-	<!-- Single Page Header End -->
 
-
-	<!-- Fruits Shop Start-->
 	<div class="container-fluid fruite py-1">
 		<div class="container py-5">
 			<div class="row g-4">
@@ -51,247 +58,101 @@
 							<div>
 								<h2>식단 커뮤니티</h2>
 							</div>	
-							<div >
+							<form name="sortForm" action="${pageContext.request.contextPath}/mealCmnt/list" method="post">
 								<div class="bg-light ps-3 py-3 rounded mb-4">
-									<label for="meals ">정렬</label> 
-									<select id="meals" name="meallist" class="border-0 form-select-md bg-light mx-3" form="mealform">
-										<option value="recent">최신순</option>
-										<option value="hitcount">조회순</option>
-										<option value="popular">인기순</option>
+									<label for="mealSort">정렬</label> 
+									<select name="mealSort" id="mealSort" class="border-0 form-select-md bg-light mx-3 mealSort">
+										<option value="recent" ${mealSort=="recent"?"selected":""}>최신순</option>
+										<option value="hitcount" ${mealSort=="hitcount"?"selected":""}>조회순</option>
+										<option value="popular" ${mealSort=="popular"?"selected":""}>인기순</option>
 									</select>
 								</div>
-							</div>
+							</form>
 						</div>
+						<div>${dataCount}개 (${page}/${total_page}페이지)	</div>
 					</div>
 					<div class="row g-4">
-						<div class="col-lg-13">
-							<div class="row g-4 justify-content-center">
-								<div class="col-md-4 col-lg-4 col-xl-3 pb-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img ratio ratio-4x3">
-											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top">
+						<div class="col-lg-12">
+							<div class="row g-4 justify-content-start">
+								<c:choose>
+									<c:when test="${empty list}">
+										<div class="d-flex">
+											<div class=" d-flex fw-bold justify-content-center align-content-center" style="height: 500px">게시물이 존재하지 않습니다.</div>
 										</div>
-										
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램1</div>
-										</div>
-										
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom ">
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="dto" items="${list}" varStatus="status">
+											<div class="col-md-4 col-lg-4 col-xl-3 pb-3" style="max-height: 400px">
+												<div class="rounded position-relative fruite-item content-box" onclick="location.href='${articleUrl}&num=${dto.num}';">
+													<div class="fruite-img ratio ratio-4x3">
+														<img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid  rounded-top">
+													</div>
+													
+													<div>
+														<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">${dto.mem_Nick}</div>
+													</div>
+													
+													<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom ">
+														<div class="d-flex justify-content-between mt-2">
+															
+															<c:choose>
+																<c:when test="${dto.timeGap/60 < 24}">
+																	<c:choose>
+																		<c:when test="${dto.timeGap < 60}">
+																			<p class="py-1">${dto.timeGap}분전</p>
+																		</c:when>
+																		<c:otherwise>
+																			<p class="py-1">${Math.floor(dto.timeGap / 60)}시간전</p>
+																		</c:otherwise>
+																	</c:choose>	
+																</c:when>
+															</c:choose>
+															<p class="py-1">${dto.reg_date}</p>
+														</div>
+														<h5 class="pb-2 pt-3 text-center">${dto.subject}</h5>
+														<div class="content-control" style="min-height: 72px">${dto.content}</div>
+														<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
+															<p class="text-dark mb-2 pe-2">댓글10</p> 
+															<p class="text-dark mb-2 pe-2">좋아요${dto.likeCount}</p>
+															<p class="text-dark mb-3">조회수${dto.hitCount}</p>
+														</div>
+													</div>
+												</div>
 											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 col-lg-4 col-xl-3 pb-3 ">
-									<div class="rounded position-relative fruite-item ">
-										<div class="fruite-img ratio ratio-4x3">
-											<img src="https://flexible.img.hani.co.kr/flexible/normal/970/777/imgdb/resize/2019/0926/00501881_20190926.JPG" class="img-fluid  rounded-top">
-										</div>
-										
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램2</div>
-										</div>
-										
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom ">
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
-											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 col-lg-4 col-xl-3 pb-3">
-									<div class="rounded position-relative fruite-item ">
-										<div class="fruite-img ratio ratio-4x3">
-											<img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-												class="img-fluid w-100 rounded-top " >
-										</div>
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute " style="top: 10px; left: 10px; ">웃지마민병관</div>
-											
-										</div>
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom ">
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
-											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 col-lg-4 col-xl-3 pb-3">
-									<div class="rounded position-relative fruite-item ">
-										<div class="fruite-img ratio ratio-4x3">
-											<img src="https://images.unsplash.com/photo-1582716454502-f0925ab107aa?q=80&w=2075&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-												class="img-fluid w-100 rounded-top " >
-										</div>
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램3</div>
-											
-										</div>
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom " >
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
-											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img ratio ratio-4x3">
-											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top ">
-										</div>
-										
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램1</div>
-										</div>
-										
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
-											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img ratio ratio-4x3">
-											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top ">
-										</div>
-										
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램1</div>
-										</div>
-										
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom ">
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
-											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img ratio ratio-4x3">
-											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid  rounded-top ">
-										</div>
-										
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램1</div>
-										</div>
-										
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
-											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4 col-lg-4 col-xl-3 pb-2">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img ratio ratio-4x3">
-											<img src="https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/472/5108241b97436af498bf14ba4ab3d68a_res.jpeg" class="img-fluid  rounded-top ">
-										</div>
-										
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램1</div>
-										</div>
-										
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
-											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
+										</c:forEach>
+									</c:otherwise>
 								
+								</c:choose>
+								
+
 								<div style="text-align: right">
 									<button type="button" class="text-white bg-secondary px-3 pt-1 rounded border-secondary" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/write';">글쓰기</button>
 								</div>
 								
-								<div class="col-6 d-flex justify-content-evenly mt-3">
-									<select name="schCategory" class="rounded drop-down h-50 p-4 w-25 me-2">
-										<option value="subcon">제목+내용</option>
-										<option value="subject">제목</option>
-										<option value="content">내용</option>
-										<option value="writer">작성자</option>
-									</select>
-										 
-									<div class="input-group w-75  d-flex">
-										<input type="search" class="form-control p-4 h-50" placeholder="검색" aria-describedby="search-icon-1"> 
-										<span id="search-icon-1" class="input-group-text p-4 h-50">
-											<i class="fa fa-search"></i>
-										</span>
+								<form name="searchForm" class="d-flex justify-content-center" action="${pageContext.request.contextPath}/mealCmnt/list" method="post">
+									<div class="d-flex mt-3 w-50">
+										<select name="schCategory" class="form-select rounded drop-down w-25 me-2 ">
+											<option value="subcon" ${schType=="subcon"?"selected":""}>제목+내용</option>
+											<option value="subject" ${schType=="subject"?"selected":""}>제목</option>
+											<option value="content" ${schType=="content"?"selected":""}>내용</option>
+											<option value="mem_Nick" ${schType=="mem_Nick"?"selected":""}>작성자</option>
+										</select>
+											 
+										<div class="input-group w-75 d-flex">
+											<input type="text" name="schContent" value="${schContent}" class="form-control " placeholder="검색"> 
+											<button type="button" id="search-icon-1" class="input-group-text" onclick="searchList()">
+												<i class="fa fa-search"></i>
+											</button>
+										</div>
 									</div>
-								</div>
+								</form>
 								
 								<nav aria-label="Page navigation example">
 									<ul class="pagination d-flex justify-content-center">
 										<li class="page-item m_prev"><a class="page-link" href="#"
 											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 										</a></li>
+										
 										<li class="page-item"><a class="page-link" href="#">1</a></li>
 										<li class="page-item"><a class="page-link" href="#">2</a></li>
 										<li class="page-item"><a class="page-link" href="#">3</a></li>
@@ -307,20 +168,9 @@
 			</div>
 		</div>
 	</div>
-	<!-- Fruits Shop End-->
-
-
 	
-
-    <footer>
-        <jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
-    </footer>
-
-	<!-- Back to Top -->
 	<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
-	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
 
-	<!-- Copyright Start -->
 	<div class="container-fluid copyright bg-dark py-4">
 		<div class="container">
 			<div class="row">
@@ -330,9 +180,6 @@
 						right reserved.</span>
 				</div>
 				<div class="col-md-6 my-auto text-center text-md-end text-white">
-					<!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-					<!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-					<!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
 					Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML
 						Codex</a> Distributed By <a class="border-bottom"
 						href="https://themewagon.com">ThemeWagon</a>
@@ -340,7 +187,27 @@
 			</div>
 		</div>
 	</div>
-	<!-- Copyright End -->
+	
+	 <footer>
+        <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+        <jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
+    </footer>
+    
+    <script type="text/javascript">
+    function searchList() {
+    	const form = document.searchForm;
+
+    	form.submit();
+    }
+    
+    $(function() {
+    	$(".mealSort").change(function() {
+    		const form = document.sortForm;
+    		form.submit();
+    	});
+    });
+    
+    </script>
 	
 </body>
 

@@ -1,13 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri = "jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri = "jakarta.tags.fmt" %>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
     	<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
-    	
-  <style>
+<style>
   .ratio-4x3 {
     position: relative;
     width: 100%;
@@ -47,89 +48,48 @@
                             </div>
                             <div class="col-6"></div>
                             <div class="col-xl-3">
-                                <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                                    <label for="fruits">정렬</label>
-                                    <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3" form="fruitform">
-                                        <option value="volvo">최신순</option>
-                                        <option value="saab">인기순</option>
-                                    </select>
+                                <div class="ps-3 py-3 rounded d-flex justify-content-end mb-4">
+                                    <div class="col-auto">
+										<c:if test="${dataCount != 0 }">
+											<select name="size" class="form-select" onchange="chageList();">
+												<option value="6" ${size==6 ? "selected" : ""}> 6개 출력 </option>
+												<option value="9" ${size==9 ? "selected" : ""}> 9개 출력 </option>
+												<option value="12" ${size==12 ? "selected" : ""}> 12개 출력 </option>
+												<option value="15" ${size==15 ? "selected" : ""}> 15개 출력 </option>
+											</select>
+										</c:if>
+										
+										<input type="hidden" name="page" value="${page}">
+										<input type="hidden" name="schType" value="${schType}">
+										<input type="hidden" name="kwd" value="${kwd}">
+									</div>
                                 </div>
                             </div>
                             
                         </div>
                             <div class="col-lg-13">
                                 <div class="row g-4 justify-content-center">
-                                    <div class="col-md-6 col-lg-6 col-xl-4">
-                                        <div class="rounded position-relative fruite-item">
-                                            <div class="fruite-img ratio ratio-4x3">
-                                                <img src="https://i.namu.wiki/i/ESC_-sL2qz0XHQ0yfac2qEoNhWDo-qwLgRdqtyjeAiz_7ZxTdJ17KFWXqzEbm7dYA5G1uTTZECqTudyv-7hRmg.webp" class="img-fluid w-100 rounded-top" alt="">
-                                            </div>
-                                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><i class="bi bi-eye" style="letter-spacing: 10px;"></i>12</div>
-                                            <div class="p-4 border border-primary border-top-0 rounded-bottom">
-                                                <h4>Grapes</h4>
-                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6 col-xl-4">
-                                        <div class="rounded position-relative fruite-item">
-                                            <div class="fruite-img ratio ratio-4x3">
-                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Cat_November_2010-1a.jpg/300px-Cat_November_2010-1a.jpg" class="img-fluid w-100 rounded-top" style="max-height: 390px;">
-                                            </div>
-                                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><i class="bi bi-eye" style="letter-spacing: 10px;"></i>12</div>
-                                            <div class="p-4 border border-primary border-top-0 rounded-bottom">
-                                                <h4>Grapes</h4>
-                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6 col-xl-4">
-                                        <div class="rounded position-relative fruite-item">
-                                            <div class="fruite-img ratio ratio-4x3">
-                                                <img src="https://flexible.img.hani.co.kr/flexible/normal/970/777/imgdb/resize/2019/0926/00501881_20190926.JPG" class="img-fluid w-100 rounded-top" alt="">
-                                            </div>
-                                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><i class="bi bi-eye" style="letter-spacing: 10px;"></i>12</div>
-                                            <div class="p-4 border border-primary border-top-0 rounded-bottom">
-                                                <h4>Grapes</h4>
-                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6 col-xl-4">
-                                        <div class="rounded position-relative fruite-item">
-                                            <div class="fruite-img ratio ratio-4x3">
-                                                <img src="https://pbs.twimg.com/media/FVQXinVaUAA2Lbg.png" class="img-fluid w-100 rounded-top" alt="">
-                                            </div>
-                                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><i class="bi bi-eye" style="letter-spacing: 10px;"></i>12</div>
-                                            <div class="p-4 border border-primary border-top-0 rounded-bottom">
-                                                <h4>Grapes</h4>
-                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6 col-xl-4">
-                                        <div class="rounded position-relative fruite-item">
-                                            <div class="fruite-img ratio ratio-4x3">
-                                                <img src="https://image.newsis.com/2023/07/12/NISI20230712_0001313626_web.jpg?rnd=20230712163021" class="img-fluid w-100 rounded-top" style="max-height: 390px;">
-                                            </div>
-                                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><i class="bi bi-eye" style="letter-spacing: 10px;"></i>12</div>
-                                            <div class="p-4 border border-primary border-top-0 rounded-bottom">
-                                                <h4>Grapes</h4>
-                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-6 col-xl-4">
-                                        <div class="rounded position-relative fruite-item">
-                                            <div class="fruite-img ratio ratio-4x3">
-                                                <img src="https://www.fitpetmall.com/wp-content/uploads/2023/10/230420-0668-1.png" class="img-fluid w-100 rounded-top" alt="">
-                                            </div>
-                                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><i class="bi bi-eye" style="letter-spacing: 10px;"></i>12</div>
-                                            <div class="p-4 border border-primary border-top-0 rounded-bottom">
-                                                <h4>Grapes</h4>
-                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                                            </div>
-                                        </div>
+                                	<c:forEach var="dto" items="${list}" varStatus="state">
+	                                    <div class="col-md-6 col-lg-6 col-xl-4">
+	                                        <div class="rounded position-relative fruite-item">
+	                                            <div class="fruite-img ratio ratio-4x3">
+	                                       			<a href="${articleUrl}&num=${dto.num}" class="text-reset">
+	                                                	<img src="${pageContext.request.contextPath}/uploads/mealColumn/${dto.saveFilename}" class="img-fluid w-100 rounded-top" alt=""> 
+	                                                </a>
+	                                            </div>
+	                                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><i class="bi bi-eye" style="letter-spacing: 10px;"></i>${dto.hitCount}</div>
+	                                            <div class="p-4 border border-primary border-top-0 rounded-bottom">
+	                                                <h4>${dto.shortSubject}</h4>
+	                                                <p>${dto.shortTextContent}</p>
+	                                               <p>${dto.reg_date}</p>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+                                    </c:forEach>
+                                    
+                                    
+                                    
+                                    
                                     </div>
                                     
                                  <div id="right-buttons" class= "d-flex justify-content-end hidden">
@@ -138,8 +98,12 @@
 				                    </a>
 				                </div>
 				                
+				                <div>
+				                	<div class="col-auto me-auto">${dataCount}개(${page}/${total_page} 페이지)</div>
+				                </div>
+				                
                               <div class="justify-content-center row board-list-footer">
-									<form class="justify-content-center row" name="searchForm" action="${pageContext.request.contextPath}/bbs/list" method="post">
+									<form class="mb-4 justify-content-center row" name="searchForm" action="${pageContext.request.contextPath}/bbs/list" method="post">
 										<div class="col-auto p-1">
 											<select name="schType" class="form-select">
 												<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
@@ -177,18 +141,19 @@
                         </div>
                     </div>
                 </div>
-        </div>
         <!-- Fruits Shop End-->
 
         <!-- Footer Start -->
         <footer>
         	<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
+			<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
         </footer>
         <!-- Footer End -->
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
-		<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
+        
+    <script type="text/javascript">
+    
+    </script>
+    
     </body>
 
 </html>

@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
-
-
 <!-- Footer Start -->
 <div class="bg-dark text-white-50 footer custom-container" style="margin-top: auto;">
     <div class="container py-5">
@@ -20,4 +18,8 @@
     </div>
 </div>
 
+	<!-- Back to Top -->
+	<a href="#"
+		class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+		class="fa fa-arrow-up"></i></a>
 <!-- Footer End -->
