@@ -38,38 +38,37 @@ canvas {
 		<div class="container">
 			<div class="row mb-5">
 	                    <div class="col-lg-8">
-	                        <h1 class="fw-bold mb-3">신라면</h1>
-	                        <h5 class="mb-3">제조사: 농심</h5>
+	                        <h1 class="fw-bold mb-3">${dto.food_name}</h1>
+	                        <h5 class="mb-3">제조사: ${dto.maker}</h5>
 	                        <hr>
 	                        <div class="row d-flex justify-content-around p-3 my-3 mx-1" style="background: #eee;">
 	                        	<h5>총 영양 요약</h5>
 	                        	<div class="col-2" style="border: 3px solid lightgray; background: white;">
 	                        		<div class="text-center fw-bold">칼로리</div>
-	                        		<div class="text-center">990kcal</div>
+	                        		<div class="text-center">${dto.kcal}kcal</div>
 	                        	</div>
 	                        	<div class="col-2" style="border: 3px solid lightgray; background: white;">
 	                        		<div class="text-center fw-bold">탄수화물</div>
-	                        		<div class="text-center">990g</div>
+	                        		<div class="text-center">${dto.tansoo}g</div>
 	                        	</div>
 	                        	<div class="col-2" style="border: 3px solid lightgray; background: white;">
 	                        		<div class="text-center fw-bold">단백질</div>
-	                        		<div class="text-center">990g</div>
+	                        		<div class="text-center">${dto.protein}g</div>
 	                        	</div>
 	                        	<div class="col-2" style="border: 3px solid lightgray; background: white;">
 	                        		<div class="text-center fw-bold">지방</div>
-	                        		<div class="text-center">990g</div>
+	                        		<div class="text-center">${dto.fat}g</div>
 	                        	</div>
 	                        </div>
 	                        <hr>
 
-	                        <div class="my-5 d-flex gap-3">
+	                        <div class="d-flex gap-3">
     							<h2>탄단지 비율</h2>
-	    						<canvas id="myPieChart" class="w-50 float-md-end"></canvas>
-	    						<div id="pieContainer" class="w-100 float-md-end"></div>
+	    						<div id="pieContainer" style="height: 400px; width: 400px;"></div>
 							</div>
 							<hr>
 							
-							<div class="my-5">
+							<div class="mb-5">
 								<div class="d-flex justify-content-between">
 									<h2>사진</h2>
 									<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">등록하기</button>
@@ -120,40 +119,50 @@ canvas {
 	                        	<h4>영양 정보</h4>
 	                        	<hr class="mt-3">
 	                        	<span class="tblack">총 중량</span>
-	                        	<span class="float-end tblack fw-bold"> 707g</span>
+	                        	<span class="float-end tblack fw-bold"> ${dto.weight}</span>
 	                        	<br>
 	                        	<span class="tblack">영양성분함량단위</span>
-	                        	<span class="float-end tblack fw-bold"> 77g</span>
+	                        	<span class="float-end tblack fw-bold"> ${dto.serving_size}</span>
 	                        	<hr style="height: 10px;">
 	                        	<span class="float-end tblack">영양성분함량단위 당</span>
 	                        	<br>
 	                        	<hr class="mt-2" style="height: 4px; background-color: black;">
 	                        	<span class="tblack">칼로리</span>
-	                        	<span class="float-end tblack fw-bold"> 77g</span>
+	                        	<span class="float-end tblack fw-bold"> ${dto.kcal}g</span>
 	                        	<hr class="mt-2" style="height: 3px;">
 	                        	<span class="tblack">탄수화물</span>
-	                        	<span class="float-end tblack fw-bold"> 77g</span>
+	                        	<span class="float-end tblack fw-bold"> ${dto.tansoo}g</span>
 	                        	<hr class="mt-2" style="height: 3px;">
 	                        	<span class="tblack">단백질</span>
-	                        	<span class="float-end tblack fw-bold"> 77g</span>
+	                        	<span class="float-end tblack fw-bold"> ${dto.protein}g</span>
 	                        	<hr class="mt-2" style="height: 3px;">
 	                        	<span class="tblack">지방</span>
-	                        	<span class="float-end tblack fw-bold"> 77g</span>
+	                        	<span class="float-end tblack fw-bold"> ${dto.fat}g</span>
 	                        	<hr class="mt-2" style="height: 3px;">
 	                        	<span class="tblack">당류</span>
-	                        	<span class="float-end tblack fw-bold"> 77g</span>
+	                        	<span class="float-end tblack fw-bold"> ${dto.sugar}g</span>
 	                        	<hr class="mt-2" style="height: 3px;">
 	                        	<span class="tblack">포화지방</span>
-	                        	<span class="float-end tblack fw-bold"> 77g</span>
+	                        	<span class="float-end tblack fw-bold"> ${dto.pohwa}g</span>
 	                        	<hr class="mt-2" style="height: 3px;">
 	                        	<span class="tblack">불포화지방</span>
-	                        	<span class="float-end tblack fw-bold"> 77g</span>
+	                        	<span class="float-end tblack fw-bold"> ${dto.bulpohwa}g</span>
 	                        	<hr class="mt-2" style="height: 3px;">
-	                        	<span class="tblack">나트륨</span>
-	                        	<span class="float-end tblack fw-bold"> 77mg</span>
+	                        	<c:choose>
+	                        		<c:when test="${dto.salt == null}">
+			                        	<span class="tblack">나트륨</span>
+			                        	<span class="float-end tblack fw-bold">정보없음</span>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                        	<span class="tblack">나트륨</span>
+			                        	<span class="float-end tblack fw-bold">${dto.salt}</span>
+	                        		</c:otherwise>
+	                        	</c:choose>
+	                        	<c:if test="${dto.salt == null}">
+	                        	</c:if>
 	                        	<hr class="mt-2" style="height: 3px;">
 	                        	<span class="tblack">콜레스테롤</span>
-	                        	<span class="float-end tblack fw-bold"> 77mg</span>
+	                        	<span class="float-end tblack fw-bold"> ${dto.chole}mg</span>
 	                        	<hr class="mt-2" style="height: 4px; background-color: black;">
 	                        	
 	                        	
@@ -174,48 +183,6 @@ canvas {
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
 	
 	<script type="text/javascript">
-		const ctx = document.getElementById('myPieChart').getContext('2d');
-		const myPieChart = new Chart(ctx, {
-			plugins:[ChartDataLabels],
-		    type: 'pie',
-		    data: {
-		        labels: ['탄수화물', '단백질', '지방'],
-		        datasets: [{
-		            label: '# of Votes',
-	                datalabels:{
-	          	        color:'gray',   
-	          	        font:{size:18}  
-	          	    }, 
-		            data: [12, 19, 3],
-		            backgroundColor: [
-		                'rgba(255, 99, 132, 0.2)',
-		                'rgba(54, 162, 235, 0.2)',
-		                'rgba(255, 159, 64, 0.2)'
-		            ],
-		            borderColor: [
-		                'rgba(255, 99, 132, 1)',
-		                'rgba(54, 162, 235, 1)',
-		                'rgba(255, 159, 64, 1)'
-		            ],
-		            borderWidth: 1
-		        }]
-		    },
-		    options: {
-		        responsive: false,
-		        maintainAspectRatio: false,
-	            plugins: {
-	                tooltips: {
-	                    enabled: false
-	                },
-	                datalabels: {
-	                    formatter: function (value, context) {
-	                        return Math.round(value / context.chart.getDatasetMeta(0).total * 100) + "%";
-	                    },
-	                    color: '#fff',
-	                }
-	            }
-		    }
-		});
 		
 		$(function(){
 			var sel_files = [];
@@ -299,9 +266,9 @@ canvas {
 			  dataset: [
 			    {
 			      source: [
-			        { value: 1048, name: '탄수화물' },
-			        { value: 735, name: '단백질' },
-			        { value: 580, name: '지방' },
+			        { value: ${dto.tansoo}, name: '탄수화물' },
+			        { value: ${dto.protein}, name: '단백질' },
+			        { value: ${dto.fat}, name: '지방' },
 			      ]
 			    }
 			  ],
@@ -312,7 +279,6 @@ canvas {
 			    },
 			    {
 			      type: 'pie',
-			      radius: '50%',
 			      label: {
 			        position: 'inside',
 			        formatter: '{d}%',

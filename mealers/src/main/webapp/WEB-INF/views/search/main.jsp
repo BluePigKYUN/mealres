@@ -8,6 +8,14 @@
 <title>Mealers</title>
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
+
+<script type="text/javascript">
+function searchList() {
+	const f = document.searchForm;
+	f.submit();
+}
+</script>
+
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
@@ -22,29 +30,24 @@
        		<div class="row">
            		<div class="col-md-8">
 					<div class="row g-5 align-items-center">
-                        <div class="position-relative mx-auto">
-                            <input class="form-control border-2 border-secondary py-3 px-4 rounded-pill" type="text" placeholder="음식 이름 검색">
-                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 2%;">검색하기</button>
-                        </div>
+                        <form class="position-relative mx-auto" name="searchForm" action="${pageContext.request.contextPath}/search/main" method="post">
+                            <input name="kwd" value="${kwd}" class="form-control border-2 border-secondary py-3 px-4 rounded-pill" type="text" placeholder="음식 이름 검색">
+                            <button type="button" onclick="searchList()" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 2%;">검색하기</button>
+                        </form>
 					</div>
 					<div class="row">
 						<div class="col-6">
 							<h4 class="ms-3 pt-3"> 밀러 등록 </h4>
 							<ul class="list-group my-3">
-								<li class="list-group-item list-group-item-action d-flex gap-2">
-									<div class="me-auto ">
-										  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
-										  	월드콘 (농심, 388kcal)
-										  </a>
-									</div>
-								</li>
-								<li class="list-group-item list-group-item-action d-flex gap-2">
-									<div class="me-auto ">
-										  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
-										  	월드콘 (농심, 388kcal)
-										  </a>
-									</div>
-								</li>
+								<c:forEach var="dto" items="${list}">
+									<li class="list-group-item list-group-item-action d-flex gap-2">
+										<div class="me-auto ">
+											  <a href="${articleUrl}&num=${dto.food_num}" class="" style="color: black">
+											  	${dto.food_name} (${dto.maker}, ${dto.kcal}kcal)
+											  </a>
+										</div>
+									</li>
+								</c:forEach>
 							</ul>
 						</div>
 						
