@@ -6,7 +6,7 @@ public class DiaryDTO {
 	private String subject;
 	private String content;
 	private String userNum;
-	private String status;
+	private String emoji;
 	private String memberId;
 	
 	public String getUserNum() {
@@ -15,14 +15,14 @@ public class DiaryDTO {
 	public void setUserNum(String userNum) {
 		this.userNum = userNum;
 	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
 	public long getDiary_Num() {
 		return diary_Num;
+	}
+	public String getEmoji() {
+		return emoji;
+	}
+	public void setEmoji(String emoji) {
+		this.emoji = emoji;
 	}
 	public void setDiary_Num(long diary_Num) {
 		this.diary_Num = diary_Num;

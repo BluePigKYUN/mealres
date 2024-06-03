@@ -36,6 +36,7 @@ public class MemberDAO {
 				dto.setMemberId(rs.getString("memberId"));
 				dto.setMemberPwd(rs.getString("memberPwd"));
 				dto.setMem_Nick(rs.getString("mem_Nick"));
+				dto.setUserNum(rs.getString("userNum"));
 				
 			}
 		} catch (SQLException e) {
