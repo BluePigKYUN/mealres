@@ -108,7 +108,7 @@ public class MealCmntDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("SELECT c.num, mem_Nick, subject, content, reg_date, hitCount, fileName, likeCount");
+			sb.append("SELECT num, mem_Nick, subject, content, reg_date, hitCount, fileName, likeCount");
 			sb.append(" FROM mealCmnt c ");
 			sb.append(" JOIN member m ON c.userNum = m.userNum ");
 			if(mealSort.equals("recent")) {
@@ -244,7 +244,7 @@ public class MealCmntDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT num, userNum FROM mealCmntLike WEHRE num = ?AND userNum = ?";
+			sql = "SELECT num, userNum FROM mealCmntLike WHERE num = ? AND userNum = ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setLong(1, num);
@@ -340,13 +340,13 @@ public class MealCmntDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT num, m.userNum, subject, content, TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
+			sql = "SELECT num, mem_Nick, subject, content, TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
 					+ " hitCount, likeCount, fileName "
 					+ " FROM mealCmnt c "
 					+ " JOIN member m ON c.userNum = c.userNum "
 					+ " WHERE num = ? ";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setLong(0, num);
+			pstmt.setLong(1, num);
 			
 			rs = pstmt.executeQuery();
 			
@@ -354,12 +354,12 @@ public class MealCmntDAO {
 				dto = new CmntDTO();
 				
 				dto.setNum(rs.getLong("num"));
-				dto.setUserNum(rs.getString("userNum"));
+				dto.setMem_Nick(rs.getString("mem_Nick"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setContent(rs.getString("content"));
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setHitCount(rs.getInt("hitCount"));
-				dto.setLikeCount(rs.getInt("hitCount"));
+				dto.setLikeCount(rs.getInt("likeCount"));
 				dto.setFileName(rs.getString("fileName"));
 			}						
 		} catch (Exception e) {

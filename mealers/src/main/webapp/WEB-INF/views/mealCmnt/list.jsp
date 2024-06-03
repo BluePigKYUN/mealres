@@ -33,7 +33,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: -webkit-box;
-	-webkit-line-clamp: 3;
+	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 }
 
@@ -94,13 +94,13 @@
 							<div class="row g-4 justify-content-start">
 								<c:choose>
 									<c:when test="${empty list}">
-										<div class="d-flex">
-											<div class=" d-flex fw-bold justify-content-center align-content-center" style="height: 500px">게시물이 존재하지 않습니다.</div>
+										<div class="d-flex justify-content-center">
+											<div class="fw-bold align-content-center" style="height: 500px">게시물이 존재하지 않습니다.</div>
 										</div>
 									</c:when>
 									<c:otherwise>
 										<c:forEach var="dto" items="${list}" varStatus="status">
-											<div class="col-md-4 col-lg-4 col-xl-3 pb-3 mb-3" style="max-height: 600px">
+											<div class="col-md-4 col-lg-4 col-xl-3 pb-3 mb-3" style="max-height: 800px">
 												<div class="rounded position-relative meal-item content-box" onclick="location.href='${articleUrl}&num=${dto.num}';">
 													<div class="fruite-img ratio ratio-4x3">
 														<img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid  rounded-top">
@@ -131,7 +131,7 @@
 															<p class="py-1">${dto.reg_date}</p>
 														</div>
 														<div class="pt-3 mb-4 text-center subject-control fw-bold fs-5">${dto.subject}</div>
-														<div class="content-control" style="min-height: 72px">${dto.content}</div>
+														<div class="content-control mb-5" style="height: 50px">${dto.content}</div>
 														<div class="d-flex flex-lg-wrap position-relative start-25 ">
 															<span class="text-dark mb-2 pe-2">댓글10</span> 
 															<span class="text-dark mb-2 pe-2">좋아요${dto.likeCount}</span>
