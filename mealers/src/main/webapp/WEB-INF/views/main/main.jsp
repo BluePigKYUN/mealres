@@ -5,6 +5,12 @@
 <html lang="en">
     <head>
     	<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
+    	<script type="text/javascript">
+    	function searchList() {
+    		const f = document.searchForm;
+    		f.submit();
+    	}
+    	</script>
     </head>
     <header>
     	<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
@@ -18,10 +24,10 @@
                         <h4 class="mb-3 text-secondary">하루하루 쌓아가는 건강, 함께하는 변화</h4>
                         <h1 class="mb-5 display-3 text-primary" style="font-family: Pretendard-Regular">원하는 식품 검색
                         </h1>
-                        <div class="position-relative mx-auto">
-                            <input class="form-control border-2 border-secondary-main w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
+                        <form class="position-relative mx-auto" name="searchForm" action="${pageContext.request.contextPath}/search/main" method="post">
+                            <input  name="kwd" value="${kwd}" class="form-control border-2 border-secondary-main w-75 py-3 px-4 rounded-pill" type="text" placeholder="Search">
                             <button type="submit" class="btn btn-primary border-2 border-secondary-main py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">영양성분 검색하기 </button>
-                        </div>
+                        </form>
                     </div>
                     <div class="col-md-12 col-lg-5">
                         <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
