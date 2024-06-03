@@ -7,14 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mealers.domain.MealCmntDTO;
+import com.mealers.domain.CmntDTO;
 import com.mealers.util.DBConn;
 import com.mealers.util.DBUtil;
 
 public class MealCmntDAO {
 	private Connection conn = DBConn.getConnection();
 	
-	public void insertMeal(MealCmntDTO dto) throws SQLException {
+	public void insertMeal(CmntDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
@@ -101,8 +101,8 @@ public class MealCmntDAO {
 		return conCount;
 	}
 	
-	public List<MealCmntDTO> listMeal(int offset, int size, String mealSort) {
-		List<MealCmntDTO> list = new ArrayList<MealCmntDTO>();
+	public List<CmntDTO> listMeal(int offset, int size, String mealSort) {
+		List<CmntDTO> list = new ArrayList<CmntDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		StringBuilder sb = new StringBuilder();
@@ -127,7 +127,7 @@ public class MealCmntDAO {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				MealCmntDTO dto = new MealCmntDTO();
+				CmntDTO dto = new CmntDTO();
 				
 				dto.setNum(rs.getLong("num"));
 				dto.setMem_Nick(rs.getString("mem_Nick"));
@@ -150,8 +150,8 @@ public class MealCmntDAO {
 	}
 	
 	
-	public List<MealCmntDTO> listMeal(int offset, int size, String mealSort, String schCategory, String schContent) {
-		List<MealCmntDTO> list = new ArrayList<MealCmntDTO>();
+	public List<CmntDTO> listMeal(int offset, int size, String mealSort, String schCategory, String schContent) {
+		List<CmntDTO> list = new ArrayList<CmntDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		StringBuilder sb = new StringBuilder();
@@ -196,7 +196,7 @@ public class MealCmntDAO {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				MealCmntDTO dto = new MealCmntDTO();
+				CmntDTO dto = new CmntDTO();
 				
 				dto.setNum(rs.getLong("num"));
 				dto.setMem_Nick(rs.getString("mem_Nick"));
