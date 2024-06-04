@@ -130,7 +130,7 @@ public class MealColumnDAO {
 		ResultSet rs = null;
 		String sql;
 		
-		// VVVVV 네이버 스마트 에디터에서 올린 파일로 대체할것!
+		
 		try {
 			sql = "SELECT n.num, n.userNum, subject, content, hitCount, saveFilename, "
 					+ " TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date "
@@ -265,12 +265,12 @@ public class MealColumnDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT n.num, subject, content, saveFilename, originalFilename, hitCount, "
+			sql = "SELECT n.num, n.userNum, subject, content, saveFilename, originalFilename, hitCount, "
 					+ " TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, "
 					+ " NVL(likeCount, 0) likeCount "
-					+ "FROM  mealColumn n "
-					+ "JOIN member m ON n.userNum = m.userNum "
-					+ "JOIN mealcolumnfile f ON n.num = f.num "
+					+ " FROM  mealColumn n "
+					+ " JOIN member m ON n.userNum = m.userNum "
+					+ " JOIN mealcolumnfile f ON n.num = f.num "
 					+ " LEFT OUTER JOIN ( SELECT num, COUNT(*) likeCount FROM mealColumnLike GROUP BY num )"
 					+ " bc ON n.num = bc.num "
 					+ " WHERE n.num = ? ";
@@ -284,9 +284,18 @@ public class MealColumnDAO {
 			if(rs.next()) {
 				dto = new MealColumnDTO();
 				
+				dto.setNum(rs.getLong("num"));
+				dto.setUserNum(rs.getString("userNum"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setContent(rs.getString("content"));
+				dto.setSaveFilename(rs.getString("saveFilename"));
+				dto.setOriginalFilename(rs.getString("originalFilename"));
+				dto.setHitCount(rs.getInt("hitCount"));
+				dto.setReg_date(rs.getString("reg_date"));
+				
+				dto.setLikeCount(rs.getInt("likeCount"));
 				
 			}
-			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -300,7 +309,84 @@ public class MealColumnDAO {
 		
 	}
 	
+	// 칼럼 수정
+	public void updateMealColumn(MealColumnDTO dto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+
+		try {
+			sql = "UPDATE mealColumn SET subject= ?, content= ?  "
+					+ "  WHERE num = ? ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getSubject());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setLong(3, dto.getNum());
+			
+			pstmt.executeUpdate();
+			pstmt.close();
+			pstmt = null;
+			
+			
+			// 파일 정보 수정
+	        if (dto.getSaveFilename() != null && !dto.getSaveFilename().isEmpty()) {
+	            // 기존 파일 정보가 있다면 삭제
+	            sql = "DELETE FROM mealColumnfile WHERE num = ?";
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setLong(1, dto.getNum());
+	            pstmt.executeUpdate();
+	            pstmt.close();
+	            pstmt = null;
+
+	            // 새로운 파일 정보 추가
+	            sql = "INSERT INTO mealColumnfile(fileNum, num, saveFilename, originalFileName, filesize) "
+	                + " VALUES(mealColfile_seq.NEXTVAL, ?, ?, ?, ?)";
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setLong(1, dto.getNum());
+	            pstmt.setString(2, dto.getSaveFilename());
+	            pstmt.setString(3, dto.getOriginalFilename());
+	            pstmt.setLong(4, dto.getFileSize());
+	            pstmt.executeUpdate();    
+//			// 파일 수정
+//			sql = "INSERT INTO mealColumnfile(fileNum, num, saveFilename, originalFileName, filesize) "
+//					+ " VALUES(mealColfile_seq.NEXTVAL, ?, ?, ?, ? )";
+//			
+//			pstmt = conn.prepareStatement(sql);
+//			pstmt.setLong(1, dto.getNum());
+//			pstmt.setString(2, dto.getSaveFilename());
+//			pstmt.setString(3, dto.getOriginalFilename());
+//			pstmt.setLong(4, dto.getFileSize());
+//			pstmt.executeUpdate();
+	        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(pstmt);
+		}
+	}
 	
+	// 게시물 삭제
+	public void deleteMealColumn(long num, String userNum) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			if( userNum.equals("1")) {
+				sql = "DELETE FROM mealColumn WHERE num = ? ";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setLong(1, num);
+				
+				pstmt.executeUpdate();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
+	}
 	
 	
 	public long findByUserNum(String memberId) {

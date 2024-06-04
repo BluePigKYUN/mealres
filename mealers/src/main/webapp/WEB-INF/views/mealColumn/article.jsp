@@ -12,8 +12,8 @@
     		max-width: 1000px;
     		margin: 0 auto;
     	}
-    	
-    .table-article img { max-width: 100%; }
+    .table-article img { max-width: 70%; }
+    
 </style>
     </head>
     
@@ -35,7 +35,7 @@
 					    <thead class="align-middle text-center bg-light">
 					        <tr>
 					            <td colspan="2" class="align-middle text-center">
-					                <h3 class="text-primary m-3 text-center">${dto.subject }</h3>
+					                <h3 class="text-primary m-3 text-center">${dto.subject}</h3>
 					            </td>
 							</tr>
 						</thead>
@@ -46,7 +46,7 @@
 									이름 : 밀티쥬
 								</td>
 								<td class="text-end">
-									YYYY-MM-DD | 조회 ${dto.hitCount}
+									 ${dto.reg_date}| 조회 ${dto.hitCount}
 								</td>
 							</tr>
 							
@@ -68,7 +68,7 @@
 									<c:if test="${not empty dto.saveFilename}">
 										<p class="border text-secondary mb-1 p-2">
 											<i class="bi bi-folder2-open"></i>
-											<a href="${pageContext.request.contextPath}/lecture/download?num=${dto.num}">${dto.originalFilename}</a>
+											<a href="${pageContext.request.contextPath}/mealColumn/download?num=${dto.num}">${dto.originalFilename}</a>
 											[${dto.fileSize} byte]
 										</p>
 									</c:if>
@@ -82,8 +82,8 @@
 					<tr>
 						<td class="text-start">
 								<c:choose>
-									<c:when test="${sessionScope.member.userId==dto.userId}">
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/lecture/update?num=${dto.num}&category=${category}&page=${page}';">수정</button>
+									<c:when test="${sessionScope.member.userNum=='1'}">
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/mealColumn/update?num=${dto.num}&page=${page}';">수정</button>
 									</c:when>
 									<c:otherwise>
 										<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" disabled>수정</button>
@@ -91,8 +91,8 @@
 								</c:choose>
 						    	
 								<c:choose>
-						    		<c:when test="${sessionScope.member.userId==dto.userId || sessionScope.member.userId=='admin'}">
-						    			<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" onclick="deleteLecture();">삭제</button>
+						    		<c:when test="${sessionScope.member.userNum=='1'}">
+						    			<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" onclick="deleteMealColumn();">삭제</button>
 						    		</c:when>
 						    		<c:otherwise>
 						    			<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" disabled>삭제</button>
@@ -100,7 +100,7 @@
 						    	</c:choose>
 						</td>
 						<td class="text-end">
-							<button type="button" class="btn btn-primary m-2 py-2 rounded-pill text-white" onclick="location.href='${pageContext.request.contextPath}/lecture/list?${query}';">리스트</button>
+							<button type="button" class="btn btn-primary m-2 py-2 rounded-pill text-white" onclick="location.href='${pageContext.request.contextPath}/mealColumn/list?${query}';">리스트</button>
 						</td>
 					</tr>
 				</table>
@@ -140,6 +140,14 @@
         <!-- Footer End -->
 
 		<script type="text/javascript">
+		function deleteMealColumn() {
+			if(confirm("게시글을 삭제 하시 겠습니까 ? ")) {
+				   let query = "num=${dto.num}&page=${page}";
+				   let url = "${pageContext.request.contextPath}/mealColumn/delete?" + query;
+				 location.href = url;
+			
+			}
+		}
 		
 		// 게시물 공감 여부
 		$(function(){
@@ -161,7 +169,7 @@
 				let url = "${pageContext.request.contextPath}/mealColumn/insertLectureLike";
 				let num = "${dto.num}";
 				// var query = {num:num, isNoLike:isNoLike};
-				let query = "num=" + num + "&isNoLike=" + isNoLike;;
+				// let query = "num=" + num + "&isNoLike=" + isNoLike;;
 		
 				const fn = function(data) {
 					let state = data.state;
@@ -171,7 +179,7 @@
 							color = "blue";
 						}
 						$i.css("color", color);
-						
+						//
 						let count = data.likeCount;
 						$("#boardLikeCount").text(count);
 					} else if(state === "liked") {
@@ -182,7 +190,6 @@
 				ajaxFun(url, "post", query, "json", fn);
 			});
 		});
-		
 		
 		</script>
     </body>
