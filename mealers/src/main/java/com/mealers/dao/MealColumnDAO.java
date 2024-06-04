@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mealers.domain.MealColumnDTO;
+import com.mealers.domain.ReplyDTO;
 import com.mealers.util.DBConn;
 import com.mealers.util.DBUtil;
 
@@ -387,6 +388,136 @@ public class MealColumnDAO {
 			DBUtil.close(pstmt);
 		}
 	}
+	
+	
+	// 로그인 유저의 게시글 공감 유무
+	public boolean isUserMealCollike(long num, String userNum) {
+		boolean result = false;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT num, userNum FROM mealColumnlike WHERE num = ? AND userNum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, num);
+			pstmt.setString(2, userNum);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = true;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		return result;
+	}
+	
+	// 게시물 공감 추가
+	public void insertMealColLike(long num, String userNum) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "INSERT INTO mealColumnlike(num, userNum) VALUES (?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, num);
+			pstmt.setString(2, userNum);
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
+	}
+	
+	// 게시글 공감 삭제
+		public void deleteMealColLike(long num, String userNum) throws SQLException {
+			PreparedStatement pstmt = null;
+			String sql;
+			
+			try {
+				sql = "DELETE FROM mealColumnlike WHERE num = ? AND userNum = ? ";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setLong(1, num);
+				pstmt.setString(2, userNum);
+				
+				pstmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			} finally {
+				DBUtil.close(pstmt);
+			}
+		}
+	
+	// 게시물의 공감 개수
+		public int countMealColLike(long num) {
+			int result = 0;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql;
+			
+			try {
+				sql = "SELECT NVL(COUNT(*), 0) FROM mealColumnlike WHERE num = ?";
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setLong(1, num);
+				
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					result = rs.getInt(1);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DBUtil.close(rs);
+				DBUtil.close(pstmt);
+			}
+			
+			return result;
+		}
+	
+	// 게시물의 댓글 추가
+	public void insertReply(ReplyDTO dto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "INSERT INTO mealcolumnReply(replyNum, num, userNum, userNum, content,reg_date)"
+					+ " VAUES()  ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, dto.getReplyNum());
+			pstmt.setLong(2,  dto.getNum());
+			pstmt.setString(3, dto.getUserNum());
+			pstmt.setString(4, dto.getContent());
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
+			
+			
+	}
+	
 	
 	
 	public long findByUserNum(String memberId) {

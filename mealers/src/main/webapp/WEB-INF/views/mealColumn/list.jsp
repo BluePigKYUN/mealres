@@ -52,7 +52,7 @@
                                     <div class="col-auto">
                                     <form name="listForm" method="post">
 										<c:if test="${dataCount != 0 }">
-											<select name="size" class="form-select" onchange="chageList();">
+											<select name="size" class="form-select" onchange="changeList();">
 												<option value="6" ${size==6 ? "selected" : ""}> 6개 출력 </option>
 												<option value="9" ${size==9 ? "selected" : ""}> 9개 출력 </option>
 												<option value="12" ${size==12 ? "selected" : ""}> 12개 출력 </option>
@@ -159,9 +159,11 @@
     	f.submit();
     }
     
-    function chageList() {
-        var size = document.querySelector('select[name="size"]').value;
-        window.location.href = window.location.pathname + "?size=" + size;
+    function changeList() {
+    	 var size = document.querySelector('select[name="size"]').value;
+    	    var form = document.forms['listForm']; // 폼 요소를 찾음
+    	    form.action = '${pageContext.request.contextPath}/mealColumn/list?size=' + size; // 폼의 action 속성을 설정
+    	    form.submit(); // 폼 제출
     }
     
     </script>

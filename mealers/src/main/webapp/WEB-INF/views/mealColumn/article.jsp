@@ -12,7 +12,7 @@
     		max-width: 1000px;
     		margin: 0 auto;
     	}
-    .table-article img { max-width: 70%; }
+    .table-article img { max-width: 65%; }
     
 </style>
     </head>
@@ -34,18 +34,18 @@
 					<table class="table table-article border border-1">
 					    <thead class="align-middle text-center bg-light">
 					        <tr>
-					            <td colspan="2" class="align-middle text-center">
-					                <h3 class="text-primary m-3 text-center">${dto.subject}</h3>
+					            <td colspan="2" class="bg-primary align-middle text-center">
+					                <h3 class="text-white m-3 text-center">${dto.subject}</h3>
 					            </td>
 							</tr>
 						</thead>
 						
 						<tbody>
-							<tr>
-								<td align="left" style="text-align: left;">
+							<tr class="m-3">
+								<td class="p-3" align="left" style="text-align: left;">
 									이름 : 밀티쥬
 								</td>
-								<td class="text-end">
+								<td class="p-3 text-end">
 									 ${dto.reg_date}| 조회 ${dto.hitCount}
 								</td>
 							</tr>
@@ -58,8 +58,7 @@
 							
 							<tr>
 								<td colspan="2" class="text-center p-3" style="border-bottom: none;">
-									<button type="button" class="btn btn-outline-primary btnSendLectureLike" title="좋아요">
-										<i class="bi bi-hand-thumbs-up-fill" style="color: ${isUserLike?'text-primary':'gray'}"></i>&nbsp;&nbsp;<span id="boardLikeCount">${dto.likeCount}</span></button>
+									<button type="button" class="btn btn-outline-primary btnSendMealColLike" title="좋아요"><i class="bi bi-hand-thumbs-up-fill" style="color: ${isUserLike?'#20C997':'black'}"></i>&nbsp;&nbsp;<span id="mealColLikeCount">${dto.likeCount}</span></button>
 								</td>
 							</tr>
 							
@@ -69,7 +68,6 @@
 										<p class="border text-secondary mb-1 p-2">
 											<i class="bi bi-folder2-open"></i>
 											<a href="${pageContext.request.contextPath}/mealColumn/download?num=${dto.num}">${dto.originalFilename}</a>
-											[${dto.fileSize} byte]
 										</p>
 									</c:if>
 								</td>
@@ -107,8 +105,8 @@
 				
 				<div class="reply">
 					<form name="replyForm" method="post">
-						<div class='form-header'>
-							<span class="text-secondary bold">질문/답변</span><span> - 타인을 비방하거나 개인정보를 유출하는 글의 게시를 삼가해 주세요.</span>
+						<div class='px-3 pb-2 form-header'>
+							<span class="text-secondary bold">댓글</span><span> - 타인을 비방하거나 개인정보를 유출하는 글의 게시를 삼가해 주세요.</span>
 						</div>
 						
 						<table class="table table-borderless reply-form">
@@ -119,7 +117,7 @@
 							</tr>
 							<tr>
 							   <td align='right'>
-							        <button type='button' class='btn btn-primary m-2 py-2 px-4 rounded-pill text-white btnSendReply'>질문 등록</button>
+							        <button type='button' class='btn btn-primary m-2 py-2 px-4 rounded-pill text-white btnSendReply'>댓글 등록</button>
 							    </td>
 							 </tr>
 						</table>
@@ -149,15 +147,47 @@
 			}
 		}
 		
+		function login() {
+			location.href="${pageContext.request.contextPath}/member/login";
+		}
+
+		function ajaxFun(url, method, formData, dataType, fn, file = false) {
+			const settings = {
+					type: method, 
+					data: formData,
+					dataType:dataType,
+					success:function(data) {
+						fn(data);
+					},
+					beforeSend: function(jqXHR) {
+						jqXHR.setRequestHeader('AJAX', true);
+					},
+					complete: function () {
+					},
+					error: function(jqXHR) {
+						if(jqXHR.status === 403) {
+							login();
+							return false;
+						} else if(jqXHR.status === 400) {
+							alert('요청 처리가 실패 했습니다.');
+							return false;
+				    	}
+				    	
+						console.log(jqXHR.responseText);
+					}
+			};
+			
+			if(file) {
+				settings.processData = false;  // file 전송시 필수. 서버로전송할 데이터를 쿼리문자열로 변환여부
+				settings.contentType = false;  // file 전송시 필수. 서버에전송할 데이터의 Content-Type. 기본:application/x-www-urlencoded
+			}
+			
+			$.ajax(url, settings);
+		}
+
 		// 게시물 공감 여부
 		$(function(){
-			$(".btnSendLectureLike").click(function(){
-				alert("ggg");
-			});
-		});
-		
-		$(function(){
-			$(".btnSendLectureLike").click(function(){
+			$(".btnSendMealColLike").click(function(){
 				const $i = $(this).find("i");
 				let isNoLike = $i.css("color") == "rgb(0, 0, 0)";
 				let msg = isNoLike ? "게시글에 공감하십니까 ? " : "게시글 공감을 취소하시겠습니까 ? ";
@@ -166,22 +196,23 @@
 					return false;
 				}
 				
-				let url = "${pageContext.request.contextPath}/mealColumn/insertLectureLike";
+				let url = "${pageContext.request.contextPath}/mealColumn/insertMealColLike";
 				let num = "${dto.num}";
-				// var query = {num:num, isNoLike:isNoLike};
-				// let query = "num=" + num + "&isNoLike=" + isNoLike;;
+				let query = "num=" + num + "&isNoLike=" + isNoLike;;
 		
 				const fn = function(data) {
 					let state = data.state;
+					
 					if(state === "true") {
 						let color = "black";
 						if( isNoLike ) {
-							color = "blue";
+							color = "#20C997";
 						}
 						$i.css("color", color);
-						//
+						
 						let count = data.likeCount;
-						$("#boardLikeCount").text(count);
+						
+						$("#mealColLikeCount").text(count);
 					} else if(state === "liked") {
 						alert("좋아요는 한번만 가능합니다. !!!");
 					}

@@ -46,7 +46,7 @@
 						<tr>
 							<td class="align-middle bg-light col-sm-2" scope="row">카테고리</td>
 	 						<td>
-								<p class="text-start">식단 칼럼</p>
+								<p class=" text-start">식단 칼럼</p>
 							</td>
 						</tr>
 	
@@ -58,11 +58,12 @@
 						</tr>
 						
 						<tr>
-							<td class="align-middle bg-light col-sm-2">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
+							<td class="p-3 align-middle bg-light col-sm-2">첨&nbsp;&nbsp;&nbsp;&nbsp;부</td>
 							<td> 
 								<input type="file" name="selectFile" class="form-control">
 							</td>
 						</tr>
+						<!--  
 						<c:if test="${mode=='update'}">
 							<tr>
 								<td class="bg-light col-sm-2" scope="row">첨부된파일</td>
@@ -77,7 +78,7 @@
 								</td>
 							</tr>
 						</c:if>
-						
+						-->
 					</table>
 					
 					<table class="table table-borderless">
@@ -171,7 +172,7 @@ function submitContents(elClickedObj) {
 
 function setDefaultFont() {
 	var sDefaultFont = '돋움';
-	var nFontSize = 12;
+	var nFontSize = 15;
 	oEditors.getById["ir1"].setDefaultFont(sDefaultFont, nFontSize);
 }
 </script>       

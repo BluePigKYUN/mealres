@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mealers.annotation.Controller;
 import com.mealers.annotation.RequestMapping;
 import com.mealers.annotation.RequestMethod;
+import com.mealers.annotation.ResponseBody;
 import com.mealers.dao.MealColumnDAO;
 import com.mealers.domain.MealColumnDTO;
 import com.mealers.domain.SessionInfo;
@@ -178,6 +182,7 @@ public class MealColumnController {
 		// 넘어온 파라미터 : 글 번호, 페이지 번호
 		MealColumnDAO dao = new MealColumnDAO();
 		
+		
 		String page = req.getParameter("page");
 		String size = req.getParameter("size");
 		String query = "page=" + page + "&size=" + size;
@@ -207,9 +212,9 @@ public class MealColumnController {
 				return new ModelAndView("edirect:/mealColumn/list?" + query);
 			}
 		
-			// HttpSession session = req.getSession();
-			// SessionInfo info = (SessionInfo) session.getAttribute("member");
-			// boolean isUserLike = dao.isUserLectureLike(num, info.getUserNum());
+			HttpSession session = req.getSession();
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+			boolean isUserLike = dao.isUserMealCollike(num, info.getUserNum());
 			
 			ModelAndView mav = new ModelAndView("mealColumn/article");
 			
@@ -218,7 +223,7 @@ public class MealColumnController {
 			mav.addObject("size", size);
 			mav.addObject("query", query);
 			
-			// mav.addObject("isUserLike", isUserLike);
+			mav.addObject("isUserLike", isUserLike);
 			
 			return mav;
 		} catch (Exception e) {
@@ -267,7 +272,8 @@ public class MealColumnController {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/mealColumn/list");
+		// return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
+		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
 	}
 	
 	
@@ -289,7 +295,7 @@ public class MealColumnController {
 		String pathname = root + "uploads" + File.separator + "mealColumn";
 		
 		String page = req.getParameter("page");
-		// String size = req.getParameter("size");
+	    // String size = req.getParameter("size");
 		
 		
 		MealColumnDAO dao = new MealColumnDAO();
@@ -329,6 +335,7 @@ public class MealColumnController {
 			e.printStackTrace();
 		}
 
+		// return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
 		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
 	}
 	
@@ -392,7 +399,7 @@ public class MealColumnController {
 		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
 	}
 	
-	@RequestMapping(value = "/mealColumn/download")
+	@RequestMapping(value = "/mealColumn/download", method = RequestMethod.GET)
 	public void download(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 파일 다운로드
 		MealColumnDAO dao = new MealColumnDAO();
@@ -423,4 +430,50 @@ public class MealColumnController {
 			out.print("<script>alert('파일다운로드가 실패 했습니다.');history.back();</script>");
 		}
 	}
+	
+	// 게시물 공감 저장
+	@ResponseBody
+	@RequestMapping(value = "/mealColumn/insertMealColLike", method = RequestMethod.POST)
+	public Map<String, Object> insertMealColLike(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		MealColumnDAO dao = new MealColumnDAO();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		String state = "false";
+		int likeCount = 0;
+		
+		try {
+			long num = Long.parseLong(req.getParameter("num"));
+			String isNoLike = req.getParameter("isNoLike");
+			
+			if(isNoLike.equals("true")) {
+				dao.insertMealColLike(num, info.getUserNum());
+			} else {
+				dao.deleteMealColLike(num, info.getUserNum());
+			}
+			
+			likeCount = dao.countMealColLike(num);
+			
+			state = "true";
+			
+		} catch (SQLException e) {
+			state = "liked";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		model.put("state", state);
+		model.put("likeCount", likeCount);
+		
+		return model;
+		 
+		
+	}
+
+	
+	
+	
 }
