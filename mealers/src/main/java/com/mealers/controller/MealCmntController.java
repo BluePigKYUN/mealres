@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -178,7 +177,7 @@ public class MealCmntController {
 	}
 	
 	@RequestMapping(value = "/mealCmnt/article", method = RequestMethod.GET)
-	public ModelAndView article(HttpServletRequest req, HttpRequest resp) throws ServletException, IOException {
+	public ModelAndView article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 페이지, 글번호, [,검색컬럼, 검색값, 정렬컬럼]
 		MealCmntDAO dao = new MealCmntDAO();
 		String page = req.getParameter("page");
@@ -220,16 +219,16 @@ public class MealCmntController {
 			
 			dto.setContent(dto.getContent().replace("\n", "<br>"));
 			
-			// HttpSession session = req.getSession();
-			// SessionInfo info = (SessionInfo)session.getAttribute("member");
-			// boolean isLikeCmnt = dao.isLikeCmnt(num, info.getUserNum());
+			HttpSession session = req.getSession();
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			boolean isLikeCmnt = dao.isLikeCmnt(num, info.getUserNum());
 			
 			ModelAndView mav = new ModelAndView("mealCmnt/article");
 			
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
 			mav.addObject("query", query);
-			// mav.addObject("isLikeCmnt", isLikeCmnt);
+			mav.addObject("isLikeCmnt", isLikeCmnt);
 
 			return mav;
 		} catch (Exception e) {

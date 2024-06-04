@@ -103,6 +103,8 @@
 									</c:forEach>
 								</tbody>
 							</table>
+							
+						<!-- 페이징 처리 -->
 							<nav aria-label="Page navigation example">
 								<ul class="pagination d-flex justify-content-center pt-4">
 									<li class="page-item m_prev"><a class="page-link" href="#"
@@ -114,6 +116,8 @@
 									</a></li>
 								</ul>
 							</nav>
+							<!--//페이징처리 -->
+							
 						</div>
 						<!-- //탭 1 -->
 

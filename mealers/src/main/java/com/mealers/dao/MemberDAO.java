@@ -1,5 +1,6 @@
 package com.mealers.dao;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +9,8 @@ import java.sql.SQLException;
 import com.mealers.domain.MemberDTO;
 import com.mealers.util.DBConn;
 import com.mealers.util.DBUtil;
+
+import jakarta.servlet.ServletException;
 
 public class MemberDAO {
 	private Connection conn = DBConn.getConnection();
@@ -134,6 +137,53 @@ public class MemberDAO {
 		
 		return dto;
 	}
-	
+	/**
+	 * 회원 탈퇴
+	 */
+	public void deleteMember(String memberId) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
 
+		try {
+
+			sql = "DELETE FROM member WHERE MEMBERID=?";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, memberId);
+
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
+
+	}
+	
+	public void updateMember(MemberDTO dto) throws ServletException,IOException{
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "UPDATE MEMBER SET MEMBERPWD=?,MEM_NICK=?,MEM_EMAIL=?,MODIFY_DATE=SYSDATE "
+					+ "WHERE MEMBERID=?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getMemberPwd());
+			pstmt.setString(2, dto.getMem_Nick());
+			pstmt.setString(3, dto.getMem_Email());
+			pstmt.setString(4, dto.getMemberId());
+			
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(pstmt);
+		}
+		
+	}
+	
 }

@@ -80,6 +80,8 @@ public class MemberController {
 
 		return new ModelAndView("redirect:/");
 	}
+	
+	
 	@RequestMapping(value="/member/member",method = RequestMethod.GET)
 	public ModelAndView singupForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException{	
 		ModelAndView mav = new ModelAndView("member/login");
@@ -144,6 +146,83 @@ public class MemberController {
 		
 		return map;
 		
+	}
+	
+	@RequestMapping(value = "/member/pwd", method = RequestMethod.POST)
+	public ModelAndView pwdSubmit(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// 패스워드 확인
+		MemberDAO dao = new MemberDAO();
+		HttpSession session = req.getSession();
+
+		try {
+			SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+			// DB에서 해당 회원 정보 가져오기
+			MemberDTO dto = dao.findById(info.getUserId());
+			if (dto == null) {
+				session.invalidate();
+				return new ModelAndView("redirect:/");
+			}
+
+			String userPwd = req.getParameter("memberPwd");
+			String mode = req.getParameter("mode");
+	        
+			if (!dto.getMemberPwd().equals(userPwd)) {
+				ModelAndView mav = new ModelAndView("member/mypage");
+
+				mav.addObject("mode", mode);
+				mav.addObject("message", "패스워드가 일치하지 않습니다.");
+
+				mav.addObject("dto", dto);
+
+				return mav;
+			}
+
+			if (mode.equals("delete")) {
+				// 회원탈퇴
+				dao.deleteMember(info.getUserId());
+
+				session.removeAttribute("member");
+				session.invalidate();
+
+				return new ModelAndView("redirect:/main");
+			}
+
+			if (mode.equals("update") || mode.equals("pwdupdate")) {
+
+				dto.setMemberId(req.getParameter("memberId"));
+
+				// if(mode.equals("update"))
+				dto.setMemberPwd(req.getParameter("memberPwd"));
+				
+				if (mode.equals("pwdupdate"))
+					dto.setMemberPwd(req.getParameter("confirmpassword"));
+
+				dto.setMem_Nick(req.getParameter("mem_Nick"));
+				dto.setMem_Email(req.getParameter("mem_Email"));
+
+				dao.updateMember(dto);
+
+				return new ModelAndView("redirect:/member/mypage");
+
+				// dao.updateMember(dto);
+			}
+
+			// 회원정보수정 - 회원수정폼으로 이동
+			/*
+			 * ModelAndView mav = new ModelAndView("member/member");
+			 * 
+			 * mav.addObject("title", "회원 정보 수정"); mav.addObject("dto", dto);
+			 * mav.addObject("mode", "update");
+			 * 
+			 * return mav;
+			 */
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect:/");
 	}
 
 }
