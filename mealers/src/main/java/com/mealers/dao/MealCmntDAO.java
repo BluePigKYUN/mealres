@@ -112,11 +112,11 @@ public class MealCmntDAO {
 			sb.append(" FROM mealCmnt c ");
 			sb.append(" JOIN member m ON c.userNum = m.userNum ");
 			if(mealSort.equals("recent")) {
-				sb.append(" ORDER BY num DESC");				
+				sb.append(" ORDER BY reg_date DESC");				
 			} else if(mealSort.equals("hitcount")) {
-				sb.append(" ORDER BY hitCount DESC, num DESC");
+				sb.append(" ORDER BY hitCount DESC, reg_date DESC");
 			} else {
-				sb.append(" ORDER BY likeCount DESC, num DESC");
+				sb.append(" ORDER BY likeCount DESC, reg_date DESC");
 			}
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			

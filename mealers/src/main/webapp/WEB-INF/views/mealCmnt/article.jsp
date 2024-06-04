@@ -90,7 +90,7 @@
 				
 				
 				<div class="col-md-6  border border-2 border-start-0 rounded-end pe-3 right-content" >
-					<div class="replyBox" style="max-height: 360px">
+					<div class="replyBox" style="height: 70%" >
 						<div class="col-lg-12 mt-4 topContent" >
 							<h6>댓글 3개 </h6>
 						</div>
@@ -135,16 +135,17 @@
 						</div>
 					</div>
 					
-					<form action="#" class="replywrite mt-4 ">
+					<form action="#" class="replywrite mb-4" style="height: 30%">
 						<div class="row g-4">
 							<div class="col-lg-12">
-								<div class="rounded pt-2">
-									<textarea name="reply" class="form-control border mt-4" cols="30"
+								<div class="rounded">
+									<textarea name="reply" class="form-control border" cols="30"
 										rows="4" placeholder="댓글을 입력하세요 *"></textarea>
 								</div>
 							</div>
 							<div class="col-lg-12 h-25 my-3">
-								<div class="d-flex justify-content-end mt-1">
+								<div class="d-flex justify-content-between mt-1">
+									<button type="button" class="btn text-white bg-primary text-primary rounded-pill" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/list';">목록</button>
 									<button type="button" class="btn border border-primary text-primary rounded-pill">등록</button>
 								</div>
 							</div>
