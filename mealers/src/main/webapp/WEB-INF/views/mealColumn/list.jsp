@@ -146,7 +146,6 @@
                         </div>
                     </div>
                 </div>
-        <!-- Fruits Shop End-->
 
         <!-- Footer Start -->
         <footer>

@@ -346,7 +346,7 @@ public class MealColumnDAO {
 	            pstmt.setString(2, dto.getSaveFilename());
 	            pstmt.setString(3, dto.getOriginalFilename());
 	            pstmt.setLong(4, dto.getFileSize());
-	            pstmt.executeUpdate();
+	            pstmt.executeUpdate();    
 //			
 //			// 파일 수정
 //			sql = "INSERT INTO mealColumnfile(fileNum, num, saveFilename, originalFileName, filesize) "

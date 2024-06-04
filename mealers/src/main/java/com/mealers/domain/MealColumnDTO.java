@@ -133,7 +133,7 @@ public class MealColumnDTO {
         return textOnly;
     }
     
-    
+//    
 //    public String getFirstImageSrc() {
 //        if (this.content != null) {
 //            // 첫 번째 <img> 태그의 src 값을 추출하기 위한 정규 표현식

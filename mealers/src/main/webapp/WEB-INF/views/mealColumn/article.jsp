@@ -179,7 +179,7 @@
 							color = "blue";
 						}
 						$i.css("color", color);
-						
+						//
 						let count = data.likeCount;
 						$("#boardLikeCount").text(count);
 					} else if(state === "liked") {

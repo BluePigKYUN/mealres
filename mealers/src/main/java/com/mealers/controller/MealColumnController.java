@@ -342,7 +342,7 @@ public class MealColumnController {
 		
 		
 		// 파일 저장 경로
-		String root = session.getServletContext().getRealPath("/");
+		String root = session.getServletContext().getRealPath("/");   
 		String pathname = root + "uploads" + File.separator + "mealColumn";
 		
 		String page = req.getParameter("page");
