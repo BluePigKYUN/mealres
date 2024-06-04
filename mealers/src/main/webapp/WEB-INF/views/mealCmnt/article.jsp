@@ -6,6 +6,7 @@
 
 <head>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
+<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
 
 <style type="text/css">
 
@@ -56,6 +57,8 @@
 .likeheart {
 	font-size: 50px;
 	transition: 0.5s;
+	background: none;
+	border: none;
 }
 
 .likeheart:hover {
@@ -84,7 +87,7 @@
 						<img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid rounded object-fit-cover" >
 					</div>
 						
-					<a class="px-2 py-1 position-absolute likeheart" style="top: 10px; right: 10px;" onclick="likecontent();">🤍</a> 
+					<button type="button" class="px-2 py-1 position-absolute likeheart" style="top: 10px; right: 10px;"> <i class="bi bi-heart-fill" style="color: ${isLikeCmnt?'rgb(255, 0, 0)':'white'}"></i>&nbsp;&nbsp;</button> 
 					
 					<div class="flex-grow-1" style="height: 50%">
 						 <div style="height: 75%">
@@ -98,7 +101,13 @@
 							<div class="ms-5 w-75 ps-1 mt-2 content-box " style="max-height: 180px">${dto.content}</div>
 						</div>
 						<div class="d-flex justify-content-between bottom-0 start-0 bottom-item pt-5 mb-1" style="height: 25%">
-							<p class="ms-4 mb-1">댓글10 좋아요${dto.likeCount} 조회수${dto.hitCount}</p>
+							<p class="ms-4 mb-1">
+								<span>댓글10</span> 
+								<span>좋아요
+									<span id="cmntLikeCount">${likeCount}</span>
+								</span> 
+								<span>조회수${dto.hitCount}</span>
+							</p>
 							<p class="me-4">${dto.reg_date}</p>
 						</div>
 					</div>
@@ -216,15 +225,78 @@
 	</footer>
 	
 	<script type="text/javascript">
+	function login() {
+		location.href = "${pageContext.request.contextPath}/member/login";
+	}
+	
+	function ajaxFun(url, method, formData, dataType, fn, file = false) {
+		const settings = {
+				type: method, 
+				data: formData,
+				dataType:dataType,
+				success:function(data) {
+					fn(data);
+				},
+				beforeSend: function(jqXHR) {
+					jqXHR.setRequestHeader('AJAX', true);
+				},
+				complete: function () {
+				},
+				error: function(jqXHR) {
+					if(jqXHR.status === 403) {
+						login();
+						return false;
+					} else if(jqXHR.status === 400) {
+						alert('요청 처리가 실패 했습니다.');
+						return false;
+			    	}
+			    	
+					console.log(jqXHR.responseText);
+				}
+		};
+		
+		if(file) {
+			settings.processData = false;  // file 전송시 필수. 서버로전송할 데이터를 쿼리문자열로 변환여부
+			settings.contentType = false;  // file 전송시 필수. 서버에전송할 데이터의 Content-Type. 기본:application/x-www-urlencoded
+		}
+		
+		$.ajax(url, settings);
+	}
 	
 	$(function() {
+		
 		$(".likeheart").click(function() {
-			const el = document.querySelector('.likeheart');
-			if(el.innerText === '🤍') {
-				el.innerText = '❤️';
-			} else el.innerText = '🤍';
+			const $i = $(this).find("i");
+			let isNoLike = $i.css("color") === "rgb(255, 255, 255)";
+			
+			let msg = isNoLike ? "게시글에 공감하시겠습니까?" : "게시글 공감을 취소하시겠습니까?";
+
+			if(! confirm(msg)) {
+				return false;
+			}
+			
+			let url = "${pageContext.request.contextPath}/mealCmnt/addlikeCmnt";
+			let num  = "${dto.num}";
+			let query = "num=" + num + "&isNoLike=" + isNoLike;
+			
+			const fn = function(data) {
+				let state = data.state;
+				if(state === "true") {
+					let color = "rgb(255, 255, 255)";
+					if(isNoLike) {
+						color = "rgb(255, 0, 0)";
+					}
+					$i.css("color", color);
+					
+					let count = data.likeCount;
+					$("#cmntLikeCount").text(count); // text 사용..
+				}
+			};
+			ajaxFun(url, "post", query, "json", fn);
 		});
 	});
+	
+	
 	
 	</script>
 </body>

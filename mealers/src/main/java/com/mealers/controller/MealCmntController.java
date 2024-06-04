@@ -7,11 +7,14 @@ import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mealers.annotation.Controller;
 import com.mealers.annotation.RequestMapping;
 import com.mealers.annotation.RequestMethod;
+import com.mealers.annotation.ResponseBody;
 import com.mealers.dao.MealCmntDAO;
 import com.mealers.domain.CmntDTO;
 import com.mealers.domain.SessionInfo;
@@ -81,6 +84,7 @@ public class MealCmntController {
 			} else {
 				list = dao.listMeal(offset, size, mealSort, schCategory, schContent);
 			}
+			
 			
 			long timeGap;
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -212,6 +216,8 @@ public class MealCmntController {
 			
 			dao.hitCountCal(num);
 			
+			int likeCount = dao.likeCount(num);
+			
 			CmntDTO dto = dao.findContent(num);
 			if(dto == null) {
 				return new ModelAndView("/mealCmnt/list?" + query);
@@ -229,6 +235,7 @@ public class MealCmntController {
 			mav.addObject("page", page);
 			mav.addObject("query", query);
 			mav.addObject("isLikeCmnt", isLikeCmnt);
+			mav.addObject("likeCount", likeCount);
 
 			return mav;
 		} catch (Exception e) {
@@ -236,5 +243,41 @@ public class MealCmntController {
 		}
 
 		return new ModelAndView("redirect/mealCmnt/list");
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/mealCmnt/addlikeCmnt", method = RequestMethod.POST)
+	public Map<String, Object> addlikeCmnt(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		MealCmntDAO dao = new MealCmntDAO();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		
+		String state = "false";
+		int likeCount = 0;
+		
+		try {
+			long num = Long.parseLong(req.getParameter("num"));
+			String isNoLike = req.getParameter("isNoLike");
+			
+			if(isNoLike.equals("true")) {
+				dao.addlikeCmnt(num, info.getUserNum());
+			} else {
+				dao.deleteLikeCmnt(num, info.getUserNum());
+			}
+			
+			likeCount = dao.likeCount(num);
+			
+			state = "true";
+		} catch (Exception e) {
+		}
+		
+		model.put("state", state);
+		model.put("likeCount", likeCount);
+			
+		return model;
 	}
 } 

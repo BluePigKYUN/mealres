@@ -108,15 +108,20 @@ public class MealCmntDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("SELECT num, mem_Nick, subject, content, reg_date, hitCount, fileName, likeCount");
+			sb.append("SELECT c.num, mem_Nick, subject, content, reg_date, hitCount, fileName ");
 			sb.append(" FROM mealCmnt c ");
 			sb.append(" JOIN member m ON c.userNum = m.userNum ");
 			if(mealSort.equals("recent")) {
-				sb.append(" ORDER BY reg_date DESC");				
+				sb.append(" ORDER BY reg_date DESC ");				
 			} else if(mealSort.equals("hitcount")) {
-				sb.append(" ORDER BY hitCount DESC, reg_date DESC");
+				sb.append(" ORDER BY hitCount DESC, reg_date DESC ");
 			} else {
-				sb.append(" ORDER BY likeCount DESC, reg_date DESC");
+				sb.append(" LEFT JOIN ( ");	
+				sb.append(" 	SELECT num, COUNT(*) AS likeCount ");	
+				sb.append(" 	FROM mealCmntLike ");	
+				sb.append(" 	GROUP BY num ");	
+				sb.append(" ) ml ON c.num = ml.num ");	
+				sb.append(" ORDER BY NVL(ml.likeCount,0) DESC, c.num "); 	
 			}
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
@@ -136,7 +141,6 @@ public class MealCmntDAO {
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setHitCount(rs.getInt("hitCount"));
 				dto.setFileName(rs.getString("fileName"));
-				dto.setLikeCount(rs.getInt("likeCount"));
 				
 				list.add(dto);
 			}	
@@ -157,9 +161,10 @@ public class MealCmntDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("SELECT num, mem_Nick, subject, content, reg_date, hitCount, likeCount, fileName");
+			sb.append("SELECT c.num, mem_Nick, subject, content, reg_date, hitCount, fileName");
 			sb.append(" FROM mealCmnt c ");
-			sb.append(" JOIN member m ON c.userNum = m.userNum ");		
+			sb.append(" JOIN member m ON c.userNum = m.userNum ");	
+			
 			switch(mealSort) {
 			case "recent" : 
 				switch(schCategory) {
@@ -174,9 +179,14 @@ public class MealCmntDAO {
 				}
 				break;
 			default : 
+				sb.append(" LEFT JOIN ( ");	
+				sb.append(" 	SELECT num, COUNT(*) AS likeCount ");	
+				sb.append(" 	FROM mealCmntLike ");	
+				sb.append(" 	GROUP BY num ");	
+				sb.append(" ) ml ON c.num = ml.num ");		
 				switch(schCategory) {
-				case "subcon" : sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ORDER BY likeCount DESC "); break;
-				default : sb.append(" WHERE INSTR(" + schCategory + ", ?) >= 1  ORDER BY likeCount DESC "); break;
+				case "subcon" : sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ORDER BY NVL(ml.likeCount,0) DESC, c.num "); break;
+				default : sb.append(" WHERE INSTR(" + schCategory + ", ?) >= 1 ORDER BY NVL(ml.likeCount,0) DESC, c.num "); break;
 				}
 				break;
 			}
@@ -314,6 +324,7 @@ public class MealCmntDAO {
 		String sql;
 		
 		try {
+			
 			sql = "SELECT NVL(COUNT(*), 0) FROM mealCmntLike WHERE num = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setLong(1, num);
@@ -341,7 +352,7 @@ public class MealCmntDAO {
 		
 		try {
 			sql = "SELECT num, mem_Nick, subject, content, TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
-					+ " hitCount, likeCount, fileName "
+					+ " hitCount, fileName "
 					+ " FROM mealCmnt c "
 					+ " JOIN member m ON c.userNum = c.userNum "
 					+ " WHERE num = ? ";
@@ -359,7 +370,6 @@ public class MealCmntDAO {
 				dto.setContent(rs.getString("content"));
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setHitCount(rs.getInt("hitCount"));
-				dto.setLikeCount(rs.getInt("likeCount"));
 				dto.setFileName(rs.getString("fileName"));
 			}						
 		} catch (Exception e) {

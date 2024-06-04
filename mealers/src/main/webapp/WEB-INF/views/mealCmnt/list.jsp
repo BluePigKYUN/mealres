@@ -134,7 +134,6 @@
 														<div class="content-control mb-5" style="height: 50px">${dto.content}</div>
 														<div class="d-flex flex-lg-wrap position-relative start-25 ">
 															<span class="text-dark mb-2 pe-2">댓글10</span> 
-															<span class="text-dark mb-2 pe-2">좋아요${dto.likeCount}</span>
 															<span class="text-dark mb-3">조회수${dto.hitCount}</span>
 														</div>
 													</div>
