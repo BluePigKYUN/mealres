@@ -491,21 +491,22 @@ public class MealColumnDAO {
 			return result;
 		}
 	
-	// 게시물의 댓글 추가
-	public void insertReply(ReplyDTO dto) throws SQLException {
+	// 칼럼 댓글 추가
+	public void insertMealColReply(ReplyDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
 		try {
-			sql = "INSERT INTO mealcolumnReply(replyNum, num, userNum, userNum, content,reg_date)"
-					+ " VAUES()  ";
+			sql = "INSERT INTO mealcolumnReply(replyNum, num, userNum , content , reg_date)"
+					+ " VALUES(mealColReply_seq.NEXTVAL, ?, ?, ?, SYSDATE )  ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setLong(1, dto.getReplyNum());
-			pstmt.setLong(2,  dto.getNum());
-			pstmt.setString(3, dto.getUserNum());
-			pstmt.setString(4, dto.getContent());
+			pstmt.setLong(1,  dto.getNum());
+			pstmt.setString(2, dto.getUserNum());
+			pstmt.setString(3, dto.getContent());
+			
+			pstmt.executeUpdate();
 			
 			
 		} catch (SQLException e) {
@@ -514,10 +515,122 @@ public class MealColumnDAO {
 		} finally {
 			DBUtil.close(pstmt);
 		}
-			
-			
 	}
 	
+	// 칼럼 댓글 개수 세기
+	public int dataCountMealColReply(long num) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT NVL(COUNT(*), 0) "
+					+ " FROM mealcolumnReply "
+					+ " WHERE num = ? ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, num);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	// 칼럼 댓글 리스트
+	public List<ReplyDTO> listMealColReply(long num, int offset, int size) {
+		List<ReplyDTO> list = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			sb.append(" SELECT r.replyNum, r.userNum, m.mem_Nick, num, content, r.reg_date ");
+			sb.append(" FROM mealcolumnReply r ");
+			sb.append(" JOIN member m ON r.userNum = m.userNum ");
+			sb.append(" WHERE num = ? ");
+			sb.append(" ORDER BY r.replyNum DESC ");
+			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
+			
+			pstmt = conn.prepareStatement(sb.toString());
+			
+			pstmt.setLong(1, num);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
+
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ReplyDTO dto = new ReplyDTO();
+				
+				dto.setReplyNum(rs.getLong("replyNum"));
+				dto.setUserNum(rs.getString("userNum"));
+				dto.setMem_Nick(rs.getString("mem_Nick"));
+				dto.setNum(rs.getLong("num"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg_date(rs.getString("reg_date"));
+				
+				list.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return list;
+	}
+	
+	public ReplyDTO findByReplyId(long replyNum) {
+		ReplyDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT r.replyNum, r.userNum, m.mem_Nick, num, content, r.reg_date "
+					+ " FROM mealcolumnReply r  "
+					+ " JOIN member m ON r.userNum = m.userNum   "
+					+ " WHERE replyNum = ? ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, replyNum);
+
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto=new ReplyDTO();
+				
+				dto.setReplyNum(rs.getLong("replyNum"));
+				dto.setUserNum(rs.getString("userNum"));
+				dto.setMem_Nick(rs.getString("mem_Nick"));
+				dto.setNum(rs.getLong("num"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg_date(rs.getString("reg_date"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return dto;
+	}
+
+	// 칼럼의 댓글 삭제
 	
 	
 	public long findByUserNum(String memberId) {

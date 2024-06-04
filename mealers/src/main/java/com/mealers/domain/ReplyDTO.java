@@ -6,10 +6,17 @@ public class ReplyDTO {
 	private String userId; 
 	private String userName;
 	private String userNum;
+	private String mem_Nick;
 	private String content; 
 	private String reg_date;
 	
 	
+	public String getMem_Nick() {
+		return mem_Nick;
+	}
+	public void setMem_Nick(String mem_Nick) {
+		this.mem_Nick = mem_Nick;
+	}
 	public String getUserNum() {
 		return userNum;
 	}

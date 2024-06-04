@@ -16,6 +16,7 @@ import com.mealers.annotation.RequestMethod;
 import com.mealers.annotation.ResponseBody;
 import com.mealers.dao.MealColumnDAO;
 import com.mealers.domain.MealColumnDTO;
+import com.mealers.domain.ReplyDTO;
 import com.mealers.domain.SessionInfo;
 import com.mealers.servlet.ModelAndView;
 import com.mealers.util.FileManager;
@@ -469,11 +470,99 @@ public class MealColumnController {
 		model.put("likeCount", likeCount);
 		
 		return model;
-		 
 		
 	}
-
 	
+	// 댓글 저장
+	@ResponseBody
+	@RequestMapping(value = "/mealColumn/insertReply", method = RequestMethod.POST)
+	public Map<String, Object>  insertReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 넘어온 파라미터 : 칼럼 게시물 번호, 댓글
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		MealColumnDAO dao = new MealColumnDAO();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		String state = "false";
+		
+		try {
+			ReplyDTO dto = new ReplyDTO();
+			long num = Long.parseLong(req.getParameter("num")); // 게시물 번호
+			
+			dto.setNum(num);
+			dto.setUserNum(info.getUserNum());
+			dto.setContent(req.getParameter("content"));
+			
+			dao.insertMealColReply(dto);
+			
+			state = "true";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		model.put("state", state);
+		
+		return model;
+	}
+	
+	// 칼럼 댓글 리스트 (AJAX)
+	@RequestMapping(value = "/mealColumn/listReply", method = RequestMethod.GET)
+	public ModelAndView listReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 파라미터 : 글번호(num) [, 페이지 번호]
+		
+		MealColumnDAO dao = new MealColumnDAO();
+		MyUtil util = new MyUtilBootstrap();
+		
+		try {
+			long num = Long.parseLong(req.getParameter("num"));
+			String pageNo = req.getParameter("pageNo");
+			int current_page = 1;
+			
+			if(pageNo != null) {
+				current_page = Integer.parseInt(pageNo);
+			}
+			
+			int size = 5;
+			int total_page = 0;
+			int replyCount = 0;
+			
+			replyCount = dao.dataCountMealColReply(num);
+			total_page = util.pageCount(replyCount, size);
+			
+			if(current_page > total_page) {
+				current_page = total_page;
+			}
+			
+			int offset = (current_page -1) * size;
+			if(offset <0 ) offset  = 0;
+			
+			List<ReplyDTO> listReply = dao.listMealColReply(num, offset, size);
+			
+			for(ReplyDTO dto : listReply) {
+				dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
+			}
+			// 페이징 : 자스 함수 (listPage)를 호출
+			String paging = util.pagingMethod(current_page, total_page, "listPage");
+			
+			ModelAndView mav = new ModelAndView("mealColumn/listReply");
+			
+			mav.addObject("listReply", listReply);
+			mav.addObject("pageNo", current_page);
+			mav.addObject("replyCount", replyCount);
+			mav.addObject("total_page", total_page);
+			mav.addObject("paging", paging);
+			
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			resp.sendError(400);
+			throw e;
+		}
+	}
+	
+	// 댓글 삭제
 	
 	
 }

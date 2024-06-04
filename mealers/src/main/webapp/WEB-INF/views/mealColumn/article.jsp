@@ -12,8 +12,13 @@
     		max-width: 1000px;
     		margin: 0 auto;
     	}
+    	
     .table-article img { max-width: 65%; }
     
+    .body-main {
+        max-width: 1010px;
+        margin: 0 auto; 
+    }
 </style>
     </head>
     
@@ -106,7 +111,7 @@
 				<div class="reply">
 					<form name="replyForm" method="post">
 						<div class='px-3 pb-2 form-header'>
-							<span class="text-secondary bold">댓글</span><span> - 타인을 비방하거나 개인정보를 유출하는 글의 게시를 삼가해 주세요.</span>
+							<span class="text-secondary bold">댓글</span><span> - 밀러즈와 함께 따듯한 댓글문화 만들어가요 ! 😉 </span>
 						</div>
 						
 						<table class="table table-borderless reply-form">
@@ -190,7 +195,7 @@
 			$(".btnSendMealColLike").click(function(){
 				const $i = $(this).find("i");
 				let isNoLike = $i.css("color") == "rgb(0, 0, 0)";
-				let msg = isNoLike ? "게시글에 공감하십니까 ? " : "게시글 공감을 취소하시겠습니까 ? ";
+				let msg = isNoLike ? "게시글에 공감하시나요? 😊 " : "게시글 공감을 취소하시나요? 😢 ";
 				
 				if(! confirm( msg )) {
 					return false;
@@ -222,6 +227,54 @@
 			});
 		});
 		
+		// 댓글 리스트
+		$(function() {
+			listPage(1);
+		});
+
+		function listPage(page) {
+			let url = "${pageContext.request.contextPath}/mealColumn/listReply";
+			let query = "num=${dto.num}&pageNo=" + page;
+			let selector = "#listReply";
+			
+			const fn = function(data) {
+				$(selector).html(data); // #listReply에 html문서 뿌려줌
+			}
+			// AJAX - Text(html)
+			ajaxFun(url, "get", query, "text", fn);
+		}
+
+
+		// 댓글 등록
+		$(function() {
+			$(".btnSendReply").click(function() {
+				let num = "${dto.num}";
+				const $tb = $(this).closest("table");
+				let content = $tb.find("textarea").val().trim();
+				
+				if(! content) {
+					$tb.find("textarea").focus();
+					return false;
+				}
+				content = encodeURIComponent(content);
+				
+				let url = "${pageContext.request.contextPath}/mealColumn/insertReply";
+				let query = "num=" + num + 	"&content=" + content;
+				
+				const fn = function(data) {
+					$tb.find("textarea").val("");
+					let state = data.state;
+					if(state === "true") {
+						listPage(1);
+					} else {
+						alert("댓글 등록 실패");
+					}
+				};
+				
+				ajaxFun(url, "post", query, "json", fn);
+			});
+		});
+
 		</script>
     </body>
 </html>
