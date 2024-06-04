@@ -30,9 +30,18 @@
 }
 
 
+.replyContent {
+	border-bottom: 1px solid #EAEAEA;
+}
 
-.replywrite {
-	border-top: 1px solid black;
+.replyContent:last-child {
+	border-bottom: none;
+}
+
+.left-content, .right-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
 }
 
 </style>
@@ -44,58 +53,62 @@
 		<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 	</header>
 
-	<!-- Single Page Header start -->
 	<div class="container-fluid page-header py-5">
 		<h1 class="text-center text-white display-6">커뮤니티</h1>
 	</div>
-	<!-- Single Page Header End -->
-
-
-	<!-- Single Product Start -->
+	
+	
 	<div class="container-fluid ">
 		<div class="container ">
-			<div class="row g-4 content my-5 pb-3" style="max-height: 700px">
-				<div class="w-50">
-					<div class="border border-3 border-secondary rounded"
-						>
-						<div style="max-height: 50%">
-							<div>
-								<a href="#"> <img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-									class="img-fluid rounded-start object-fit-cover" alt="Image">
-								</a>
-							</div>
+			<div class="row g-4 content my-5 pb-3">
+			
+				<div class="col-md-6 d-flex" >
+					<div class="border border-3 border-secondary rounded d-flex flex-column w-100 left-content" >
+						<div class="imgbox flex-grow-1">
+							<img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid rounded object-fit-cover" style="max-height: 400px;">
 						</div>
-						<div style="max-height: 50%">
-							<div class="d-flex flex-row justify-content-between pt-4 pb-3 px-3">
-								<div>
-									<div class="text-white bg-secondary px-2 rounded">닉네임인데우짤램1</div>
-								</div>
-								<div class="">두시간전</div>
+						
+						<div class="contentbox flex-grow-1">
+							<div class="d-flex flex-row justify-content-between pt-4 pb-3 px-3 ">
+									<div class="text-white bg-secondary px-2 rounded w-25 py-1 text-center" >${dto.mem_Nick}</div>
+								<div class="align-self-center">두시간전</div>
 							</div>
 
-							<h3 class="fw-bold ms-5 py-3 ps-1">웃지마민병관</h3>
-
-							<div class="ms-5 w-75 pt-3 ps-1">이봐 강호식! 조용히해...
-								김은수! 웃지마 민병관! 너 지금 재미없지 강호식! 웃지마 이호창! 곧 헤어질 거야 정태철~ 김순찬이! 변민석이!
-								상태야~~ 홍씨.. 홍팍표. 홍석천. 홍록기. 홍길동. 홍진경. 홍익대.</div>
+							<h3 class="fw-bold ms-5 py-3 ps-1">${dto.subject}</h3>
+							<div class="ms-5 w-75 pt-3 ps-1">${dto.content}</div>
 
 
 							<div
 								class="d-flex flex-row justify-content-between pb-3 px-4 mt-5 ">
-								<div>댓글10 좋아요15 조회수30</div>
-								<div>2024-05-29</div>
+								<div>댓글10 좋아요${dto.likeCount} 조회수${dto.hitCount}</div>
+								<div>${dto.reg_date}</div>
+								
 							</div>
 						</div>
 					</div>
 				</div>
 				
-				<div class="w-50 border border-2 border-start-0 rounded-end pe-3" >
-					<div class="replyBox h-80" >
-						<div class="col-lg-12 mt-4 topContent">
+				
+				<div class="col-md-6  border border-2 border-start-0 rounded-end pe-3 right-content" >
+					<div class="replyBox" style="max-height: 360px">
+						<div class="col-lg-12 mt-4 topContent" >
 							<h6>댓글 3개 </h6>
 						</div>
-						
-						<div class="replyContent pb-1">
+							
+						<div class="replyContent pb-3">
+							<div class="d-flex justify-content-between fw-bold pt-4 pb-2 ">
+								<p>명수(닉네임)</p>
+								<div class="d-flex">
+									<p>2024-05-31 00:56</p>
+									<a class="mx-2">삭제</a>
+								</div>
+							</div>
+							<div>
+								<div>아버지나를낳으시고바지적삼다적시셨네</div>
+							</div>
+						</div>
+
+						<div class="replyContent pb-3">
 							<div class="d-flex justify-content-between fw-bold pt-4 pb-3 ">
 								<div>명수(닉네임)</div>
 								<div class="d-flex">
@@ -108,33 +121,7 @@
 							</div>
 						</div>
 						
-						<div class="replyContent pb-1">
-							<div class="d-flex justify-content-between fw-bold pt-4 pb-3 ">
-								<div>명수(닉네임)</div>
-								<div class="d-flex">
-									<div>2024-05-31 00:56</div>
-									<a class="mx-2">삭제</a>
-								</div>
-							</div>
-							<div>
-								<div>아버지나를낳으시고바지적삼다적시셨네</div>
-							</div>
-						</div>
-						
-						<div class="replyContent pb-1">
-							<div class="d-flex justify-content-between fw-bold pt-4 pb-3 ">
-								<div>명수(닉네임)</div>
-								<div class="d-flex">
-									<div>2024-05-31 00:56</div>
-									<a class="mx-2">삭제</a>
-								</div>
-							</div>
-							<div>
-								<div>아버지나를낳으시고바지적삼다적시셨네</div>
-							</div>
-						</div>
-						
-						<div class="replyContent pb-1">
+						<div class="replyContent pb-3">
 							<div class="d-flex justify-content-between fw-bold pt-4 pb-3 ">
 								<div>명수(닉네임)</div>
 								<div class="d-flex">
@@ -148,17 +135,17 @@
 						</div>
 					</div>
 					
-					<form action="#" class="replywrite mt-3 h-20">
-						<div class="row g-4 ">
-							<div class="col-lg-12 h-75">
-								<div class="border-bottom rounded pt-3">
-									<textarea name="reply" class="form-control border-0" cols="30"
-										rows="5" placeholder="댓글을 입력하세요 *"></textarea>
+					<form action="#" class="replywrite mt-4 ">
+						<div class="row g-4">
+							<div class="col-lg-12">
+								<div class="rounded pt-2">
+									<textarea name="reply" class="form-control border mt-4" cols="30"
+										rows="4" placeholder="댓글을 입력하세요 *"></textarea>
 								</div>
 							</div>
-							<div class="col-lg-12 h-25">
-								<div class="d-flex justify-content-end ">
-									<a href="#" class="btn border border-primary text-primary rounded-pill px-3 py-1">등록</a>
+							<div class="col-lg-12 h-25 my-3">
+								<div class="d-flex justify-content-end mt-1">
+									<button type="button" class="btn border border-primary text-primary rounded-pill">등록</button>
 								</div>
 							</div>
 						</div>
@@ -168,37 +155,12 @@
 			</div>
 		</div>
 	</div>
-	<!-- Single Product End -->
-
-
 	
 
-
-	<!-- Back to Top -->
 	<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top">
 		<i class="fa fa-arrow-up"></i>
 	</a>
 	
-
-
-	<!-- Copyright Start -->
-	<div class="container-fluid copyright bg-dark py-4">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-					<span class="text-light"><a href="#"><i
-							class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right reserved.</span>
-				</div>
-				<div class="col-md-6 my-auto text-center text-md-end text-white">
-					Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML
-						Codex</a> Distributed By <a class="border-bottom"
-						href="https://themewagon.com">ThemeWagon</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Copyright End -->
-
 	<footer>
 		<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 		<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>

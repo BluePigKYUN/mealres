@@ -13,7 +13,7 @@ import com.mealers.annotation.Controller;
 import com.mealers.annotation.RequestMapping;
 import com.mealers.annotation.RequestMethod;
 import com.mealers.dao.MealCmntDAO;
-import com.mealers.domain.MealCmntDTO;
+import com.mealers.domain.CmntDTO;
 import com.mealers.domain.SessionInfo;
 import com.mealers.servlet.ModelAndView;
 import com.mealers.util.FileManager;
@@ -75,7 +75,7 @@ public class MealCmntController {
 			int offset = (current_page - 1) * size;
 			if(offset < 0) offset = 0;
 
-			List<MealCmntDTO> list = null;
+			List<CmntDTO> list = null;
 			if(schContent.length() == 0) {
 				list = dao.listMeal(offset, size, mealSort);
 			} else {
@@ -85,11 +85,15 @@ public class MealCmntController {
 			long timeGap;
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 			LocalDateTime today = LocalDateTime.now();
-			for(MealCmntDTO dto : list) {
+			for(CmntDTO dto : list) {
 				LocalDateTime dateTime = LocalDateTime.parse(dto.getReg_date(), formatter);
 				
 				timeGap = dateTime.until(today, ChronoUnit.MINUTES);
-				dto.setTimeGap(timeGap);
+				int timeGaps = Long.valueOf(timeGap).intValue();
+				
+				
+				dto.setTimeGap(timeGaps);	
+
 				
 				dto.setReg_date(dto.getReg_date().substring(0,10));
 			}
@@ -147,7 +151,7 @@ public class MealCmntController {
 		String pathname = root + "uploads" + File.separator + "mealCmnt";
 		
 		try {
-			MealCmntDTO dto = new MealCmntDTO();
+			CmntDTO dto = new CmntDTO();
 			
 			dto.setUserNum(info.getUserNum());
 			dto.setSubject(req.getParameter("subject"));
@@ -170,5 +174,67 @@ public class MealCmntController {
 		}
 		
 		return new ModelAndView("redirect:/mealCmnt/list");
+	}
+	
+	@RequestMapping(value = "/mealCmnt/article", method = RequestMethod.GET)
+	public ModelAndView article(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 페이지, 글번호, [,검색컬럼, 검색값, 정렬컬럼]
+		MealCmntDAO dao = new MealCmntDAO();
+		String page = req.getParameter("page");
+		String query = "page=" + page;
+		
+		try {
+			long num = Long.parseLong(req.getParameter("num"));
+			String schCategory = req.getParameter("schCategory");
+			String schContent = req.getParameter("schContent");
+			String mealSort = req.getParameter("mealSort");
+			
+			if(schCategory == null) {
+				schCategory = "subcon";
+				schContent = "";
+			}
+			
+			if(mealSort == null) {
+				mealSort = "recent";
+			}
+			
+			 schContent = URLDecoder.decode(schContent, "utf-8");
+			 if(schContent.length() != 0) {
+			 	query += "&schCategory=" + schCategory + "&schContent=" + URLEncoder.encode(schContent, "utf-8");
+				if(mealSort.equals("popular") | mealSort.equals("hitcount")) {
+					query += "&mealSort=" + mealSort;
+				}
+			 } else {
+				if(mealSort.equals("popular") | mealSort.equals("hitcount")) {
+					query += "&mealSort=" + mealSort;
+				}
+			 }
+			
+			dao.hitCountCal(num);
+			
+			CmntDTO dto = dao.findContent(num);
+			if(dto == null) {
+				return new ModelAndView("/mealCmnt/list?" + query);
+			}
+			
+			dto.setContent(dto.getContent().replace("\n", "<br>"));
+			
+			HttpSession session = req.getSession();
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			boolean isLikeCmnt = dao.isLikeCmnt(num, info.getUserNum());
+			
+			ModelAndView mav = new ModelAndView("mealCmnt/article");
+			
+			mav.addObject("dto", dto);
+			mav.addObject("page", page);
+			mav.addObject("query", query);
+			mav.addObject("isLikeCmnt", isLikeCmnt);
+
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect/mealCmnt/list");
 	}
 } 

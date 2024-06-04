@@ -5,7 +5,7 @@
 <html>
 <head>
     
-    <title>GORUP WRITE</title>
+    <title>WRITE</title>
   
     
 </head>
@@ -82,7 +82,6 @@
     <footer>
         <jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
     </footer>
-    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fas fa-arrow-up"></i></a>
     <jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.mealers.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
@@ -156,8 +157,10 @@ public class MealColumnController {
 			if (multiFile != null) {
 				String saveFilename = multiFile.getSaveFilename();
 				String originalFilename = multiFile.getOriginalFilename();
+				long size = multiFile.getSize();
 				dto.setSaveFilename(saveFilename);
 				dto.setOriginalFilename(originalFilename);
+				dto.setFileSize(size);
 			}
 			
 			dao.insertMealColumn(dto);
@@ -169,10 +172,255 @@ public class MealColumnController {
 		return new ModelAndView("redirect:/mealColumn/list");
 	}
 	
-	@RequestMapping(value = "/mealColumn/article")
-	public ModelAndView exerslist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ModelAndView mav = new ModelAndView("mealColumn/article");
+	// 글 보기
+	@RequestMapping(value = "/mealColumn/article", method = RequestMethod.GET)
+	public ModelAndView mealarticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 넘어온 파라미터 : 글 번호, 페이지 번호
+		MealColumnDAO dao = new MealColumnDAO();
 		
-		return mav;
+		String page = req.getParameter("page");
+		String size = req.getParameter("size");
+		String query = "page=" + page + "&size=" + size;
+		
+		
+		try {
+			long num = Long.parseLong(req.getParameter("num"));
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if(schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			
+			kwd = URLDecoder.decode(kwd, "utf-8");
+			
+			if(kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
+			}
+			
+			dao.updateHitCount(num);
+			
+			// 게시물 가져오기
+			MealColumnDTO dto = dao.findByColumn(num);
+			
+			if(dto == null) {
+				return new ModelAndView("edirect:/mealColumn/list?" + query);
+			}
+		
+			// HttpSession session = req.getSession();
+			// SessionInfo info = (SessionInfo) session.getAttribute("member");
+			// boolean isUserLike = dao.isUserLectureLike(num, info.getUserNum());
+			
+			ModelAndView mav = new ModelAndView("mealColumn/article");
+			
+			mav.addObject("dto", dto);
+			mav.addObject("page", page);
+			mav.addObject("size", size);
+			mav.addObject("query", query);
+			
+			// mav.addObject("isUserLike", isUserLike);
+			
+			return mav;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ModelAndView("redirect:/mealColumn/list?" + query);
+	}
+	
+	@RequestMapping(value = "/mealColumn/update", method = RequestMethod.GET)
+	public ModelAndView updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 수정폼
+		// 넘어온 파라미터 : 글번호, 페이지번호, size
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		if(! info.getUserNum().equals("1")) {
+			return new ModelAndView("redirect:/mealColumn/list");
+		}
+		
+		MealColumnDAO dao = new MealColumnDAO();
+		
+		String page = req.getParameter("page");
+		String size = req.getParameter("size");
+		
+		try {
+			long num = Long.parseLong(req.getParameter("num"));
+			
+			MealColumnDTO dto = dao.findByColumn(num);
+			
+			if(dto == null) {
+				return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
+			}
+			
+			
+			ModelAndView mav = new ModelAndView("mealColumn/write");
+			
+			mav.addObject("dto", dto);
+			mav.addObject("page", page);
+			mav.addObject("size", size);
+			mav.addObject("mode", "update");
+			
+			return mav;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ModelAndView("redirect:/mealColumn/list");
+	}
+	
+	
+	// 컬럼 수정
+	@RequestMapping(value = "/mealColumn/update", method = RequestMethod.POST)
+	public ModelAndView updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 수정 완료
+		// 넘어온 폼데이터 : 글번호, 제목, 내용, [, 파일], page, size
+
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		
+		if(!  info.getUserNum().equals("1")) {
+			return new ModelAndView("redirect:/mealColumn/list");
+		}
+		// 파일 저장 경로
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "mealColumn";
+		
+		String page = req.getParameter("page");
+		// String size = req.getParameter("size");
+		
+		
+		MealColumnDAO dao = new MealColumnDAO();
+		FileManager fileManager = new FileManager();
+		try {
+			
+			MealColumnDTO dto = new MealColumnDTO();
+			
+			dto.setNum(Long.parseLong(req.getParameter("num")));
+			dto.setSubject(req.getParameter("subject"));
+			dto.setContent(req.getParameter("content"));
+			dto.setSaveFilename(req.getParameter("saveFilename"));
+			dto.setOriginalFilename(req.getParameter("originalFilename"));
+			dto.setFileSize(Long.parseLong(req.getParameter("fileSize")));
+
+			dto.setUserNum(info.getUserNum());
+
+			Part p = req.getPart("selectFile");
+			MyMultipartFile multiFile = fileManager.doFileUpload(p, pathname);
+			if (multiFile != null) {
+				if (req.getParameter("saveFilename").length() != 0) {
+					// 기존파일 삭제
+					fileManager.doFiledelete(pathname, req.getParameter("saveFilename"));
+				}
+
+				// 새로운 파일
+				String saveFilename = multiFile.getSaveFilename();
+				String originalFilename = multiFile.getOriginalFilename();
+				long fileSize = multiFile.getSize();
+				dto.setSaveFilename(saveFilename);
+				dto.setOriginalFilename(originalFilename);
+				dto.setFileSize(fileSize);
+			}
+
+			dao.updateMealColumn(dto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
+	}
+	
+	
+	// 칼럼 삭제
+	@RequestMapping(value = "/mealColumn/delete", method = RequestMethod.GET)
+	public ModelAndView delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 삭제
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+		
+		
+		// 파일 저장 경로
+		String root = session.getServletContext().getRealPath("/");   
+		String pathname = root + "uploads" + File.separator + "mealColumn";
+		
+		String page = req.getParameter("page");
+		String size = req.getParameter("size");
+		String query = "page=" + page + "&size=" + size;
+		
+		MealColumnDAO dao = new MealColumnDAO();
+		FileManager fileManager = new FileManager();
+
+		try {
+			String schType = req.getParameter("schType");
+			String kwd = req.getParameter("kwd");
+			if (schType == null) {
+				schType = "all";
+				kwd = "";
+			}
+			kwd = URLDecoder.decode(kwd, "utf-8");
+
+			if (kwd.length() != 0) {
+				query += "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
+			}
+			
+			long num = Long.parseLong(req.getParameter("num"));
+			
+			MealColumnDTO dto  = dao.findByColumn(num);
+			if (dto == null) {
+				return new ModelAndView("redirect:/mealColumn/list?" + query);
+			}
+			
+		   // admin 만 삭제 가능
+			if ( ! info.getUserNum().equals("1")) {
+					return new ModelAndView("redirect:/mealColumn/list?" + query );
+			}
+			
+
+			if (dto.getSaveFilename() != null && dto.getSaveFilename().length() != 0) {
+				fileManager.doFiledelete(pathname, dto.getSaveFilename());
+			}
+			
+			
+			dao.deleteMealColumn(num, info.getUserNum());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
+	}
+	
+	@RequestMapping(value = "/mealColumn/download")
+	public void download(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 파일 다운로드
+		MealColumnDAO dao = new MealColumnDAO();
+		HttpSession session = req.getSession();
+		
+		FileManager fileManager = new FileManager();
+		
+		// 파일 저장 경로
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "mealColumn";
+		
+		boolean b = false;
+
+		try {
+			long num = Long.parseLong(req.getParameter("num"));
+			
+			MealColumnDTO dto = dao.findByColumn(num);
+			if (dto != null) {
+				b = fileManager.doFiledownload(dto.getSaveFilename(), dto.getOriginalFilename(), pathname, resp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if ( ! b ) {
+			resp.setContentType("text/html;charset=utf-8");
+			PrintWriter out = resp.getWriter();
+			out.print("<script>alert('파일다운로드가 실패 했습니다.');history.back();</script>");
+		}
 	}
 }

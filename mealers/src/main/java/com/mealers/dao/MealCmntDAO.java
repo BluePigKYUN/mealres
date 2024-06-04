@@ -7,14 +7,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mealers.domain.MealCmntDTO;
+import com.mealers.domain.CmntDTO;
 import com.mealers.util.DBConn;
 import com.mealers.util.DBUtil;
 
 public class MealCmntDAO {
 	private Connection conn = DBConn.getConnection();
 	
-	public void insertMeal(MealCmntDTO dto) throws SQLException {
+	public void insertMeal(CmntDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
@@ -101,22 +101,22 @@ public class MealCmntDAO {
 		return conCount;
 	}
 	
-	public List<MealCmntDTO> listMeal(int offset, int size, String mealSort) {
-		List<MealCmntDTO> list = new ArrayList<MealCmntDTO>();
+	public List<CmntDTO> listMeal(int offset, int size, String mealSort) {
+		List<CmntDTO> list = new ArrayList<CmntDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("SELECT c.num, mem_Nick, subject, content, reg_date, hitCount, fileName, likeCount");
+			sb.append("SELECT num, mem_Nick, subject, content, reg_date, hitCount, fileName, likeCount");
 			sb.append(" FROM mealCmnt c ");
 			sb.append(" JOIN member m ON c.userNum = m.userNum ");
 			if(mealSort.equals("recent")) {
 				sb.append(" ORDER BY num DESC");				
 			} else if(mealSort.equals("hitcount")) {
-				sb.append(" ORDER BY hitCount DESC ");
+				sb.append(" ORDER BY hitCount DESC, num DESC");
 			} else {
-				sb.append(" ORDER BY likeCount DESC ");
+				sb.append(" ORDER BY likeCount DESC, num DESC");
 			}
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
@@ -127,7 +127,7 @@ public class MealCmntDAO {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				MealCmntDTO dto = new MealCmntDTO();
+				CmntDTO dto = new CmntDTO();
 				
 				dto.setNum(rs.getLong("num"));
 				dto.setMem_Nick(rs.getString("mem_Nick"));
@@ -150,8 +150,8 @@ public class MealCmntDAO {
 	}
 	
 	
-	public List<MealCmntDTO> listMeal(int offset, int size, String mealSort, String schCategory, String schContent) {
-		List<MealCmntDTO> list = new ArrayList<MealCmntDTO>();
+	public List<CmntDTO> listMeal(int offset, int size, String mealSort, String schCategory, String schContent) {
+		List<CmntDTO> list = new ArrayList<CmntDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		StringBuilder sb = new StringBuilder();
@@ -196,7 +196,7 @@ public class MealCmntDAO {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				MealCmntDTO dto = new MealCmntDTO();
+				CmntDTO dto = new CmntDTO();
 				
 				dto.setNum(rs.getLong("num"));
 				dto.setMem_Nick(rs.getString("mem_Nick"));
@@ -237,7 +237,36 @@ public class MealCmntDAO {
 		}
 	}
 	
-	public void likeCmnt(long num, String userNum) throws SQLException {
+	public boolean isLikeCmnt(long num, String userNum) {
+		boolean result = false;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT num, userNum FROM mealCmntLike WHERE num = ? AND userNum = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, num);
+			pstmt.setString(2, userNum);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = true;
+			}
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		return result;
+	}
+	
+	
+	public void addlikeCmnt(long num, String userNum) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
@@ -302,6 +331,44 @@ public class MealCmntDAO {
 			DBUtil.close(pstmt);
 		}
 		return countLike;
+	}
+	
+	public CmntDTO findContent(long num) {
+		CmntDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT num, mem_Nick, subject, content, TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
+					+ " hitCount, likeCount, fileName "
+					+ " FROM mealCmnt c "
+					+ " JOIN member m ON c.userNum = c.userNum "
+					+ " WHERE num = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, num);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new CmntDTO();
+				
+				dto.setNum(rs.getLong("num"));
+				dto.setMem_Nick(rs.getString("mem_Nick"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg_date(rs.getString("reg_date"));
+				dto.setHitCount(rs.getInt("hitCount"));
+				dto.setLikeCount(rs.getInt("likeCount"));
+				dto.setFileName(rs.getString("fileName"));
+			}						
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		return dto;
 	}
 	
 	
