@@ -392,7 +392,6 @@ public class MealColumnController {
 		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
 	}
 	
-	
 	@RequestMapping(value = "/mealColumn/download")
 	public void download(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 파일 다운로드
