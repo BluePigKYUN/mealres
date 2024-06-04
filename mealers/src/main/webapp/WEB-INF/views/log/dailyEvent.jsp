@@ -68,7 +68,125 @@
             </div>
         </div>
     </div>
-   </div>
+</div>
+  
+  <!-- Modal -->
+<div class="modal fade" id="myDialogModal"
+		data-bs-backdrop="static" data-bs-keyboard="false" 
+		tabindex="-1" aria-labelledby="imyDialogModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="myDialogModalLabel">스케쥴 등록</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body pt-0 pb-0">
+        		<form name="scheduleForm">
+        			<table class="table">
+						<tr>
+							<td class="col-2">제 목</td>
+							<td>
+								<input type="text" name="subject" id="form-subject" class="form-control">
+								<small class="form-control-plaintext help-block">
+									* 제목은 필수 입니다.
+								</small>
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="col-2">일정분류</td>
+							<td>
+								<select name="color" id="form-color" class="form-select">
+									<option value="green">개인일정</option>
+									<option value="blue">가족일정</option>
+									<option value="tomato">회사일정</option>
+									<option value="purple">기타일정</option>
+								</select>
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="col-2">종일일정</td>
+							<td>
+	                            <div class="form-check form-control-plaintext">
+	                                <input class="form-check-input" type="checkbox" name="allDay" id="form-allDay" value="1">
+	                                <label class="form-check-label" for="form-allDay">하루종일</label>
+	                            </div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="col-2">시작일자</td>
+							<td>
+								<div class="row">
+									<div class="col col-sm-4 pe-1">
+										<input type="date" name="sday" id="form-sday" class="form-control">
+									</div>
+									<div class="col col-sm-3">
+										<input type="time" name="stime" id="form-stime" class="form-control" style="display: none;">
+									</div>
+								</div>
+								<small class="form-control-plaintext help-block">
+									* 시작날짜는 필수입니다.
+								</small>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="col-2">종료일자</td>
+							<td>
+								<div class="row">
+									<div class="col col-sm-4 pe-1">
+										<input type="date" name="eday" id="form-eday" class="form-control">
+									</div>
+									<div class="col col-sm-3">
+										<input type="time" name="etime" id="form-etime" class="form-control" style="display: none;">
+									</div>
+								</div>
+								<small class="form-control-plaintext help-block">
+									종료일자는 선택사항이며, 시작일자보다 작을 수 없습니다.
+								</small>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="col-2">일정반복</td>
+							<td>
+								<div class="row">
+									<div class="col col-sm-4 pe-1">
+										<select name="repeat" id="form-repeat" class="form-select">
+											<option value="0">반복안함</option>
+											<option value="1">년반복</option>
+										</select>
+									</div>
+									<div class="col col-sm-3">
+										<input type="text" name="repeat_cycle" id="form-repeat_cycle" class="form-control">
+									</div>
+								</div>
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="col-2">메 모</td>
+							<td>
+								<textarea name="memo" id="form-memo" class="form-control" style="height: 70px; resize: none;"></textarea>
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="2" class="text-center" style="border-bottom: none;">
+								<input type="hidden" name="num"id="form-num"  value="0">
+								<button type="button" class="btn btn-dark" id="btnScheduleSendOk"> 등록 완료 </button>
+								<button type="button" class="btn btn-light" id="btnScheduleSendCancel"> 등록 취소 </button>
+							</td>
+						</tr>
+						
+        			</table>
+        		</form>
+			</div>
+		</div>
+	</div>
+</div>
 
 
 <footer>
