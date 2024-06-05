@@ -4,15 +4,17 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 
 <div class="row mt-4">
-	<div class="col-4 pe-2">
+	<div class="col-10 pe-2">
 		<div class="row">
-			<div class="col-2 text-start ps-0 pe-0 fw-bold">
+			<div class="col-3 text-start ps-0 pe-0 fw-bold">
 				<span class="btn btn-sm" onclick="changeDate('${today}');">오늘</span>
 			</div>
-			<div class="col text-center fw-bold">
-				<span class="btn btn-sm ps-0 pe-0" onclick="changeDate('${preMonth}');"><i class="bi bi-chevron-left"></i></span>
-				<span class="text-dark align-middle">${year}년 ${month}월</span>
-				<span class="btn btn-sm ps-0 pe-0" onclick="changeDate('${nextMonth}');"><i class="bi bi-chevron-right"></i></span>
+				<div class="row">
+				<div class="col-6 text-center fw-bold">
+					<span class="btn btn-sm ps-0 pe-0" onclick="changeDate('${preMonth}');"><i class="bi bi-chevron-left"></i></span>
+					<span class="text-dark align-middle">${year}년 ${month}월</span>
+					<span class="btn btn-sm ps-0 pe-0" onclick="changeDate('${nextMonth}');"><i class="bi bi-chevron-right"></i></span>
+				</div>
 			</div>
 			<div class="col-2 text-end ps-0 pe-0">
 				&nbsp;
@@ -45,10 +47,10 @@
 		
 	</div>
 	
-	<div class="col ps-5">
+	<div class="row ps-5">
 		<div class="row">
 			<div class="col fw-bold form-control-plaintext">
-				<span><i class="bi bi-calendar2-date"></i> ${year}年 ${month}月 ${day}日 일정</span>
+				<span><i class="bi bi-calendar2-date"></i> ${year}년 ${month}월 ${day}일의 일정</span>
 			</div>
 		</div>
 		

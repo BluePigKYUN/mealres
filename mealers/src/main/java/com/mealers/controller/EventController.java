@@ -220,13 +220,6 @@ public class EventController {
 				String nextMonth = String.format("%04d%02d%02d", 
 						cal2.get(Calendar.YEAR), cal2.get(Calendar.MONTH) + 1, cal2.get(Calendar.DATE));
 
-				// 첫주의 year년도 month월 1일 이전 날짜
-				Calendar scal = (Calendar) cal.clone();
-				scal.add(Calendar.DATE, -(week - 1));
-				int syear = scal.get(Calendar.YEAR);
-				int smonth = scal.get(Calendar.MONTH) + 1;
-				int sdate = scal.get(Calendar.DATE);
-
 				// 마지막주의 year년도 month월 말일주의 토요일 날짜
 				Calendar ecal = (Calendar) cal.clone();
 				// year년도 month월 말일
@@ -239,12 +232,6 @@ public class EventController {
 				String s;
 				String[][] days = new String[cal.getActualMaximum(Calendar.WEEK_OF_MONTH)][7];
 
-				// 1일 앞의 전달 날짜
-				for (int i = 1; i < week; i++) {
-					s = String.format("%04d%02d%02d", syear, smonth, sdate);
-					days[0][i - 1] = "<span class='textDate preMonthDate' data-date='" + s + "' >" + sdate + "</span>";
-					sdate++;
-				}
 
 				// year년도 month월 날짜
 				int row, n = 0;
@@ -435,7 +422,7 @@ public class EventController {
 
 		// AJAX-JSON
 		@ResponseBody
-		@RequestMapping(value = "/schedule/delete", method = RequestMethod.POST)
+		@RequestMapping(value = "/log/delete", method = RequestMethod.POST)
 		public Map<String, Object> deleteSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 			EventDAO dao = new EventDAO();
 			

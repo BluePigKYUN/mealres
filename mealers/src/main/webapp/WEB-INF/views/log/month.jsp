@@ -38,16 +38,16 @@
 <table id="largeCalendar" class="table table-bordered">
 	<tr class="text-center table table-bordered">
 		<td class="text-danger" width="120">일</td>
-		<td width="120" scope="col">월</td>
-		<td width="120" scope="col">화</td>
-		<td width="120" scope="col">수</td>
-		<td width="120" scope="col">목</td>
-		<td width="120" scope="col">금</td>
+		<td width="100" scope="col">월</td>
+		<td width="100" scope="col">화</td>
+		<td width="100" scope="col">수</td>
+		<td width="100" scope="col">목</td>
+		<td width="100" scope="col">금</td>
 		<td class="text-primary" width="120">토</td>
 	</tr>
 
 	<c:forEach var="row" items="${days}" >
-		<tr align="left" height="120" valign="top">
+		<tr align="left" height="80" valign="top">
 			<c:forEach var="d" items="${row}">
 				<td class="p-2">
 					${d}

@@ -10,6 +10,20 @@
 .nav-item {
     list-style-type: none;
 }
+
+.deco {
+  width: 50px;
+  height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+}
+.deco::-webkit-color-swatch {
+  border-radius: 30px;
+  border: none;
+}
 </style>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 
@@ -20,10 +34,10 @@
 	<div class="container-fluid py-3">
 		<div class="container py-5 my-5">
 			<div class="row">
-				<div class="col-md-8">
+				<div class="col-md-7">
 
 					<h2>일정관리</h2>
-					<div class="calendar bg-white rounded shadow-sm">
+					<div class="calendar bg-white rounded shadow-sm px-5 py-3">
 						<div
 							class="d-flex justify-content-between align-items-center mb-3">
 							<div class="tab-content" id="nav-tabContent">
@@ -79,61 +93,104 @@
 							</li>
 						</ul>
 					</div>
+					
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<!-- Modal -->
-    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="eventModalLabel">일정 등록</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="event/insert" method="post">
-                        <div class="form-group">
-                            <label for="title">제목</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="memo">메모</label>
-                            <textarea class="form-control" id="memo" name="memo"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="color">색상</label>
-                            <input type="color" class="form-control" id="color" name="color" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="regDateEvent">등록일</label>
-                            <input type="date" class="form-control" id="regDateEvent" name="regDateEvent" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="eventDate">이벤트 날짜</label>
-                            <input type="date" class="form-control" id="eventDate" name="eventDate" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="eventStartTime">시작 시간</label>
-                            <input type="time" class="form-control" id="eventStartTime" name="eventStartTime">
-                        </div>
-                        <div class="form-group">
-                            <label for="eventEndTime">종료 시간</label>
-                            <input type="time" class="form-control" id="eventEndTime" name="eventEndTime">
-                        </div>
-                        <div class="form-group">
-                            <label for="userNum">사용자 번호</label>
-                            <input type="number" class="form-control" id="userNum" name="userNum" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">등록</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Event Modal Start -->
+<div class="modal fade container-fluid" id="eventModal"
+		data-bs-backdrop="static" data-bs-keyboard="false" 
+		tabindex="-1" aria-labelledby="ieventModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content col-4">
+			<div class="modal-header">
+				<h5 class="modal-title" id="eventModalLabel">스케쥴 등록</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body pt-0 pb-0">
+				<small class="form-control-plaintext help-block" style="align-content: center;">
+					모든 요소들은 필수입니다.
+				</small>
+        		<form name="scheduleForm">
+        			<table class="table">
+						<tr>
+							<td class="col-2">일정제목</td>
+							<td>
+								<input type="text" name="subject" id="form-subject" class="form-control">
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="col-2">배경색</td>
+							<td>
+								<input type="color" id="form-color" class="form-control deco">
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="col-2">종일일정</td>
+							<td>
+	                            <div class="form-check form-control-plaintext d-flex">
+	                                <input class="form-check-input" type="checkbox" name="allDay" id="form-allDay" value="1">
+	                                <label class="form-check-label px-3" for="form-allDay">하루종일</label>
+	                            </div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="col-2">일정등록</td>
+							<td>
+								<div class="row">
+									<div class="col col-sm-4 pe-1">
+										<input type="date" name="sday" id="form-sday" class="form-control" style="min-width: 150px;">
+										<small class="form-control-plaintext help-block text-start">
+											* 날짜는 필수입니다.
+										</small>
+									</div>
+									<div class="row">
+										<div class="col col-sm-3">
+											<input type="time" name="stime" id="form-stime" class="form-control" style="display: none; min-width: 150px;">
+											<small class="form-control-plaintext help-block text-start" id="stime_Son">
+												시작 시간을 기재해주세요.
+											</small>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col col-sm-3">
+											<input type="time" name="etime" id="form-etime" class="form-control" style="display: none; min-width: 150px;">
+											<small class="form-control-plaintext help-block text-start" id="etime_Son">
+												종료 시간을 기재해주세요.
+											</small>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td class="col-2">메 모</td>
+							<td>
+								<textarea name="memo" id="form-memo" class="form-control" style="height: 70px; resize: none;"></textarea>
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="3" class="text-center" style="border-bottom: none;">
+								<input type="hidden" name="num"id="form-num"  value="0">
+								<button type="button" class="btn btn-dark" id="btnEventSendOk"> 등록 완료 </button>
+								<button type="button" class="btn btn-light" id="btnEventSendCancel"> 등록 취소 </button>
+							</td>
+						</tr>
+						
+        			</table>
+        		</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Event Modal End -->
 
 
 <footer>
@@ -306,6 +363,8 @@ $(function(){
 		$("#form-allDay").removeAttr("disabled");
 		$("#form-stime").hide();
 		$("#form-etime").hide();
+		$("#stime_Son").hide();
+		$("#etime_Son").hide();
 		$("#form-eday").closest("tr").show();
 		
 		let date = $(this).attr("data-date");
@@ -315,9 +374,9 @@ $(function(){
 		$("form[name=scheduleForm] input[name=eday]").val(date);
 		
 		$("#eventModalLabel").html("스케쥴 등록");
-		$("#btnScheduleSendOk").attr("data-mode", "insert");
-		$("#btnScheduleSendOk").html(" 등록 완료 ");
-		$("#btnScheduleSendCancel").html(" 등록 취소 ");
+		$("#btnEventSendOk").attr("data-mode", "insert");
+		$("#btnEventSendOk").html(" 등록 완료 ");
+		$("#btnEventSendCancel").html(" 등록 취소 ");
 		
 		$("#eventModal").modal("show");
 	});
@@ -396,12 +455,12 @@ $(function(){
 		$("#form-memo").val(memo);
 		
 		$("#eventModalLabel").html("스케쥴 수정");
-		$("#btnScheduleSendOk").attr("data-mode", "update");
-		$("#btnScheduleSendOk").attr("data-num", num);
-		$("#btnScheduleSendOk").attr("data-date", date);
+		$("#btnEventSendOk").attr("data-mode", "update");
+		$("#btnEventSendOk").attr("data-num", num);
+		$("#btnEventSendOk").attr("data-date", date);
 		
-		$("#btnScheduleSendOk").html(" 수정 완료 ");
-		$("#btnScheduleSendCancel").html(" 수정 취소 ");
+		$("#btnEventSendOk").html(" 수정 완료 ");
+		$("#btnEventSendCancel").html(" 수정 취소 ");
 		
 		$("#eventModal").modal("show");
 	});
@@ -448,12 +507,12 @@ $(function(){
 
 // 등록/수정 대화상자 - 등록완료 버튼
 $(function(){
-	$("#btnScheduleSendOk").click(function(){
+	$("#btnEventSendOk").click(function(){
 		if(! check()) {
 			return false;
 		}
 		
-		let mode = $("#btnScheduleSendOk").attr("data-mode");
+		let mode = $("#btnEventSendOk").attr("data-mode");
 		let query = $("form[name=scheduleForm]").serialize();
 		let url = "${pageContext.request.contextPath}/log/"+mode+"";
 
@@ -470,8 +529,8 @@ $(function(){
 				    let query = "year="+y+"&month="+m;
 				    schedule(url, query, "#nav-1");
 				} else if(mode === "update") {
-					let num = $("#btnScheduleSendOk").attr("data-num");
-					let date = $("#btnScheduleSendOk").attr("data-date");
+					let num = $("#btnEventSendOk").attr("data-num");
+					let date = $("#btnEventSendOk").attr("data-date");
 					
 					let url = "${pageContext.request.contextPath}/log/day"
 					let query = "date="+date+"&num="+num;
@@ -490,7 +549,7 @@ $(function(){
 
 // 등록/수정 대화상자 - 취소 버튼
 $(function(){
-	$("#btnScheduleSendCancel").click(function(){
+	$("#btnEventSendCancel").click(function(){
 		$("#eventModal").modal("hide");
 	});
 });
@@ -501,9 +560,13 @@ $(function(){
 		if(this.checked) {
 			$("#form-stime").val("").hide();
 			$("#form-etime").val("").hide();
-		} else if(this.checked === false && $("#form-repeat").val() === "0"){
+			$("#stime_Son").hide();
+			$("#etime_Son").hide();
+		} else if(this.checked === false){
 			$("#form-stime").val("00:00").show();
 			$("#form-etime").val("00:00").show();
+			$("#stime_Son").show();
+			$("#etime_Son").show();
 		}
 	});
 
@@ -546,15 +609,6 @@ function check() {
 		return false;
 	}
 
-	if($("#form-eday").val()) {
-		let s1 = $("#form-sday").val().replace("-", "");
-		let s2 = $("#form-eday").val().replace("-", "");
-		if(s1 > s2) {
-			$("#form-sday").focus();
-			return false;
-		}
-	}
-	
 	if($("#form-etime").val()) {
 		let s1 = $("#form-stime").val().replace(":", "");
 		let s2 = $("#form-etime").val().replace(":", "");
@@ -564,15 +618,6 @@ function check() {
 		}
 	}	
 	
-	if($("#form-repeat").val() != "0" && ! /^(\d){1,2}$/g.test($("#form-repeat_cycle").val())) {
-		$("#form-repeat_cycle").focus();
-		return false;
-	}
-	
-	if($("#form-repeat").val() != "0" && $("#form-repeat_cycle").val()<1) {
-		$("#form-repeat_cycle").focus();
-		return false;
-	}
 	
 	return true;
 }
