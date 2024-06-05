@@ -23,8 +23,9 @@
                 <div class="card bg-gradient-primary shadow-lg rounded-lg">
                     <div class="card-body">
                         <h2 class="card-title text-center mb-4">
-                            <i class="bi-book-half me-2"></i>시간의 향기
+                            <i class="bi-book-half me-2"></i>순간
                         </h2>
+                            <span class="float-end">기록은 향기와 같다. <br>맡을 순 있지만 붙잡을 순 없다. </span><br>
                         <form name="viewForm" method="post">
                             <div class="form-group mb-3">
                                 <label for="subject" class="form-label">&nbsp;&nbsp;&nbsp;제목</label>
@@ -37,7 +38,7 @@
                             <div class="form-group mb-3">
                                 <label for="emotion" class="form-label">
                                     <span class="h6">&nbsp;&nbsp;&nbsp;감정&nbsp;</span>
-                                    <span class="${dto.emoji} h5"></span>
+                                    <span class="${dto.emoji} h5"></span><br>
                                 </label>
                             </div>
                             <div class="form-group mb-3">

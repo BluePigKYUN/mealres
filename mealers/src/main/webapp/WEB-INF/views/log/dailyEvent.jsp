@@ -6,187 +6,134 @@
 <head>
 <meta charset="utf-8">
 <title>일정관리</title>
+<style type="text/css">
+.nav-item {
+    list-style-type: none;
+}
+</style>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 
-<div class="container-fluid py-5 mt-5">
-	<div class="container py-5 my-5">
-        <div class="row">
-            <div class="col-md-8">
-                <h2>일정관리</h2>
-                <div class="calendar bg-white p-4 rounded shadow-sm">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <!-- arrow 누르면 다음달 이전달로 가게 구현해야함 -->
-						<div class="tab-content" id="nav-tabContent">
-							<div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-tab-1"></div>
-							<div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-tab-2"></div>
-							<div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav-tab-2"></div>
+	<div class="container-fluid py-3">
+		<div class="container py-5 my-5">
+			<div class="row">
+				<div class="col-md-8">
+
+					<h2>일정관리</h2>
+					<div class="calendar bg-white rounded shadow-sm">
+						<div
+							class="d-flex justify-content-between align-items-center mb-3">
+							<div class="tab-content" id="nav-tabContent">
+								<div class="tab-pane fade show active" id="nav-1"
+									role="tabpanel" aria-labelledby="nav-tab-1"></div>
+								<div class="tab-pane fade" id="nav-2" role="tabpanel"
+									aria-labelledby="nav-tab-2"></div>
+								<div class="tab-pane fade" id="nav-3" role="tabpanel"
+									aria-labelledby="nav-tab-2"></div>
+							</div>
 						</div>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>S</span>
-                        <span>M</span>
-                        <span>T</span>
-                        <span>W</span>
-                        <span>T</span>
-                        <span>F</span>
-                        <span>S</span>
-                    </div>
-                    <div class="days d-flex justify-content-between">
-                        <!-- 나머지 달력은 여기다가 코드 c:forEach 돌려야함 -->
-                    </div>
-                </div>
-                
-            </div>
-            <div class="col-md-4">
-                <h3>오늘일정</h3>
-                <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        새벽
-                        <span class="badge bg-primary rounded-pill">5:00-6:00</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        아침
-                        <span class="badge bg-primary rounded-pill">8:00-9:00</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        점심
-                        <span class="badge bg-primary rounded-pill">12:00-13:00</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        물품구매
-                        <span class="badge bg-primary rounded-pill">15:00-16:00</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        퇴근시간
-                        <span class="badge bg-primary rounded-pill">17:00-18:00</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-  
-  <!-- Modal -->
-<div class="modal fade" id="myDialogModal"
-		data-bs-backdrop="static" data-bs-keyboard="false" 
-		tabindex="-1" aria-labelledby="imyDialogModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="myDialogModalLabel">스케쥴 등록</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body pt-0 pb-0">
-        		<form name="scheduleForm">
-        			<table class="table">
-						<tr>
-							<td class="col-2">제 목</td>
-							<td>
-								<input type="text" name="subject" id="form-subject" class="form-control">
-								<small class="form-control-plaintext help-block">
-									* 제목은 필수 입니다.
-								</small>
-							</td>
-						</tr>
-						
-						<tr>
-							<td class="col-2">일정분류</td>
-							<td>
-								<select name="color" id="form-color" class="form-select">
-									<option value="green">개인일정</option>
-									<option value="blue">가족일정</option>
-									<option value="tomato">회사일정</option>
-									<option value="purple">기타일정</option>
-								</select>
-							</td>
-						</tr>
-						
-						<tr>
-							<td class="col-2">종일일정</td>
-							<td>
-	                            <div class="form-check form-control-plaintext">
-	                                <input class="form-check-input" type="checkbox" name="allDay" id="form-allDay" value="1">
-	                                <label class="form-check-label" for="form-allDay">하루종일</label>
-	                            </div>
-							</td>
-						</tr>
+					</div>
 
-						<tr>
-							<td class="col-2">시작일자</td>
-							<td>
-								<div class="row">
-									<div class="col col-sm-4 pe-1">
-										<input type="date" name="sday" id="form-sday" class="form-control">
-									</div>
-									<div class="col col-sm-3">
-										<input type="time" name="stime" id="form-stime" class="form-control" style="display: none;">
-									</div>
-								</div>
-								<small class="form-control-plaintext help-block">
-									* 시작날짜는 필수입니다.
-								</small>
-							</td>
-						</tr>
+				</div>
 
-						<tr>
-							<td class="col-2">종료일자</td>
-							<td>
-								<div class="row">
-									<div class="col col-sm-4 pe-1">
-										<input type="date" name="eday" id="form-eday" class="form-control">
-									</div>
-									<div class="col col-sm-3">
-										<input type="time" name="etime" id="form-etime" class="form-control" style="display: none;">
-									</div>
-								</div>
-								<small class="form-control-plaintext help-block">
-									종료일자는 선택사항이며, 시작일자보다 작을 수 없습니다.
-								</small>
-							</td>
-						</tr>
+				<div class="col-md-4">
+					<h3>오늘일정</h3>
+					<ul class="list-group">
+						<li
+							class="list-group-item d-flex justify-content-between align-items-center">
+							새벽 <span class="badge bg-primary rounded-pill">5:00-6:00</span>
+						</li>
+						<li
+							class="list-group-item d-flex justify-content-between align-items-center">
+							아침 <span class="badge bg-primary rounded-pill">8:00-9:00</span>
+						</li>
+						<li
+							class="list-group-item d-flex justify-content-between align-items-center">
+							점심 <span class="badge bg-primary rounded-pill">12:00-13:00</span>
+						</li>
+						<li
+							class="list-group-item d-flex justify-content-between align-items-center">
+							물품구매 <span class="badge bg-primary rounded-pill">15:00-16:00</span>
+						</li>
+						<li
+							class="list-group-item d-flex justify-content-between align-items-center">
+							퇴근시간 <span class="badge bg-primary rounded-pill">17:00-18:00</span>
+						</li>
+					</ul>
 
-						<tr>
-							<td class="col-2">일정반복</td>
-							<td>
-								<div class="row">
-									<div class="col col-sm-4 pe-1">
-										<select name="repeat" id="form-repeat" class="form-select">
-											<option value="0">반복안함</option>
-											<option value="1">년반복</option>
-										</select>
-									</div>
-									<div class="col col-sm-3">
-										<input type="text" name="repeat_cycle" id="form-repeat_cycle" class="form-control">
-									</div>
-								</div>
-							</td>
-						</tr>
-						
-						<tr>
-							<td class="col-2">메 모</td>
-							<td>
-								<textarea name="memo" id="form-memo" class="form-control" style="height: 70px; resize: none;"></textarea>
-							</td>
-						</tr>
-						
-						<tr>
-							<td colspan="2" class="text-center" style="border-bottom: none;">
-								<input type="hidden" name="num"id="form-num"  value="0">
-								<button type="button" class="btn btn-dark" id="btnScheduleSendOk"> 등록 완료 </button>
-								<button type="button" class="btn btn-light" id="btnScheduleSendCancel"> 등록 취소 </button>
-							</td>
-						</tr>
-						
-        			</table>
-        		</form>
+
+					<div class="list-group my-3">
+						<ul class="list-group d-flex flex-row" id="myTab" role="tablist">
+							<li class="nav-item" role="presentation">
+								<button class="mx-3 active btn btn-success" id="tab-1"
+									data-bs-toggle="tab" data-bs-target="#nav-1" type="button"
+									role="tab" aria-controls="1" aria-selected="true">월별일정</button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="btn btn-success" id="tab-2" data-bs-toggle="tab"
+									data-bs-target="#nav-2" type="button" role="tab"
+									aria-controls="2" aria-selected="true">상세일정</button>
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+
+	<!-- Modal -->
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">일정 등록</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="event/insert" method="post">
+                        <div class="form-group">
+                            <label for="title">제목</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="memo">메모</label>
+                            <textarea class="form-control" id="memo" name="memo"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="color">색상</label>
+                            <input type="color" class="form-control" id="color" name="color" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regDateEvent">등록일</label>
+                            <input type="date" class="form-control" id="regDateEvent" name="regDateEvent" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDate">이벤트 날짜</label>
+                            <input type="date" class="form-control" id="eventDate" name="eventDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventStartTime">시작 시간</label>
+                            <input type="time" class="form-control" id="eventStartTime" name="eventStartTime">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventEndTime">종료 시간</label>
+                            <input type="time" class="form-control" id="eventEndTime" name="eventEndTime">
+                        </div>
+                        <div class="form-group">
+                            <label for="userNum">사용자 번호</label>
+                            <input type="number" class="form-control" id="userNum" name="userNum" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">등록</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 <footer>
@@ -367,12 +314,12 @@ $(function(){
 		$("form[name=scheduleForm] input[name=sday]").val(date);
 		$("form[name=scheduleForm] input[name=eday]").val(date);
 		
-		$("#myDialogModalLabel").html("스케쥴 등록");
+		$("#eventModalLabel").html("스케쥴 등록");
 		$("#btnScheduleSendOk").attr("data-mode", "insert");
 		$("#btnScheduleSendOk").html(" 등록 완료 ");
 		$("#btnScheduleSendCancel").html(" 등록 취소 ");
 		
-		$("#myDialogModal").modal("show");
+		$("#eventModal").modal("show");
 	});
 });
 
@@ -448,7 +395,7 @@ $(function(){
 		}		
 		$("#form-memo").val(memo);
 		
-		$("#myDialogModalLabel").html("스케쥴 수정");
+		$("#eventModalLabel").html("스케쥴 수정");
 		$("#btnScheduleSendOk").attr("data-mode", "update");
 		$("#btnScheduleSendOk").attr("data-num", num);
 		$("#btnScheduleSendOk").attr("data-date", date);
@@ -456,7 +403,7 @@ $(function(){
 		$("#btnScheduleSendOk").html(" 수정 완료 ");
 		$("#btnScheduleSendCancel").html(" 수정 취소 ");
 		
-		$("#myDialogModal").modal("show");
+		$("#eventModal").modal("show");
 	});
 });
 
@@ -533,7 +480,7 @@ $(function(){
 				}
 			}
 			
-			$("#myDialogModal").modal("hide");
+			$("#eventModal").modal("hide");
 			
 		};
 		
@@ -544,7 +491,7 @@ $(function(){
 // 등록/수정 대화상자 - 취소 버튼
 $(function(){
 	$("#btnScheduleSendCancel").click(function(){
-		$("#myDialogModal").modal("hide");
+		$("#eventModal").modal("hide");
 	});
 });
 

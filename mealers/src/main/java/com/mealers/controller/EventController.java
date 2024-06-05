@@ -97,44 +97,6 @@ public class EventController {
 
 				String s;
 				String[][] days = new String[cal.getActualMaximum(Calendar.WEEK_OF_MONTH)][7];
-				
-				// 1일 앞의 전달 날짜 및 일정 출력(안써서 주석처리)
-				// startDay ~ endDay 까지 처리
-				/*
-				int cnt;
-				for (int i = 1; i < week; i++) {
-					s = String.format("%04d%02d%02d", syear, smonth, sdate);
-					days[0][i - 1] = "<span class='textDate preMonthDate' data-date='" + s + "' >" + sdate + "</span>";
-
-					cnt = 0;
-					for (EventDTO dto : list) {
-						int sd8 = Integer.parseInt(dto.getSday());
-						int sd4 = Integer.parseInt(dto.getSday().substring(4));
-						int ed8 = -1;
-						if (dto.getEday() != null) {
-							ed8 = Integer.parseInt(dto.getEday());
-						}
-						int cn8 = Integer.parseInt(s);
-						int cn4 = Integer.parseInt(s.substring(4));
-
-						if (cnt == 4) {
-							days[0][i - 1] += "<span class='scheduleMore' data-date='" + s + "' >" + "more..." + "</span>";
-							break;
-						}
-
-						if ((dto.getRepeat() == 0 && (sd8 == cn8 || sd8 <= cn8 && ed8 >= cn8))
-								|| (dto.getRepeat() == 1 && sd4 == cn4)) {
-							days[0][i - 1] += "<span class='scheduleSubject' data-date='" + s + "' data-num='" + dto.getNum()
-									+ "' >" + dto.getSubject() + "</span>";
-							cnt++;
-						} else if ((dto.getRepeat() == 0 && (sd8 > cn8 && ed8 < cn8)) || (dto.getRepeat() == 1 && sd4 > cn4)) {
-							break;
-						}
-					}
-
-					sdate++;
-				}
-				*/
 
 				// 해당년도 해당 월의 날짜 및 일정 출력
 				int row, n = 0;
@@ -169,16 +131,7 @@ public class EventController {
 								days[row][i] += "<span class='scheduleMore' data-date='" + s + "' >" + "more..." + "</span>";
 								break;
 							}
-							//반복일정에 대해서는 없어서 주석처리하였음
-							/*if ((dto.getRepeat() == 0 && (sd8 == cn8 || sd8 <= cn8 && ed8 >= cn8))
-									|| (dto.getRepeat() == 1 && sd4 == cn4)) {
-								days[row][i] += "<span class='scheduleSubject' data-date='" + s + "' data-num='" + dto.getNum()
-										+ "' >" + dto.getSubject() + "</span>";
-								cnt++;
-							} else if ((dto.getRepeat() == 0 && (sd8 > cn8 && ed8 < cn8))
-									|| (dto.getRepeat() == 1 && sd4 > cn4)) {
-								break;
-							}*/
+
 						}
 
 						if (n == cal.getActualMaximum(Calendar.DATE)) {
@@ -188,47 +141,6 @@ public class EventController {
 					}
 					week = 1;
 				}
-				
-				// 마지막 날짜 이후 안써서 주석처리
-				// year년도 month월 마지막 날짜 이후 일정 출력
-				/*
-				if (week != 7) {
-					n = 0;
-					for (int i = week; i < 7; i++) {
-						n++;
-						s = String.format("%04d%02d%02d", eyear, emonth, n);
-						days[row][i] = "<span class='textDate nextMonthDate' data-date='" + s + "' >" + n + "</span>";
-
-						cnt = 0;
-						for (EventDTO dto : list) {
-							int sd8 = Integer.parseInt(dto.getEvent_date());
-							int sd4 = Integer.parseInt(dto.getEvent_date().substring(4));
-							int ed8 = -1;
-							if (dto.getEday() != null) {
-								ed8 = Integer.parseInt(dto.getEday());
-							}
-							int cn8 = Integer.parseInt(s);
-							int cn4 = Integer.parseInt(s.substring(4));
-
-							if (cnt == 4) {
-								days[row][i] += "<span class='scheduleMore' data-date='" + s + "' >" + "more..." + "</span>";
-								break;
-							}
-
-							if ((dto.getRepeat() == 0 && (sd8 == cn8 || sd8 <= cn8 && ed8 >= cn8))
-									|| (dto.getRepeat() == 1 && sd4 == cn4)) {
-								days[row][i] += "<span class='scheduleSubject' data-date='" + s + "' data-num='" + dto.getNum()
-										+ "' >" + dto.getSubject() + "</span>";
-								cnt++;
-							} else if ((dto.getRepeat() == 0 && (sd8 > cn8 && ed8 < cn8))
-									|| (dto.getRepeat() == 1 && sd4 > cn4)) {
-								break;
-							}
-						}
-
-					}
-				}
-				*/
 
 				String today = String.format("%04d%02d%02d", todayYear, todayMonth, todayDate);
 
@@ -358,18 +270,6 @@ public class EventController {
 					}
 					week = 1;
 				}
-				// 마지막날짜 이후는 사용하지 않아 주석처리
-				// 해당년도 해당월의 마지막 날짜 이후
-				/*
-				if (week != 7) {
-					n = 0;
-					for (int i = week; i < 7; i++) {
-						n++;
-						s = String.format("%04d%02d%02d", eyear, emonth, n);
-						days[row][i] = "<span class='textDate nextMonthDate' data-date='" + s + "' >" + n + "</span>";
-					}
-				}
-				*/
 
 				mav.addObject("year", year);
 				mav.addObject("month", month);
@@ -478,19 +378,7 @@ public class EventController {
 					dto.setEvent_start_time("");
 					dto.setEvent_end_time("");
 				}
-				/* EndDay에 대한 옵션은 없어서 주석처리하였음
-				if (dto.getStime().length() == 0 && dto.getEtime().length() == 0 && dto.getSday().equals(dto.getEday()))
-					dto.setEday("");
-				//반복일정 설정에 대한 부분은 없어 주석처리하였음.
-				dto.setRepeat(Integer.parseInt(req.getParameter("repeat")));
-				if (req.getParameter("repeat_cycle").length() != 0) {
-					dto.setRepeat_cycle(Integer.parseInt(req.getParameter("repeat_cycle")));
 
-					dto.setEday("");
-					dto.setStime("");
-					dto.setEtime("");
-				}
-				*/
 				dto.setMemo(req.getParameter("memo"));
 
 				dao.insertEvent(dto);
@@ -531,20 +419,7 @@ public class EventController {
 					dto.setEvent_start_time("");
 					dto.setEvent_end_time("");
 				}
-				/* endDay 에 대한 설정은 없어서 주석처리
-				if (dto.getStime().length() == 0 && dto.getEtime().length() == 0 && dto.getSday().equals(dto.getEday())) {
-					dto.setEday("");
-				}
-				//반복일정에 대한 설정은 없어서 주석처리하였음.
-				dto.setRepeat(Integer.parseInt(req.getParameter("repeat")));
-				if (req.getParameter("repeat_cycle").length() != 0) {
-					dto.setRepeat_cycle(Integer.parseInt(req.getParameter("repeat_cycle")));
 
-					dto.setEday("");
-					dto.setStime("");
-					dto.setEtime("");
-				}
-				*/
 				dto.setMemo(req.getParameter("memo"));
 
 				dao.updateSchedule(dto);

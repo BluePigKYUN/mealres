@@ -1,10 +1,13 @@
 package com.mealers.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import org.json.JSONObject;
 
 import com.mealers.annotation.Controller;
 import com.mealers.annotation.RequestMapping;
@@ -76,6 +79,7 @@ public class DiaryController {
 	                emojiMap.put(emoji, 1);
 	            }
 	        }
+	        
 	        List<DiaryDTO> fullList = dao.fullListDiary(info.getUserId());
 	        DiaryDTO randomDiary = null;
 	        if (! fullList.isEmpty()) {
@@ -195,4 +199,69 @@ public class DiaryController {
  		return new ModelAndView("redirect:/log/diary?" + query );
  	}
 	
+ 	@ResponseBody
+ 	@RequestMapping(value = "/log/diaryBar", method = RequestMethod.GET)
+ 	public Map<String, Object> printChart(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+ 		Map<String, Object> model = new HashMap<String, Object>();
+		DiaryDAO dao = new DiaryDAO();
+		MyUtil util = new MyUtilBootstrap();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		try {
+			int size = 10;
+			int current_page = 1;
+			String page = req.getParameter("pageNo");
+			
+			if(page != null  && ! page.isEmpty()) {
+				current_page = Integer.parseInt(page);
+			}
+			
+			int dataCount = dao.dataCount(info.getUserId());
+			int total_page = util.pageCount(dataCount, size);
+			int offset = (current_page - 1) * size;
+			
+			if(current_page > total_page) {
+				current_page = total_page;
+			}
+			List<DiaryDTO> list = dao.listDiary(offset, size, info.getUserId());
+			
+	        Map<String, Integer> emojiMap = new HashMap<>();
+	        for (DiaryDTO dto : list) {
+	            String emoji = dto.getEmoji();
+	            if (emojiMap.containsKey(emoji)) {
+	                emojiMap.put(emoji, emojiMap.get(emoji) + 1);
+	            } else {
+	                emojiMap.put(emoji, 1);
+	            }
+	        }
+	        
+	        Map<String, String> emojiNameMap = new HashMap<>();
+	        emojiNameMap.put("bi-emoji-smile", "😊");
+	        emojiNameMap.put("bi-emoji-laughing", "😁");
+	        emojiNameMap.put("bi-emoji-frown", "😠");
+	        emojiNameMap.put("bi-emoji-angry", "😡");
+	        emojiNameMap.put("bi-emoji-neutral", "😑");
+	        emojiNameMap.put("bi-cloud-drizzle", "😶‍🌫️");
+	        
+	        List<String> emojiKeys = new ArrayList<>(emojiMap.keySet());
+	        List<String> modifiedEmojiList = new ArrayList<>();
+	        
+	        for (String key : emojiKeys) {
+	            String modifiedString = emojiNameMap.getOrDefault(key, key);
+	            modifiedEmojiList.add(modifiedString);
+	        }
+	        
+	 		model.put("title", "감정 빈도");
+	 		model.put("type", "bar");
+	 		model.put("emojiValue", emojiMap.values());
+	 		model.put("emojiKey", modifiedEmojiList);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+ 		return model;
+ 	}
 }
+ 	

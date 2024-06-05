@@ -22,6 +22,7 @@ public class DiaryDAO {
 		try {
 			
 			// 이미 오늘의 기록이 있는 경우
+			/*
 			sb.append("Select Count(*) From Diary Where userNum = ? And to_char(reg_date_diary, 'yyyy-mm-dd') = to_char(sysDate, 'yyyy-mm-dd')");
 			
 	        pstmt = conn.prepareStatement(sb.toString());
@@ -34,6 +35,7 @@ public class DiaryDAO {
 	        }
 	        
 	        DBUtil.close(pstmt);
+	        */
 	        
 	        // 새로운 일기 입력
 	        sb.setLength(0);

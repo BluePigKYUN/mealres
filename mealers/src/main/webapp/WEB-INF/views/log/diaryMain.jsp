@@ -10,6 +10,13 @@
 	i.bi-x-circle {
     cursor: pointer;
 }
+
+#chartContainer {
+    width: 100%;
+    height: 400px;
+    max-width: 100%;
+    min-height: 300px;
+}
 </style>
 
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
@@ -89,9 +96,9 @@
 	        <div class="col-lg-4">
 				<div class="mb-4 my-5">
 				    <h3>랜덤 일기 보기</h3>
-				    <div class="d-flex align-items-center bg-light p-3 rounded">
+				    <div class="d-flex list-group-item align-items-center bg-light p-3 rounded">
 				    <c:if test="${not empty randomDiary}">
-						<button class="btn btn-primary me-3" data-diaryNum="${randomDiary.diary_Num}" onclick="sendDiaryNum(this)">버튼</button>
+						<button class="btn btn-primary me-3" data-diaryNum="${randomDiary.diary_Num}" onclick="sendDiaryNum(this)">보기</button>
 					</c:if>
 				        <div>
 				            <c:choose>
@@ -115,62 +122,30 @@
 				</div>
 				
 				<div class="mb-4">
-					<h3>당시 기분</h3>
-					<ul class="list-group">
-						<c:choose>
-							<c:when test="${empty emojiList}">
-								<li class="list-group-item d-flex align-items-center">
-									<i class="bi bi-emoji-neutral me-2"></i>
-									<span>기록된 감정이 없습니다.</span>
-								</li>
-							</c:when>
-							<c:otherwise>
-								<c:forEach var="entry" items="${emojiList}">
-									<li class="list-group-item d-flex align-items-center">
-										<i class="bi ${entry.key} me-2"></i>
-										${entry.value}
-									</li>
-								</c:forEach>
-							</c:otherwise>
-						</c:choose>
-					</ul>
+				    <h3>감정들</h3>
+				    <ul class="list-group d-flex flex-row list-group-item rounded">
+				        <c:choose>
+				            <c:when test="${empty emojiList}">
+				                <li class="list-group-item d-flex align-items-center">
+				                    <i class="bi bi-emoji-neutral me-2"></i>
+				                    <span>기록된 감정이 없습니다.</span>
+				                </li>
+				            </c:when>
+				            <c:otherwise>
+				                <c:forEach var="entry" items="${emojiList}">
+				                    <li class="list-group-item d-flex align-items-center rounded" style="border: 1px dotted black;">
+				                        <i class="bi ${entry.key}"></i>
+				                    </li>
+				                </c:forEach>
+				            </c:otherwise>
+				        </c:choose>
+				    </ul>
 				</div>
 				
-	            <!-- 
-	            <div>
-	                <h3>일주일 전 일기</h3>
-	                <ul class="list-group">
-	                    <li class="list-group-item d-flex align-items-start">
-	                        <div class="me-3">
-	                            <i class="bi bi-calendar3"></i>
-	                        </div>
-	                        <div>
-	                            <span class="fw-bold">날짜를 출력할 부분</span>
-	                            <p class="mb-0">제목을 출력할 부분</p>
-	                        </div>
-	                    </li>
-	                    <li class="list-group-item d-flex align-items-start">
-	                        <div class="me-3">
-	                            <i class="bi bi-calendar3"></i>
-	                        </div>
-	                        <div>
-	                            <span class="fw-bold">2024-05-29</span>
-	                            <p class="mb-0">최근일기만 출력</p>
-	                        </div>
-	                    </li>
-	                    <li class="list-group-item d-flex align-items-start">
-	                        <div class="me-3">
-	                            <i class="bi bi-calendar3"></i>
-	                        </div>
-	                        <div>
-	                            <span class="fw-bold">2024-05-29</span>
-	                            <p class="mb-0">최대 3개 까지만</p>
-	                        </div>
-	                    </li>
-	                </ul>
-	            </div>
-	             -->
-	            
+	             <div id="chartContainer" class="w-100 list-group-item container-fluid rounded" style="height: 36%;" >
+	             <!-- 차트영역  -->
+	             </div>
+	             
 	        </div>
 	    </div>
 	</div>
@@ -429,8 +404,63 @@ function ajaxFun(url, method, formData, dataType, fn, file = false) {
 		location.href = url;	
 	}
 }
+   
+$(function() {
+	let url = "${pageContext.request.contextPath}/log/diaryBar";
+
+	$.getJSON(url, function(data) {
+		
+		if(! data.emojiValue){
+			return;
+		}
+		
+		var chartDom = document.getElementById('chartContainer');
+		var myChart = echarts.init(chartDom);
+		var option;
+
+		option = {
+		  title: {
+		    text: '감정그래프'
+		  },
+		  color: {
+		    0: '#eee',
+		    1: '#91cc75',
+		    2: '#73c0de',
+		    3: '#fac858',
+		    4: '#ea7ccc',
+		    5: '9a60b4',
+		    6: '3ba272'
+		  },
+		  textStyle: {
+		    fontSize: 16,
+		    fontWeight: 'bold'
+		  },
+		  tooltip: {
+			    trigger: 'axis'
+		  },
+		  xAxis: {
+		    type: 'category',
+		    data: data.emojiKey
+		  },
+		  yAxis: {
+		    type: 'value'
+		  },
+		  series: [
+			    {
+			      data: data.emojiValue,
+			      type: 'bar'
+			    }
+			  ]
+		};
+
+		option && myChart.setOption(option);
+	
+	});
+	
+});
 
 </script>
+
 
 
 </body>

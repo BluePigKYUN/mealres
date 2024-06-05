@@ -19,9 +19,9 @@ public class EventDAO {
 		String sql;
 
 		try {
-			sql = "INSERT INTO event(EVENT_NUM, TITLE, MEMO, COLOR, REG_DATE_EVENT, EVENT_DATE, "
-					+ " EVENT_START_TIME, EVENT_END_TIME, USERNUM) "
-					+ " VALUES(Event_seq.nextVal, ?, ?, ?, sysDate, ?, ?, ?, ?)";
+			sql = "INSERT INTO event(EVENT_NUM, TITLE, MEMO, COLOR, REG_DATE_EVENT, ";
+			sql += "  EVENT_DATE, EVENT_START_TIME, EVENT_END_TIME, USERNUM) ";
+			sql += " VALUES(Event_seq.nextVal, ?, ?, ?, sysDate, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getTitle());
@@ -137,7 +137,7 @@ public class EventDAO {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         String sql;
-        String s;
+        //String s;
 
         try {
             sql = "SELECT event_num, title, event_date, event_start_time, event_end_time, color, memo, reg_date_event "
@@ -150,6 +150,7 @@ public class EventDAO {
             rs = pstmt.executeQuery();
             
             if (rs.next()) {
+            	/*
                 dto = new EventDTO();
                 
                 dto.setEvent_num(rs.getLong("event_num"));
@@ -172,6 +173,17 @@ public class EventDAO {
                 dto.setColor(rs.getString("color"));
                 dto.setMemo(rs.getString("memo"));
                 dto.setReg_date_event(rs.getString("reg_date_event"));
+                */
+                
+                dto = new EventDTO();
+                dto.setEvent_num(rs.getLong("event_num"));
+                dto.setTitle(rs.getString("title"));
+                dto.setEvent_date(formatDate(rs.getString("event_date")));
+                dto.setEvent_start_time(formatTime(rs.getString("event_start_time")));
+                dto.setEvent_end_time(formatTime(rs.getString("event_end_time")));
+                dto.setColor(rs.getString("color"));
+                dto.setMemo(rs.getString("memo"));
+                dto.setReg_date_event(rs.getString("reg_date_event"));
             }
 
         } catch (SQLException e) {
@@ -182,6 +194,20 @@ public class EventDAO {
         }
 
         return dto;
+    }
+    
+    private String formatDate(String date) {
+        if (date != null && date.length() == 8) {
+            return date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6);
+        }
+        return date;
+    }
+
+    private String formatTime(String time) {
+        if (time != null && time.length() == 4) {
+            return time.substring(0, 2) + ":" + time.substring(2);
+        }
+        return time;
     }
 
     public void updateSchedule(EventDTO dto) throws SQLException {
