@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mealers.annotation.Controller;
 import com.mealers.annotation.RequestMapping;
 import com.mealers.annotation.RequestMethod;
+import com.mealers.annotation.ResponseBody;
 import com.mealers.dao.SearchDAO;
 import com.mealers.domain.SearchDTO;
 import com.mealers.domain.SessionInfo;
@@ -26,18 +29,12 @@ import jakarta.servlet.http.Part;
 
 @Controller
 public class SearchController {
-	@RequestMapping(value = "/search/main", method = RequestMethod.GET)
+	@RequestMapping(value = "/search/main")
 	public ModelAndView searchMain(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("search/main");
-		return mav;
-	}
-	
-	@RequestMapping(value = "/search/main", method = RequestMethod.POST)
-	public ModelAndView searchFood(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ModelAndView mav = new ModelAndView("search/main");
-		
 		SearchDAO dao = new SearchDAO();
 		MyUtil util = new MyUtilBootstrap();
+		
 		
 		try {
 			String page = req.getParameter("page");
@@ -48,6 +45,9 @@ public class SearchController {
 			
 			// 검색
 			String kwd = req.getParameter("kwd");
+			if (kwd == null) {
+				kwd = "";
+			}
 			
 			// GET 방식인 경우 디코딩
 			if (req.getMethod().equalsIgnoreCase("GET")) {
@@ -70,6 +70,9 @@ public class SearchController {
 			List<SearchDTO> list = null;
 			list = dao.listFood(offset, size, kwd);
 			
+			List<SearchDTO> listRank = null;
+			listRank = dao.listRank();
+			
 			String query = "";
 			if (kwd.length() != 0) {
 				query = "kwd=" + URLEncoder.encode(kwd, "utf-8");
@@ -88,6 +91,7 @@ public class SearchController {
 			
 			// 포워딩할 JSP에 전달할 속성
 			mav.addObject("list", list);
+			mav.addObject("listRank", listRank);
 			mav.addObject("page", current_page);
 			mav.addObject("total_page", total_page);
 			mav.addObject("dataCount", dataCount);
@@ -99,9 +103,86 @@ public class SearchController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return mav;
 	}
+	
+//	@ResponseBody
+//	@RequestMapping(value = "/search/main")
+//	public Map<String, Object> searchMain(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		
+//		Map<String, Object> model = new HashMap<String, Object>();
+//		SearchDAO dao = new SearchDAO();
+//		MyUtil util = new MyUtilBootstrap();
+//		
+//		
+//		try {
+//			String page = req.getParameter("page");
+//			int current_page = 1;
+//			if (page != null) {
+//				current_page = Integer.parseInt(page);
+//			}
+//			
+//			// 검색
+//			String kwd = req.getParameter("kwd");
+//			if (kwd == null) {
+//				kwd = "";
+//			}
+//			
+//			// GET 방식인 경우 디코딩
+//			if (req.getMethod().equalsIgnoreCase("GET")) {
+//				kwd = URLDecoder.decode(kwd, "utf-8");
+//			}
+//			
+//			int dataCount = dao.dataCount(kwd);
+//			
+//			// 전체 페이지 수
+//			int size = 8;
+//			int total_page = util.pageCount(dataCount, size);
+//			if (current_page > total_page) {
+//				current_page = total_page;
+//			}
+//			
+//			// 게시물 가져오기
+//			int offset = (current_page - 1) * size;
+//			if(offset < 0) offset = 0;
+//			
+//			List<SearchDTO> list = null;
+//			list = dao.listFood(offset, size, kwd);
+//			
+//			List<SearchDTO> listRank = null;
+//			listRank = dao.listRank();
+//			
+//			String query = "";
+//			if (kwd.length() != 0) {
+//				query = "kwd=" + URLEncoder.encode(kwd, "utf-8");
+//			}
+//			
+//			// 페이징 처리
+//			String cp = req.getContextPath();
+//			String listUrl = cp + "/search/main";
+//			String articleUrl = cp + "/search/item?page=" + current_page;
+//			if (query.length() != 0) {
+//				listUrl += "?" + query;
+//				articleUrl += "&" + query;
+//			}
+//			
+//			String paging = util.paging(current_page, total_page, listUrl);
+//			
+//			model.put("list", list);
+//			model.put("listRank", listRank);
+//			model.put("page", current_page);
+//			model.put("total_page", total_page);
+//			model.put("dataCount", dataCount);
+//			model.put("size", size);
+//			model.put("articleUrl", articleUrl);
+//			model.put("paging", paging);
+//			model.put("kwd", kwd);
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return model;
+//	}
 	
 	@RequestMapping(value = "/search/reg", method = RequestMethod.GET)
 	public ModelAndView searchReg(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -207,9 +288,11 @@ public class SearchController {
 			String articleUrl = cp + "/photo/article?page=" + current_page;
 			
 			String kwd = req.getParameter("kwd");
-			kwd = URLDecoder.decode(kwd, "utf-8");
+			if (kwd != null) {
+				kwd = URLDecoder.decode(kwd, "utf-8");
+			}
 			
-			if (kwd.length() != 0) {
+			if (kwd != null) {
 				query += "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
 			}
 			
