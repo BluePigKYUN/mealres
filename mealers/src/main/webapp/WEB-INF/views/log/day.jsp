@@ -48,7 +48,7 @@
 	</div>
 	
 	<div class="row ps-5">
-		<div class="row">
+		<div class="row" style="width: ">
 			<div class="col fw-bold form-control-plaintext">
 				<span><i class="bi bi-calendar2-date"></i> ${year}년 ${month}월 ${day}일의 일정</span>
 			</div>

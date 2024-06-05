@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.mealers.annotation.Controller;
+import com.mealers.annotation.RequestMapping;
+import com.mealers.annotation.RequestMethod;
 import com.mealers.annotation.ResponseBody;
 import com.mealers.dao.EventDAO;
 import com.mealers.domain.EventDTO;
 import com.mealers.domain.SessionInfo;
-import com.mealers.annotation.Controller;
-import com.mealers.annotation.RequestMapping;
-import com.mealers.annotation.RequestMethod;
 import com.mealers.servlet.ModelAndView;
 
 import jakarta.servlet.ServletException;
@@ -51,6 +51,7 @@ public class EventController {
 			Calendar cal = Calendar.getInstance();
 			int year = cal.get(Calendar.YEAR);
 			int month = cal.get(Calendar.MONTH) + 1; // 0 ~ 11
+			int thisdate = cal.getActualMinimum(Calendar.DAY_OF_MONTH);
 			int todayYear = year;
 			int todayMonth = month;
 			int todayDate = cal.get(Calendar.DATE);
@@ -91,10 +92,10 @@ public class EventController {
 				int edate = ecal.get(Calendar.DATE);
 
 				// 스케쥴 가져오기
-				String startDay = String.format("%04d%02d%02d", syear, smonth, sdate);
+				String startDate = String.format("%04d%02d%02d", syear, smonth, thisdate);
 				String endDay = String.format("%04d%02d%02d", eyear, emonth, edate);
-				List<EventDTO> list = dao.listMonth(startDay, endDay, info.getUserId());
-
+				List<EventDTO> list = dao.listMonth(startDate, endDay, info.getUserNum());
+	
 				String s;
 				String[][] days = new String[cal.getActualMaximum(Calendar.WEEK_OF_MONTH)][7];
 
@@ -102,11 +103,12 @@ public class EventController {
 				int row, n = 0;
 				int cnt;
 
-				jump: for (row = 0; row < days.length; row++) {
+				jump: 
+				for (row = 0; row < days.length; row++) {
 					for (int i = week - 1; i < 7; i++) {
 						n++;
 						s = String.format("%04d%02d%02d", year, month, n);
-
+						//달력을 만드는 부분
 						if (i == 0) {
 							days[row][i] = "<span class='textDate sundayDate' data-date='" + s + "' >" + n + "</span>";
 						} else if (i == 6) {
@@ -114,16 +116,15 @@ public class EventController {
 						} else {
 							days[row][i] = "<span class='textDate nowDate' data-date='" + s + "' >" + n + "</span>";
 						}
-
+						
 						cnt = 0;
 						for (EventDTO dto : list) {
 							int sd8 = Integer.parseInt(dto.getEvent_date());
 							int sd4 = Integer.parseInt(dto.getEvent_date().substring(4));
 							int ed8 = -1;
-							//내 DTO 에는 endDay가 없어서 주석처리
-							/*if (dto.getEday() != null) {
-								ed8 = Integer.parseInt(dto.getEday());
-							}*/
+							if (dto.getEvent_date() != null) {
+								ed8 = Integer.parseInt(dto.getEvent_date());
+							}
 							int cn8 = Integer.parseInt(s);
 							int cn4 = Integer.parseInt(s.substring(4));
 
@@ -132,6 +133,15 @@ public class EventController {
 								break;
 							}
 
+							if (((sd8 == cn8 || sd8 <= cn8 && ed8 >= cn8))
+									|| (sd4 == cn4)) {
+								days[row][i] += "<span class='scheduleSubject' style='max-width: 30px; font-color: white; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; background-color: " + dto.getColor() + ";' data-date='" + s + "' data-num='" + dto.getEvent_num()
+								+ "' >" + dto.getTitle() + "</span>";
+								cnt++;
+							} else if (((sd8 > cn8 && ed8 < cn8))
+									|| (sd4 > cn4)) {
+								break;
+							}
 						}
 
 						if (n == cal.getActualMaximum(Calendar.DATE)) {
@@ -357,7 +367,7 @@ public class EventController {
 				
 				dto.setUserNum(info.getUserNum());
 				dto.setTitle(req.getParameter("subject"));
-				dto.setColor(req.getParameter("color"));
+				dto.setColor(req.getParameter("bgColor"));
 				dto.setEvent_date(req.getParameter("sday").replaceAll("-", ""));
 				dto.setEvent_start_time(req.getParameter("stime").replaceAll(":", ""));
 				dto.setEvent_end_time(req.getParameter("etime").replaceAll(":", ""));

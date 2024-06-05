@@ -42,26 +42,25 @@ public class EventDAO {
 
 	}
 
-    public List<EventDTO> listMonth(String startDay, String endDay, String userId) {
+    public List<EventDTO> listMonth(String startDate, String EndDate, String userNum) {
         List<EventDTO> list = new ArrayList<>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         StringBuilder sb = new StringBuilder();
 
         try {
-            sb.append("SELECT event_num, title, event_date, event_start_time, event_end_time, ");
-            sb.append("color, memo ");
+            sb.append("SELECT event_num, title, To_Char(event_date, 'YYYYMMDD') event_date, ");
+            sb.append(" event_start_time, event_end_time, ");
+            sb.append("color, memo, To_Char(REG_DATE_EVENT, 'YYYYMMDD') REG_DATE_EVENT ");
             sb.append("FROM event ");
-            sb.append("WHERE usernum = ? AND ");
-            sb.append("(TO_DATE(event_date, 'YYYYMMDD') >= TO_DATE(?, 'YYYYMMDD') ");
-            sb.append("AND TO_DATE(event_date, 'YYYYMMDD') <= TO_DATE(?, 'YYYYMMDD')) ");
+            sb.append("WHERE usernum = ? And event_date Between ? And ? ");
             sb.append("ORDER BY event_date ASC, event_num DESC");
 
             pstmt = conn.prepareStatement(sb.toString());
             
-            pstmt.setString(1, userId);
-            pstmt.setString(2, startDay);
-            pstmt.setString(3, endDay);
+            pstmt.setString(1, userNum);
+            pstmt.setString(2, startDate);
+            pstmt.setString(3, EndDate);
 
             rs = pstmt.executeQuery();
             
@@ -71,6 +70,7 @@ public class EventDAO {
                 dto.setEvent_num(rs.getLong("event_num"));
                 dto.setTitle(rs.getString("title"));
                 dto.setEvent_date(rs.getString("event_date"));
+                dto.setReg_date_event(rs.getString("REG_DATE_EVENT"));
                 dto.setEvent_start_time(rs.getString("event_start_time"));
                 dto.setEvent_end_time(rs.getString("event_end_time"));
                 dto.setColor(rs.getString("color"));

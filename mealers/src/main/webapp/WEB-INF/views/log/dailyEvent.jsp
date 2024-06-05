@@ -125,7 +125,7 @@
 						<tr>
 							<td class="col-2">배경색</td>
 							<td>
-								<input type="color" id="form-color" class="form-control deco">
+								<input type="color" name="bgColor" id="form-color" class="form-control deco">
 							</td>
 						</tr>
 						

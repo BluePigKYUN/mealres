@@ -22,10 +22,10 @@
             <div class="col-lg-8">
                 <div class="card bg-gradient-primary shadow-lg rounded-lg">
                     <div class="card-body">
-                        <h2 class="card-title text-center mb-4">
+                        <h2 class="card-title text-center mt-3">
                             <i class="bi-book-half me-2"></i>순간
                         </h2>
-                            <span class="float-end">기록은 향기와 같다. <br>맡을 순 있지만 붙잡을 순 없다. </span><br>
+                            <i class="float-end">🌼기록은 향기와 같다🌻 <br>맡을 순 있지만 붙잡을 순 없다👀 </i><br>
                         <form name="viewForm" method="post">
                             <div class="form-group mb-3">
                                 <label for="subject" class="form-label">&nbsp;&nbsp;&nbsp;제목</label>

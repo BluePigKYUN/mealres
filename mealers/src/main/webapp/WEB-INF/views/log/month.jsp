@@ -45,7 +45,7 @@
 		<td width="100" scope="col">금</td>
 		<td class="text-primary" width="120">토</td>
 	</tr>
-
+	
 	<c:forEach var="row" items="${days}" >
 		<tr align="left" height="80" valign="top">
 			<c:forEach var="d" items="${row}">
