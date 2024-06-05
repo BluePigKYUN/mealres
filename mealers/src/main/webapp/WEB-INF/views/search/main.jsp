@@ -40,13 +40,15 @@ function searchList() {
 							<h4 class="ms-3 pt-3"> 밀러 등록 </h4>
 							<ul class="list-group my-3">
 								<c:forEach var="dto" items="${list}">
-									<li class="list-group-item list-group-item-action d-flex gap-2">
-										<div class="me-auto ">
-											  <a href="${articleUrl}&num=${dto.food_num}" class="" style="color: black">
-											  	${dto.food_name} (${dto.maker}, ${dto.kcal}kcal)
-											  </a>
-										</div>
-									</li>
+									<c:if test="${dto.userNum == 0}">
+										<li class="list-group-item list-group-item-action d-flex gap-2">
+											<div class="me-auto ">
+												  <a href="${articleUrl}&num=${dto.food_num}" class="" style="color: black">
+												  	${dto.food_name} (${dto.maker}, ${dto.kcal}kcal)
+												  </a>
+											</div>
+										</li>
+									</c:if>
 								</c:forEach>
 							</ul>
 						</div>
@@ -54,25 +56,23 @@ function searchList() {
 						<div class=" col-6">
 							<h4 class="ms-3 pt-3"> 유저 등록 </h4>
 							<ul class="list-group my-3">
-								<li class="list-group-item list-group-item-action d-flex gap-2">
-									<div class="me-auto ">
-										  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
-										  	월드콘 (농심, 388kcal)
-										  </a>
-									</div>
-									<span class="badge bg-primary rounded-pill ">유저등록</span>
-								</li>
-								<li class="list-group-item list-group-item-action d-flex gap-2">
-									<div class="me-auto ">
-										  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
-										  	월드콘 (농심, 388kcal)
-										  </a>
-									</div>
-									<span class="badge bg-primary rounded-pill ">유저등록</span>
-								</li>
+								<c:forEach var="dto" items="${list}">
+									<c:if test="${dto.userNum != 0}">
+										<li class="list-group-item list-group-item-action d-flex gap-2">
+											<div class="me-auto ">
+												  <a href="${articleUrl}&num=${dto.food_num}" class="" style="color: black">
+												  	${dto.food_name} (${dto.maker}, ${dto.kcal}kcal)
+												  </a>
+											</div>
+											<span class="badge bg-primary rounded-pill ">유저등록</span>
+										</li>
+									</c:if>
+								</c:forEach>
 							</ul>
 						</div>
 					</div>
+					
+					<div class="page-navigation d-flex">${paging}</div>
 					
 					<div class="my-3">
 						검색결과가 없습니다...&nbsp;
@@ -91,31 +91,29 @@ function searchList() {
            		<div class="col-md-4">
                 	<h3 class="mb-3">이번주 인기 식품</h3>
 					<ul class="list-group list-group-numbered mt-4">
-						<li class="list-group-item list-group-item-action d-flex gap-2">
-							<div class="me-auto ">
-								  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
-								  	월드콘 (농심, 388kcal)
-								  </a>
-							</div>
-							<span class="badge bg-primary rounded-pill ">유저등록</span>
-						</li>
-						
-						<li class="list-group-item list-group-item-action d-flex gap-2">
-							<div class="me-auto ">
-								  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
-								  	월드콘 (농심, 388kcal)
-								  </a>
-							</div>
-						</li>
-						
-						<li class="list-group-item list-group-item-action d-flex gap-2">
-							<div class="me-auto ">
-								  <a href="${pageContext.request.contextPath}/search/item" class="" style="color: black">
-								  	월드콘 (농심, 388kcal)
-								  </a>
-							</div>
-						</li>
-						
+						<c:forEach var="dto" items="${listRank}">
+							<c:choose>
+								<c:when test="${dto.userNum == 0}">
+									<li class="list-group-item list-group-item-action d-flex gap-2">
+										<div class="me-auto ">
+											  <a href="${articleUrl}&num=${dto.food_num}" class="" style="color: black">
+											  	${dto.food_name} (${dto.maker}, ${dto.kcal}kcal)
+											  </a>
+										</div>
+									</li>
+								</c:when>
+								<c:otherwise>
+									<li class="list-group-item list-group-item-action d-flex gap-2">
+										<div class="me-auto ">
+											  <a href="${articleUrl}&num=${dto.food_num}" class="" style="color: black">
+											  	${dto.food_name} (${dto.maker}, ${dto.kcal}kcal)
+											  </a>
+										</div>
+										<span class="badge bg-primary rounded-pill ">유저등록</span>
+									</li>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
 					</ul>
             	</div>
            	</div>

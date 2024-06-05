@@ -87,26 +87,47 @@
 						<img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid rounded object-fit-cover" >
 					</div>
 						
-					<button type="button" class="px-2 py-1 position-absolute likeheart" style="top: 10px; right: 10px;"> <i class="bi bi-heart-fill" style="color: ${isLikeCmnt?'rgb(255, 0, 0)':'white'}"></i>&nbsp;&nbsp;</button> 
+	 
 					
 					<div class="flex-grow-1" style="height: 50%">
 						 <div style="height: 75%">
-							<div class="d-flex flex-row justify-content-between pt-4 pb-3 px-3 ">
-									
-								<div class="text-white bg-secondary px-2 rounded w-25 py-1 text-center">${dto.mem_Nick}</div>
-								<div class="align-self-center">두시간전</div>
+							<div class="d-flex flex-row justify-content-between pt-2 pb-3 px-3 d-flex justify-content-center align-items-center">
+								<div class="d-flex w-50">
+									<p class="text-white bg-secondary px-2 rounded py-1 me-3 h-50 d-flex justify-content-center align-items-center" >${dto.mem_Nick}</p>
+									<c:choose>
+										<c:when test="${dto.timeGap/60 < 24}">
+											<c:choose>
+												<c:when test="${dto.timeGap == 0}">
+													<p class="py-1 text-secondary">지금</p>
+												</c:when>
+												<c:when test="${dto.timeGap < 60}">
+													<p class="py-1 text-secondary">${dto.timeGap}분전</p>
+												</c:when>
+												<c:otherwise>
+													<p class="py-1 text-secondary">${Math.floor(dto.timeGap/60)}시간전</p>
+												</c:otherwise>
+											</c:choose>	
+										</c:when>
+										<c:otherwise>
+											<p>&nbsp;</p>
+										</c:otherwise>
+									</c:choose>
+								</div>	
+								<div class="w-50 text-end">
+									<button type="button" class="px-2 py-1 likeheart" > <i class="bi bi-heart-fill" style=" color: ${isLikeCmnt?'rgb(255, 0, 0)':'rgb(234, 234, 234)'}"></i></button>
+								</div>
 							</div>
 
 							<h3 class="fw-bold ms-5 py-3 ps-1 mb-0 ">${dto.subject}</h3>
-							<div class="ms-5 w-75 ps-1 mt-2 content-box " style="max-height: 180px">${dto.content}</div>
+							<div class="ms-5 w-75 ps-1 mt-2 content-box" style="max-height: 180px">${dto.content}</div>
 						</div>
 						<div class="d-flex justify-content-between bottom-0 start-0 bottom-item pt-5 mb-1" style="height: 25%">
 							<p class="ms-4 mb-1">
 								<span>댓글10</span> 
-								<span>좋아요
-									<span id="cmntLikeCount">${likeCount}</span>
-								</span> 
 								<span>조회수${dto.hitCount}</span>
+								<span>좋아요
+									<span id="cmntLikeCount">${likeCount}</span> 
+								</span> 
 							</p>
 							<p class="me-4">${dto.reg_date}</p>
 						</div>
@@ -114,8 +135,28 @@
 				</div>
 				<div class="col-lg-12 h-25 mt-4 px-0 d-flex justify-content-between">
 					<div>
-						<button type="button" class="btn border border-secondary text-secondary rounded-pill" >수정</button>
-						<button type="button" class="btn border border-secondary text-secondary rounded-pill ms-1" >삭제</button>
+						<c:choose>
+							<c:when test="${sessionScope.member.userNum == dto.userNum}">
+								
+									<button type="button" class="btn border border-secondary text-secondary rounded-pill" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/update?num=${dto.num}&page=${page}&mealS mealSort}';">수정</button>
+								
+							</c:when>
+							<c:otherwise>
+								<div>&nbsp;</div>
+							</c:otherwise>
+							
+						</c:choose>
+						
+						<c:choose>
+							<c:when test="${sessionScope.member.userNum == dto.userNum || sessionScope.member.userNum == 'admin'}">
+								
+									<button type="button" class="btn border border-secondary text-secondary rounded-pill ms-1" onclick="deleteMeal();">삭제</button>
+								
+							</c:when>
+							<c:otherwise>
+								<div>&nbsp;</div>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<button type="button" class="btn text-white bg-secondary rounded-pill ms-1" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/list';">목록</button>
 				</div>
@@ -137,7 +178,7 @@
 					</div>
 				</form>
 				
-				<div class="replyBox mt-0" style="height: 70%" >
+				<div class="replyBox mt-0" style="height: 70%">
 					<div class="col-lg-12 topContent" >
 						<h6>댓글 3개 </h6>
 					</div>
@@ -256,8 +297,8 @@
 		};
 		
 		if(file) {
-			settings.processData = false;  // file 전송시 필수. 서버로전송할 데이터를 쿼리문자열로 변환여부
-			settings.contentType = false;  // file 전송시 필수. 서버에전송할 데이터의 Content-Type. 기본:application/x-www-urlencoded
+			settings.processData = false; 
+			settings.contentType = false;
 		}
 		
 		$.ajax(url, settings);
@@ -267,14 +308,8 @@
 		
 		$(".likeheart").click(function() {
 			const $i = $(this).find("i");
-			let isNoLike = $i.css("color") === "rgb(255, 255, 255)";
-			
-			let msg = isNoLike ? "게시글에 공감하시겠습니까?" : "게시글 공감을 취소하시겠습니까?";
-
-			if(! confirm(msg)) {
-				return false;
-			}
-			
+			let isNoLike = $i.css("color") === "rgb(234, 234, 234)";
+	
 			let url = "${pageContext.request.contextPath}/mealCmnt/addlikeCmnt";
 			let num  = "${dto.num}";
 			let query = "num=" + num + "&isNoLike=" + isNoLike;
@@ -282,7 +317,7 @@
 			const fn = function(data) {
 				let state = data.state;
 				if(state === "true") {
-					let color = "rgb(255, 255, 255)";
+					let color = "rgb(234, 234, 234)";
 					if(isNoLike) {
 						color = "rgb(255, 0, 0)";
 					}
@@ -296,9 +331,19 @@
 		});
 	});
 	
-	
-	
 	</script>
+	
+	<c:if test="${sessionScope.member.userNum == dto.userNum || sessionScope.member.userNum == 'admin'}">
+		<script type="text/javascript">
+			function deleteMeal() {
+				if(confirm("글을 삭제하시겠습니까?")) {
+					let query = "page=${page}&num=${num}";
+					let url = "${pageContext.request.contextPath}/mealCmnt/delete?" + query;
+					location.href = url;
+				}
+			}
+		</script>
+	</c:if>
 </body>
 
 </html>
