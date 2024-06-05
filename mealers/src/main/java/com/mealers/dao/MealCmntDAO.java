@@ -19,8 +19,8 @@ public class MealCmntDAO {
 		String sql;
 		
 		try {
-			sql = "INSERT INTO mealCmnt(num, userNum, subject, content, reg_date, hitCount, likeCount, fileName) "
-					+ " VALUES (mealCmnt_seq.NEXTVAL, ?, ?, ?, SYSDATE, 0, 0, ?)";
+			sql = "INSERT INTO mealCmnt(num, userNum, subject, content, reg_date, hitCount, fileName) "
+					+ " VALUES (mealCmnt_seq.NEXTVAL, ?, ?, ?, SYSDATE, 0, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, dto.getUserNum());
@@ -108,7 +108,7 @@ public class MealCmntDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("SELECT c.num, mem_Nick, subject, content, reg_date, hitCount, fileName ");
+			sb.append("SELECT c.num, m.userNum, mem_Nick, subject, content, reg_date, hitCount, fileName ");
 			sb.append(" FROM mealCmnt c ");
 			sb.append(" JOIN member m ON c.userNum = m.userNum ");
 			if(mealSort.equals("recent")) {
@@ -135,6 +135,7 @@ public class MealCmntDAO {
 				CmntDTO dto = new CmntDTO();
 				
 				dto.setNum(rs.getLong("num"));
+				dto.setUserNum(rs.getString("userNum"));
 				dto.setMem_Nick(rs.getString("mem_Nick"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setContent(rs.getString("content"));
@@ -161,7 +162,7 @@ public class MealCmntDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("SELECT c.num, mem_Nick, subject, content, reg_date, hitCount, fileName");
+			sb.append("SELECT c.num, m.userNum, mem_Nick, subject, content, reg_date, hitCount, fileName");
 			sb.append(" FROM mealCmnt c ");
 			sb.append(" JOIN member m ON c.userNum = m.userNum ");	
 			
@@ -209,12 +210,12 @@ public class MealCmntDAO {
 				CmntDTO dto = new CmntDTO();
 				
 				dto.setNum(rs.getLong("num"));
+				dto.setUserNum(rs.getString("userNum"));
 				dto.setMem_Nick(rs.getString("mem_Nick"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setContent(rs.getString("content"));
 				dto.setReg_date(rs.getString("reg_date"));
 				dto.setHitCount(rs.getInt("hitCount"));
-				dto.setLikeCount(rs.getInt("likeCount"));
 				dto.setFileName(rs.getString("fileName"));
 				
 				list.add(dto);
@@ -351,10 +352,10 @@ public class MealCmntDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT num, mem_Nick, subject, content, TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
+			sql = "SELECT num, m.userNum, mem_Nick, subject, content, TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
 					+ " hitCount, fileName "
 					+ " FROM mealCmnt c "
-					+ " JOIN member m ON c.userNum = c.userNum "
+					+ " JOIN member m ON c.userNum = m.userNum "
 					+ " WHERE num = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setLong(1, num);
@@ -365,6 +366,7 @@ public class MealCmntDAO {
 				dto = new CmntDTO();
 				
 				dto.setNum(rs.getLong("num"));
+				dto.setUserNum(rs.getString("userNum"));
 				dto.setMem_Nick(rs.getString("mem_Nick"));
 				dto.setSubject(rs.getString("subject"));
 				dto.setContent(rs.getString("content"));
@@ -381,5 +383,46 @@ public class MealCmntDAO {
 		return dto;
 	}
 	
+	public void updateMeal(CmntDTO dto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "UPDATE mealCmnt SET subject=?, content=?, fileName=? "
+					+ " WHERE num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getSubject());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, dto.getFileName());
+			pstmt.setLong(4, dto.getNum());
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
+	}
 	
+	public void deleteMeal(long num) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "DELETE FROM mealCmnt WHERE num = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, num);
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
+	}
+
 }
