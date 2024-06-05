@@ -102,18 +102,15 @@ public class MealCmntController {
 				dto.setReg_date(dto.getReg_date().substring(0,10));
 			}
 			
-			String query = "";
+			String query = "mealSort=" + mealSort ;
 			if(schContent.length() != 0) {
-				query = "schCategory=" + schCategory + "&schContent=" + URLEncoder.encode(schContent, "utf-8");
+				query += "&schCategory=" + schCategory + "&schContent=" + URLEncoder.encode(schContent, "utf-8");
 			}
 			
 			String cp = req.getContextPath();
-			String listUrl = cp + "/mealCmnt/list";
-			String articleUrl = cp + "/mealCmnt/article?page=" + current_page;
-			if(query.length() != 0) {
-				listUrl += "?" + query;
-				articleUrl += "&" + query;
-			}
+			String listUrl = cp + "/mealCmnt/list?" + query;
+			String articleUrl = cp + "/mealCmnt/article?page=" + current_page + "&" + query;
+			
 			String paging = util.paging(current_page, total_page, listUrl);
 			
 			mav.addObject("list", list);
@@ -185,13 +182,13 @@ public class MealCmntController {
 		// 페이지, 글번호, [,검색컬럼, 검색값, 정렬컬럼]
 		MealCmntDAO dao = new MealCmntDAO();
 		String page = req.getParameter("page");
-		String query = "page=" + page;
+		String mealSort = req.getParameter("mealSort");
+		String query = "page=" + page + "&mealSort=" + mealSort;
 		
 		try {
 			long num = Long.parseLong(req.getParameter("num"));
 			String schCategory = req.getParameter("schCategory");
 			String schContent = req.getParameter("schContent");
-			String mealSort = req.getParameter("mealSort");
 			
 			if(schCategory == null) {
 				schCategory = "subcon";
@@ -205,13 +202,6 @@ public class MealCmntController {
 			 schContent = URLDecoder.decode(schContent, "utf-8");
 			 if(schContent.length() != 0) {
 			 	query += "&schCategory=" + schCategory + "&schContent=" + URLEncoder.encode(schContent, "utf-8");
-				if(mealSort.equals("popular") | mealSort.equals("hitcount")) {
-					query += "&mealSort=" + mealSort;
-				}
-			 } else {
-				if(mealSort.equals("popular") | mealSort.equals("hitcount")) {
-					query += "&mealSort=" + mealSort;
-				}
 			 }
 			
 			dao.hitCountCal(num);
@@ -279,5 +269,135 @@ public class MealCmntController {
 		model.put("likeCount", likeCount);
 			
 		return model;
+	}
+	
+	@RequestMapping(value = "/mealCmnt/update", method = RequestMethod.GET)
+	public ModelAndView updateMeal(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 페이지번호, 글번호, 정렬, [, 검색컬럼, 검색값]
+		MealCmntDAO dao = new MealCmntDAO();
+		String page = req.getParameter("page");
+		String mealSort = req.getParameter("mealSort");
+		
+		try {
+			HttpSession session = req.getSession();
+			SessionInfo info = (SessionInfo)session.getAttribute("member");
+			
+			long num = Long.parseLong(req.getParameter("num"));
+	
+			CmntDTO dto = dao.findContent(num);
+			
+			if(dto == null || ! dto.getUserNum().equals(info.getUserNum())) {
+				return new ModelAndView("redirect:/mealCmnt/list?page="+ page + "&mealSort=" + mealSort);
+			}
+			
+			ModelAndView mav = new ModelAndView("/mealCmnt/write");
+			mav.addObject("dto", dto);
+			mav.addObject("page", page);
+			mav.addObject("mealSort", mealSort);
+			mav.addObject("mode", "update");
+			
+			return mav;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect:/mealCmnt/list?page=" + page + "&mealSort=" + mealSort);
+	}
+	
+	@RequestMapping(value = "/mealCmnt/update", method = RequestMethod.POST)
+	public ModelAndView updateMealOk(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 글번호, 페이지번호, 정렬, 제목, 내용, 파일
+		
+		HttpSession session = req.getSession();
+		FileManager fileManager = new FileManager();
+		
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "mealCmnt";
+		
+		String page = req.getParameter("page");
+		String mealSort = req.getParameter("mealSort");
+		
+		MealCmntDAO dao = new MealCmntDAO();
+		
+		try {
+			CmntDTO dto = new CmntDTO();
+			
+			dto.setNum(Long.parseLong(req.getParameter("num")));
+			dto.setSubject(req.getParameter("subject"));
+			dto.setContent(req.getParameter("content"));
+			
+			String fileName = req.getParameter("fileName");
+			dto.setFileName(fileName);
+			
+			Part p = req.getPart("photoSelect");
+			MyMultipartFile multipart = fileManager.doFileUpload(p, pathname);
+			
+			if(multipart != null) {
+				String fileItem = multipart.getSaveFilename();
+				dto.setFileName(fileItem);
+				
+				fileManager.doFiledelete(pathname, fileName);
+			}
+			
+			dao.updateMeal(dto);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ModelAndView("redirect:/mealCmnt/list?page=" + page + "&mealSort=" + mealSort);
+	}
+	
+	@RequestMapping(value = "/mealCmnt/delete", method = RequestMethod.GET)
+	public ModelAndView deleteMeal(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// 페이지, 글번호, 정렬
+		MealCmntDAO dao = new MealCmntDAO();
+		
+		FileManager fileManager = new FileManager();
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		String root = session.getServletContext().getRealPath("/");
+		String pathname = root + "uploads" + File.separator + "mealCmnt";
+		
+		String page = req.getParameter("page");
+		String mealSort = req.getParameter("mealSort");
+		if(mealSort == null) {
+			mealSort = "recent";
+		}
+		String query = "page=" + page + "&mealSort=" + mealSort; 
+		
+		try {
+			long num = Long.parseLong(req.getParameter("num"));
+			CmntDTO dto = dao.findContent(num);
+			
+			String schCategory = req.getParameter("schCategory");
+			String schContent = req.getParameter("schContent");
+			if(schCategory == null) {
+				schCategory = "subcon";
+				schContent = "";
+			}
+			
+			if(schContent.length() != 0) {
+				query += "&schCategory=" + schCategory + "&schContent=" + schContent;
+			}
+			
+			
+			if(dto == null) {
+				return new ModelAndView("redirect:/mealCmnt/list?" + query);
+			}
+			
+			if(! dto.getUserNum().equals(info.getUserNum())) {
+				return new ModelAndView("redirect:/mealCmnt/list?" + query);
+			}
+			
+			fileManager.doFiledelete(pathname, dto.getFileName());
+			dao.deleteMeal(num);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ModelAndView("redirect:/mealCmnt/list?" + query);
 	}
 } 

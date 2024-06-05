@@ -54,6 +54,8 @@
     transition: 0.5s;
 }
 
+
+
 </style>
 
 </head>
@@ -80,10 +82,13 @@
 								<div class="bg-light ps-3 py-3 rounded mb-4">
 									<label for="mealSort">정렬</label> 
 									<select name="mealSort" id="mealSort" class="border-0 form-select-md bg-light mx-3 mealSort">
-										<option value="recent" ${mealSort=="recent"?"selected":""}>최신순</option>
-										<option value="hitcount" ${mealSort=="hitcount"?"selected":""}>조회순</option>
-										<option value="popular" ${mealSort=="popular"?"selected":""}>인기순</option>
+										<option value="recent" ${mealSort=="recent" ? "selected" : ""}>최신순</option>
+										<option value="hitcount" ${mealSort=="hitcount" ? "selected" : ""}>조회순</option>
+										<option value="popular" ${mealSort=="popular" ? "selected" : ""}>인기순</option>
 									</select>
+									<input type="hidden" name="mealSort" value="${mealSort}"> 
+									<input type="hidden" name="schCategory" value="${schCategory}">
+									<input type="hidden" name="schContent" value="${schContent}">
 								</div>
 							</form>
 						</div>
@@ -127,10 +132,13 @@
 																		</c:otherwise>
 																	</c:choose>	
 																</c:when>
+																<c:otherwise>
+																	<p>&nbsp;</p>
+																</c:otherwise>
 															</c:choose>
 															<p class="py-1">${dto.reg_date}</p>
 														</div>
-														<div class="pt-3 mb-4 text-center subject-control fw-bold fs-5">${dto.subject}</div>
+														<h4 class="pt-1 mb-4 subject-control fw-bold ">${dto.subject}</h4>
 														<div class="content-control mb-5" style="height: 50px">${dto.content}</div>
 														<div class="d-flex flex-lg-wrap position-relative start-25 ">
 															<span class="text-dark mb-2 pe-2">댓글10</span> 
@@ -159,10 +167,12 @@
 										</select>
 											 
 										<div class="input-group w-75 d-flex">
-											<input type="text" name="schContent" value="${schContent}" class="form-control " placeholder="검색"> 
-											<button type="button" id="search-icon-1" class="input-group-text" onclick="searchList()">
-												<i class="fa fa-search"></i>
-											</button>
+											<input type="text" name="schContent" value="${schContent}" class="form-control rounded " placeholder="검색"> 
+											<div class="col-auto p-1">
+												<input type="hidden" name="mealSort" value="${mealSort}"> 	
+												<button type="button" id="search-icon-1" class="input-group-text" onclick="searchList()"> <i class="fa fa-search search-icon"></i> </button>
+											</div>
+											
 										</div>
 									</div>
 								</form>

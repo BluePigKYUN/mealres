@@ -22,6 +22,12 @@ public class SearchDTO {
 	private String caffeine;
 	private String amino;
 	
+	private long userNum;
+	
+	private long file_num;
+	private String food_file_name;
+	private String file_reg_date;
+	
 	public long getFood_num() {
 		return food_num;
 	}
@@ -136,4 +142,29 @@ public class SearchDTO {
 	public void setAmino(String amino) {
 		this.amino = amino;
 	}
+	public long getUserNum() {
+		return userNum;
+	}
+	public void setUserNum(long userNum) {
+		this.userNum = userNum;
+	}
+	public long getFile_num() {
+		return file_num;
+	}
+	public void setFile_num(long file_num) {
+		this.file_num = file_num;
+	}
+	public String getFile_reg_date() {
+		return file_reg_date;
+	}
+	public void setFile_reg_date(String file_reg_date) {
+		this.file_reg_date = file_reg_date;
+	}
+	public String getFood_file_name() {
+		return food_file_name;
+	}
+	public void setFood_file_name(String food_file_name) {
+		this.food_file_name = food_file_name;
+	}
+	
 }

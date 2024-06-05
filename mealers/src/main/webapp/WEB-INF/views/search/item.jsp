@@ -21,6 +21,20 @@ canvas {
 </style>
 
 <script type="text/javascript">
+function sendOk() {
+    const f = document.photoForm;
+
+    let mode = "${mode}";
+    if( (mode === "write") && (!f.selectFile.value) ) {
+        alert("이미지 파일을 추가 하세요. ");
+        f.selectFile.focus();
+        return;
+    }
+    
+    f.action = "${pageContext.request.contextPath}/search/item";
+    f.submit();
+}
+
 function searchList() {
 	const f = document.searchForm;
 	f.submit();
@@ -89,28 +103,54 @@ function searchList() {
 														<div class="img-grid">
 														</div>
 														<input type="file" name="selectFile" accept="image/*" class="form-control">
+														<input type="hidden" name="num" value="${dto.food_num}">
+														<input type="hidden" name="kwd" value="${kwd}">
+														<input type="hidden" name="page" value="${page}">
 													</form>
 												</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-													<button type="button" class="btn btn-primary">등록</button>
+													<button type="button" class="btn btn-primary" onclick="sendOk();">등록</button>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 		                        <div class="row d-flex justify-content-around p-3 my-3 mx-1" style="background: #eee;">
-		                        	<div class="col-2 col-sm-1 p-0" style="height: 120px; width: 120px; background: lightgray;">
-		                        	</div>
-		                        	<div class="col-2 col-sm-1 p-0" style="height: 120px; width: 120px; background: lightgray;">
-		                        	</div>
-		                        	<div class="col-2 col-sm-1 p-0" style="height: 120px; width: 120px; background: lightgray;">
-		                        	</div>
-		                        	<div class="col-2 col-sm-1 p-0" style="height: 120px; width: 120px; background: lightgray;">
-		                        	</div>
+		                        
+		                        	<c:choose>
+		                        		<c:when test="${list[0].food_file_name == null}">
+			                        			<div style="text-align: center">등록된 사진이 없습니다.</div>
+			                        			<div style="text-align: center">첫번째 사진의 주인공이 되어보세요!</div>
+		                        		</c:when>
+		                        		<c:otherwise>
+				                        	<c:forEach var="dto" items="${list}" varStatus="status" step="4">
+					                        	<div class="col-2 col-sm-1 p-0" style="height: 120px; width: 120px; background: lightgray;">
+					                        		<c:if test="${dto.food_file_name != null}">
+							                        	<img src="${pageContext.request.contextPath}/uploads/photo/${dto.food_file_name}" style="height: 120px; width: 120px;">
+					                        		</c:if>
+					                        	</div>
+					                        	<div class="col-2 col-sm-1 p-0" style="height: 120px; width: 120px; background: lightgray;">
+					                        		<c:if test="${list[status.index + 1].food_file_name != null}">
+						                        		<img src="${pageContext.request.contextPath}/uploads/photo/${list[status.index + 1].food_file_name}" style="height: 120px; width: 120px;">
+						                        	</c:if>
+					                        	</div>
+					                        	<div class="col-2 col-sm-1 p-0" style="height: 120px; width: 120px; background: lightgray;">
+					                        		<c:if test="${list[status.index + 2].food_file_name != null}">
+						                        		<img src="${pageContext.request.contextPath}/uploads/photo/${list[status.index + 2].food_file_name}" style="height: 120px; width: 120px;">
+						                        	</c:if>
+					                        	</div>
+					                        	<div class="col-2 col-sm-1 p-0" style="height: 120px; width: 120px; background: lightgray;">
+					                        		<c:if test="${list[status.index + 3].food_file_name != null}">
+						                        		<img src="${pageContext.request.contextPath}/uploads/photo/${list[status.index + 3].food_file_name}" style="height: 120px; width: 120px;">
+						                        	</c:if>
+					                        	</div>
+				                        	</c:forEach>
+		                        		</c:otherwise>
+		                        	</c:choose>
+		                        	
 		                        </div>
 							</div>
-	                        <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
 	                    </div>
 	                    
 	                    <div class="col-lg-4">
@@ -130,26 +170,89 @@ function searchList() {
 	                        	<span class="float-end tblack">영양성분함량단위 당</span>
 	                        	<br>
 	                        	<hr class="mt-2" style="height: 4px; background-color: black;">
-	                        	<span class="tblack">칼로리</span>
-	                        	<span class="float-end tblack fw-bold"> ${dto.kcal}g</span>
+
+	                        	<c:choose>
+	                        		<c:when test="${dto.kcal == null}">
+			                        	<span class="tblack">칼로리</span>
+			                        	<span class="float-end tblack fw-bold">정보없음</span>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                        	<span class="tblack">칼로리</span>
+			                        	<span class="float-end tblack fw-bold"> ${dto.kcal}kcal</span>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        	<hr class="mt-2" style="height: 3px;">
-	                        	<span class="tblack">탄수화물</span>
-	                        	<span class="float-end tblack fw-bold"> ${dto.tansoo}g</span>
+
+	                        	<c:choose>
+	                        		<c:when test="${dto.tansoo == null}">
+			                        	<span class="tblack">탄수화물</span>
+			                        	<span class="float-end tblack fw-bold">정보없음</span>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                        	<span class="tblack">탄수화물</span>
+			                        	<span class="float-end tblack fw-bold"> ${dto.tansoo}g</span>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        	<hr class="mt-2" style="height: 3px;">
-	                        	<span class="tblack">단백질</span>
-	                        	<span class="float-end tblack fw-bold"> ${dto.protein}g</span>
+
+	                        	<c:choose>
+	                        		<c:when test="${dto.protein == null}">
+			                        	<span class="tblack">단백질</span>
+			                        	<span class="float-end tblack fw-bold">정보없음</span>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                        	<span class="tblack">단백질</span>
+			                        	<span class="float-end tblack fw-bold"> ${dto.protein}g</span>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        	<hr class="mt-2" style="height: 3px;">
-	                        	<span class="tblack">지방</span>
-	                        	<span class="float-end tblack fw-bold"> ${dto.fat}g</span>
+
+	                        	<c:choose>
+	                        		<c:when test="${dto.fat == null}">
+			                        	<span class="tblack">지방</span>
+			                        	<span class="float-end tblack fw-bold">정보없음</span>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                        	<span class="tblack">지방</span>
+			                        	<span class="float-end tblack fw-bold"> ${dto.fat}g</span>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        	<hr class="mt-2" style="height: 3px;">
-	                        	<span class="tblack">당류</span>
-	                        	<span class="float-end tblack fw-bold"> ${dto.sugar}g</span>
+
+	                        	<c:choose>
+	                        		<c:when test="${dto.sugar == null}">
+			                        	<span class="tblack">당류</span>
+			                        	<span class="float-end tblack fw-bold">정보없음</span>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                        	<span class="tblack">당류</span>
+			                        	<span class="float-end tblack fw-bold"> ${dto.sugar}g</span>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        	<hr class="mt-2" style="height: 3px;">
-	                        	<span class="tblack">포화지방</span>
-	                        	<span class="float-end tblack fw-bold"> ${dto.pohwa}g</span>
+
+	                        	<c:choose>
+	                        		<c:when test="${dto.pohwa == null}">
+			                        	<span class="tblack">포화지방</span>
+			                        	<span class="float-end tblack fw-bold">정보없음</span>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                        	<span class="tblack">포화지방</span>
+			                        	<span class="float-end tblack fw-bold"> ${dto.pohwa}g</span>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        	<hr class="mt-2" style="height: 3px;">
-	                        	<span class="tblack">불포화지방</span>
-	                        	<span class="float-end tblack fw-bold"> ${dto.bulpohwa}g</span>
+
+	                        	<c:choose>
+	                        		<c:when test="${dto.bulpohwa == null}">
+			                        	<span class="tblack">불포화지방</span>
+			                        	<span class="float-end tblack fw-bold">정보없음</span>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                        	<span class="tblack">불포화지방</span>
+			                        	<span class="float-end tblack fw-bold">${dto.bulpohwa}g</span>
+	                        		</c:otherwise>
+	                        	</c:choose>
 	                        	<hr class="mt-2" style="height: 3px;">
 	                        	<c:choose>
 	                        		<c:when test="${dto.salt == null}">
@@ -158,14 +261,26 @@ function searchList() {
 	                        		</c:when>
 	                        		<c:otherwise>
 			                        	<span class="tblack">나트륨</span>
-			                        	<span class="float-end tblack fw-bold">${dto.salt}</span>
+			                        	<span class="float-end tblack fw-bold">${dto.salt}mg</span>
 	                        		</c:otherwise>
 	                        	</c:choose>
-	                        	<c:if test="${dto.salt == null}">
-	                        	</c:if>
 	                        	<hr class="mt-2" style="height: 3px;">
-	                        	<span class="tblack">콜레스테롤</span>
-	                        	<span class="float-end tblack fw-bold"> ${dto.chole}mg</span>
+	                        	<c:choose>
+	                        		<c:when test="${dto.chole == null}">
+										<span class="tblack">콜레스테롤</span>
+			                        	<span class="float-end tblack fw-bold">정보없음</span>
+	                        		</c:when>
+	                        		<c:otherwise>
+			                        	<span class="tblack">콜레스테롤</span>
+	                        			<span class="float-end tblack fw-bold"> ${dto.chole}mg</span>
+	                        		</c:otherwise>
+	                        	</c:choose>
+	                        	<c:if test="${dto.caffeine != null}">
+		                        	<hr class="mt-2" style="height: 3px;">
+	                       			<span class="tblack">카페인</span>
+	                       			<span class="float-end tblack fw-bold"> ${dto.caffeine}mg</span>
+	                        	</c:if>
+	                        	
 	                        	<hr class="mt-2" style="height: 4px; background-color: black;">
 	                        	
 	                        	
@@ -181,8 +296,6 @@ function searchList() {
 <footer>
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
 	
 	<script type="text/javascript">
@@ -259,6 +372,33 @@ function searchList() {
 			var chartDom = document.getElementById('pieContainer');
 			var myChart = echarts.init(chartDom);
 			var option;
+			
+        	<c:choose>
+	    		<c:when test="${dto.tansoo == null}">
+					let tansoo = 0;
+	    		</c:when>
+	    		<c:otherwise>
+	    			let tansoo = ${dto.tansoo};
+	    		</c:otherwise>
+    		</c:choose>
+			
+        	<c:choose>
+	    		<c:when test="${dto.protein == null}">
+					let protein = 0;
+	    		</c:when>
+	    		<c:otherwise>
+	    			let protein = ${dto.protein};
+	    		</c:otherwise>
+    		</c:choose>
+			
+        	<c:choose>
+	    		<c:when test="${dto.fat == null}">
+					let fat = 0;
+	    		</c:when>
+	    		<c:otherwise>
+	    			let fat = ${dto.fat};
+	    		</c:otherwise>
+    		</c:choose>
 	
 			option = {
 			  tooltip: {
@@ -269,9 +409,9 @@ function searchList() {
 			  dataset: [
 			    {
 			      source: [
-			        { value: ${dto.tansoo}, name: '탄수화물' },
-			        { value: ${dto.protein}, name: '단백질' },
-			        { value: ${dto.fat}, name: '지방' },
+			        { value: tansoo, name: '탄수화물' },
+			        { value: protein, name: '단백질' },
+			        { value: fat, name: '지방' },
 			      ]
 			    }
 			  ],

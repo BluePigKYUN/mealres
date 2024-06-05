@@ -24,8 +24,6 @@
 	align-items: center;
 }
 
-
-
 </style>
 
 
@@ -74,10 +72,11 @@
 		                            <button type="button" class="btn border border-secondary ms-2" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/list';">
 		                                ${mode=='update'?'수정취소':'취소'}
 		                            </button>
-		                            <input type="hidden" name="category" value="${category}">
+		                            
 		                            <c:if test="${mode=='update'}">
 		                                <input type="hidden" name="num" value="${dto.num}">
 		                                <input type="hidden" name="page" value="${page}">
+		                                <input type="hidden" name="mealSort" value="${mealSort}">
 		                                <input type="hidden" name="fileName" value="${dto.fileName}">
 		                            </c:if>
 		                        </div>
@@ -100,7 +99,7 @@
 			let file = "${dto.fileName}";
 			
 			if(file) {
-				file = "${pageContext.request.contextPath}/cmnt/mealCmnt/" + file;
+				file = "${pageContext.request.contextPath}/uploads/mealCmnt/" + file;
 				$(".contentForm .viewer").empty();
 				$(".contentForm .viewer").css("background-image","url("+file+")");
 			}
@@ -115,7 +114,7 @@
 				if(! image) {
 					$(".contentForm .viewer").empty();
 					if(file) {
-				        file = "${pageContext.request.contextPath}/cmnt/mealCmnt/" + file;
+				        file = "${pageContext.request.contextPath}/uploads/mealCmnt/" + file;
 				        $(".contentForm .viewer").css("background-image", "url(" + file + ")");
 				    } 
 					return false;
@@ -150,6 +149,8 @@
 			form.submit();
 			
 		}
+		
+		
 	</script>
 </body>
 </html>
