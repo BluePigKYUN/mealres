@@ -631,7 +631,36 @@ public class MealColumnDAO {
 	}
 
 	// 칼럼의 댓글 삭제
-	
+	public void deleteMealColReply(long replyNum, String userNum) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		if(! userNum.equals("1")) {
+			ReplyDTO dto = findByReplyId(replyNum);
+			if(dto == null || (! userNum.equals(dto.getUserNum()))) {
+				return;
+			}
+		}
+		
+		try {
+			sql = "DELETE FROM mealcolumnreply "
+					+ " WHERE replyNum = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, replyNum);
+			
+			pstmt.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
+	}
+
 	
 	public long findByUserNum(String memberId) {
 		long num = 0;

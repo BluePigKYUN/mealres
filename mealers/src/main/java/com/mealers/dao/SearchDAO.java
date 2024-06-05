@@ -24,7 +24,7 @@ public class SearchDAO {
 			sql = "insert into nutrient (food_num, food_name, maker, weight, serving_size, "
 					+ " kcal, tansoo, protein, fat, sugar, salt, calcium, potassium, "
 					+ " chole, pohwa, bulpohwa, omega3, caffeine, amino, userNum) "
-					+ " values (foodNum_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, "
+					+ " values (foodNum_seq.NEXTVAL, ?, nvl(?, '제조사정보없음'), ?, ?, ?, ?, ?, "
 					+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -142,11 +142,11 @@ public class SearchDAO {
 		
 		try {
 			
-			sql = " select n.food_num, food_name, maker, kcal, count(*) 이번주조회수 "
+			sql = " select n.food_num, food_name, nvl(maker, '제조사정보없음') maker, kcal, count(*), nvl(userNum, 0) userNum "
 				+ " from foodSearchNum f "
 				+ " join nutrient n on f.food_num = n.food_num "
 				+ " where search_date between trunc(sysdate, 'iw') and trunc(sysdate, 'iw')+6 "
-				+ " group by n.food_num, food_name, maker, kcal "
+				+ " group by n.food_num, food_name, maker, kcal, userNum "
 				+ " order by count(*) desc "
 				+ " OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY";
 			
@@ -157,8 +157,8 @@ public class SearchDAO {
 			while (rs.next()) {
 				SearchDTO dto = new SearchDTO();
 				
-				dto.setFood_num(rs.getLong("n.food_num"));
-				dto.setFood_name(rs.getString("n.food_name"));
+				dto.setFood_num(rs.getLong(1));
+				dto.setFood_name(rs.getString("food_name"));
 				dto.setMaker(rs.getString("maker"));
 				dto.setKcal(rs.getString("kcal"));
 				dto.setUserNum(rs.getLong("userNum"));

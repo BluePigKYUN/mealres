@@ -562,7 +562,37 @@ public class MealColumnController {
 		}
 	}
 	
-	// 댓글 삭제
+	// 댓글 삭제 : ajax/json
+	@ResponseBody
+	@RequestMapping(value = "/mealColumn/deleteReply", method = RequestMethod.POST)
+	public Map<String, Object> deleteReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		MealColumnDAO dao = new MealColumnDAO();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		String state = "false";
+		
+		
+		try {
+			long replyNum = Long.parseLong(req.getParameter("replyNum"));
+			
+			dao.deleteMealColReply(replyNum, info.getUserNum());
+			
+			state = "true";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		model.put("state", state);
+		
+		return model;
+		
+	}
+	
 	
 	
 }

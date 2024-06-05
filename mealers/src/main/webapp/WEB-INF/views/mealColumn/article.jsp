@@ -274,7 +274,43 @@
 				ajaxFun(url, "post", query, "json", fn);
 			});
 		});
-
+		
+		// 엔터 누르면 바로 댓글등록
+		$(function() {
+		    $('textarea[name="content"]').keydown(function(e) {
+		        if (e.keyCode === 13 && !e.shiftKey) {
+		            e.preventDefault(); 
+		            $(this).closest('form').find('.btnSendReply').click();
+		        }
+		    });
+		});
+		
+		// 댓글 삭제
+		$(function() {
+			$(".reply").on("click", ".deleteReplyAnswer", function(){
+				if( ! confirm('댓글을 삭제 하시겠습니까 ? ')) {
+					return false;
+				}
+				
+				let replyNum = $(this).attr("data-replyNum");
+				
+				let url = "${pageContext.request.contextPath}/mealColumn/deleteReply";
+				let query = "replyNum=" + replyNum;
+				
+				const fn = function(data) {
+					listReplyAnswer(answer);
+					countReplyAnswer(answer);
+				};
+				
+				ajaxFun(url, "post", query, "json", fn);
+				
+			});
+		});
+		
+		
+		
+		
+		
 		</script>
     </body>
 </html>
