@@ -343,11 +343,13 @@ footer p a .fa-behance {
 		<!-- 로그인 -->		
         <form name="loginForm" id="loginForm" action="" method="post">
             <div class="first-input input__block">
-                <input type="text" name="memberId" placeholder="아이디" class="input" id="memberId" value="admin"/>
+                <input type="text" name="memberId" placeholder="아이디" class="input" id="memberId" value="admin">
             </div>
             <div class="input__block">
-                <input type="password" name="memberPwd" placeholder="비밀번호" class="input" id="password1" value="admin" />
+                <input type="password" name="memberPwd" placeholder="비밀번호" class="input" id="password1" value="admin">
             </div>
+            <!-- 비밀번호 유무 -->
+            <p class="form-control-plaintext text-center">${message}</p>
             <button class="login__btn" type="button" onclick="sendLogin();">로그인</button>
         </form>
 
@@ -372,18 +374,24 @@ footer p a .fa-behance {
             <div class="input__block">
                 <input type="password" placeholder="비밀번호 확인" class="input repeat__password" id="repeat__password" />
             </div>
+            <p class="form-control-plaintext text-center">${message}</p>
+            <button class="login__btn" type="submit" onclick="">test</button>
             <button class="login__btn" type="button" onclick="sendJoin();">회원가입</button>
         </form>
     </div>
 
     <script type="text/javascript">
+    	
+    	//유효성검사
         function validateEmail(email) {
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailPattern.test(email);
         }
 
         function validatePassword(password) {
-            const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+            const passwordPattern = /^[0-9]+$/; 
+            	
+            	/* /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/; */
             return passwordPattern.test(password);
         }
 		
@@ -394,7 +402,7 @@ footer p a .fa-behance {
 
             str = f.memberId.value;
             if (!str) {
-                alert("이메일을 입력하세요.");
+                alert("아이디를 입력하세요.");
                 f.memberId.focus();
                 return;
             }
@@ -436,19 +444,19 @@ footer p a .fa-behance {
                 return;
             }
 
-            str = f.memberPwd.value;
+             str = f.memberPwd.value;
             if (!str || !validatePassword(str)) {
                 alert("비밀번호는 최소 8자 이상, 대문자, 소문자, 숫자를 포함해야 합니다.");
                 f.memberPwd.focus();
                 return;
-            }
+            } 
 
             const repeatPwd = document.getElementById("repeat__password").value;
             if (str !== repeatPwd) {
                 alert("비밀번호가 일치하지 않습니다.");
                 document.getElementById("repeat__password").focus();
                 return;
-            }
+            } 
 
             if (f.userIdValid.value === "false") {
                 alert("아이디 중복 검사를 실행하세요.");
@@ -456,10 +464,12 @@ footer p a .fa-behance {
                 return;
             }
             
-            f.action = "${pageContext.request.contextPath}/member/member";
+            f.action = "${pageContext.request.contextPath}/member/join";
             f.submit();
+        
         }
-
+		
+        //ajax id 중복검사 
         function userIdCheck() {
             let memberId2 = $("#memberId2").val();
 

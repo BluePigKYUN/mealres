@@ -29,27 +29,25 @@ public class MypageController {
 	 * 
 	 * return mav; }
 	 */
-	
-	@RequestMapping(value="/member/mypage",method=RequestMethod.GET)
-	public ModelAndView myPage(HttpServletRequest req, HttpServletResponse resp)throws ServletException,IOException{
-		
-		MemberDAO dao = new MemberDAO();
-        HttpSession session = req.getSession();
-        SessionInfo info = (SessionInfo) session.getAttribute("member");
-    	
-        MemberDTO dto = dao.findById(info.getUserId());
 
-        ModelAndView mav = new ModelAndView("member/mypage");
-        mav.addObject("dto", dto);
-        
+	@RequestMapping(value = "/member/mypage", method = RequestMethod.GET)
+	public ModelAndView myPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		MemberDAO dao = new MemberDAO();
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+		MemberDTO dto = dao.findById(info.getUserId());
+
+		ModelAndView mav = new ModelAndView("member/mypage");
+		mav.addObject("dto", dto);
+
 		return mav;
 	}
-	
-	
 
-	@RequestMapping(value = "/member/post", method = RequestMethod.GET)
-	public ModelAndView post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ModelAndView mav = new ModelAndView("member/post");
+	@RequestMapping(value = "/member/activity", method = RequestMethod.GET)
+	public ModelAndView activity(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		ModelAndView mav = new ModelAndView("member/activity");
 
 		try {
 			MypageDAO dao = new MypageDAO();
@@ -67,10 +65,11 @@ public class MypageController {
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 			if (info != null) {
+				
 				String userNum = info.getUserNum();
+				String mode = req.getParameter("mode"); // mode 파라미터 추가
 
 				List<CmntDTO> list = dao.listPost(userNum, offset, size);
-
 				int totalCount = dao.getTotalCount(userNum);
 
 				// 페이징 처리를 위한 데이터 설정
@@ -81,6 +80,16 @@ public class MypageController {
 					endPage = pageCount;
 				}
 
+
+				if ("tab1".equals(mode)) { // mode 파라미터를 확인하여 탭 구분
+					list = dao.listPost(userNum, offset, size);
+					totalCount = dao.getTotalCount(userNum);
+				
+				} else if("tab2".equals(mode)) {
+					list = dao.listReply(userNum, offset, size);
+					totalCount = dao.getTotalCount(userNum);
+				}
+
 				// ModelAndView에 데이터 전달
 				mav.addObject("list", list);
 				mav.addObject("totalCount", totalCount);
@@ -89,6 +98,7 @@ public class MypageController {
 				mav.addObject("endPage", endPage);
 				mav.addObject("currentPage", page);
 
+				
 			} else {
 				mav = new ModelAndView("redirect:/login");
 			}
