@@ -56,42 +56,40 @@
 						</div>
 						<div class="col-lg-8 text-end">
 							<ul class="nav nav-pills d-inline-flex text-center mb-5">
-								<li class="nav-item"><a
+								<li class="nav-item"><span
 									class="nav-link active bg-primary text-white rounded-pill"
-									data-bs-toggle="pill" href="#tab-1"> <span
-										style="width: 130px;">
-										<a href="${pageContext.request.contextPath}/member/activity?mode=tab1">
-										게시물
-										<!-- </a> -->
-										</span>
-										<!-- ${pageContext.request.contextPath}/member/activity?mode=tab1 -->
-								</a></li>
-								<li class="nav-item"><a
+									data-bs-toggle="pill">
+										<a style="width: 130px;" href="${pageContext.request.contextPath}/member/activity?mode=1"> 
+												게시물
+										</a> <!-- ${pageContext.request.contextPath}/member/activity?mode=tab1 -->
+									</span>
+								</li>
+								<li class="nav-item"><span
 									class="nav-link bg-success text-white rounded-pill"
-									data-bs-toggle="pill" href="#tab-2"> <span
-										style="width: 130px;">
-									 <a href="${pageContext.request.contextPath}/member/activity?mode=tab2"> 
-										댓글
-										<!-- </a> -->
-										</span>
-										<!-- ${pageContext.request.contextPath}/member/activity?mode=tab2 -->
-								</a></li>
-								<li class="nav-item"><a
+									data-bs-toggle="pill">
+										<a style="width: 130px;" href="${pageContext.request.contextPath}/member/activity?mode=2">
+												댓글
+										</a> <!-- ${pageContext.request.contextPath}/member/activity?mode=tab2 -->
+								</span></li>
+								<li class="nav-item"><span
 									class="nav-link bg-danger text-white rounded-pill"
-									data-bs-toggle="pill" href="#tab-3"> <span
-										style="width: 130px;">
-										<%-- <a href="${pageContext.request.contextPath}/member/activity?mode=tab3"> --%>
-										좋아요
-										<!-- </a> -->
-										</span>
-								</a></li>
-						
+									data-bs-toggle="pill" >
+									
+									<a style="width: 130px;" href="${pageContext.request.contextPath}/member/activity?mode=3"> 
+											좋아요
+									</a>
+								</span></li>
+
 							</ul>
 						</div>
 					</div>
 					<div class="tab-content">
-						<!-- 탭 1 나의 게시물 -->
+					
+						
 						<div id="tab-1" class="tab-pane fade show p-0 active">
+							${mode == '1' ? 'active' : ''}
+							<!-- 탭 1 나의 게시물 -->
+							<c:if test="${mode == '1'}">
 							<table class="table table-hover mob_table">
 								<thead>
 									<tr>
@@ -102,41 +100,25 @@
 										<th scope="col">상태</th>
 									</tr>
 								</thead>
-
-								<!--게시글 -->
 								<tbody>
 									<c:forEach var="dto" items="${list}" varStatus="status">
 										<tr>
-											<td>${totalCount - (page-1) * size - status.index}</td>
-											<%-- <td class="left"><a href="${articleUrl}&num=${dto.num}"
-												class="text-reset">${dto.subject}</a></td> --%>
-											<td>${dto.num }</td>
-											<td>${dto.subject}</td>
+											<td>${dataCount - (pageNo-1) * size - status.index}</td>
+											<td>${dto.type}</td>
+											<td class="left">
+												<a href="${articleUrl}&num=${dto.num}" class="text-reset">${dto.subject}</a>
+											</td>
+											<td>${dto.content}</td>
 											<td>${dto.reg_date}</td>
-											<td></td>
 										</tr>
 									</c:forEach>
 								</tbody>
 							</table>
-						<!-- //게시글 -->
-							<nav aria-label="Page navigation">
-								<ul class="pagination d-flex justify-content-center pt-4">
-									<li class="page-item m_prev"><a class="page-link" href="#"
-										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-									</a></li>
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item m_next"><a class="page-link" href="#"
-										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-									</a></li>
-								</ul>
-							</nav>
-							<!--//페이징처리 -->
+							</c:if>
+							<!-- //탭 1 -->
 							
-						</div>
-						<!-- //탭 1 -->
-
-						<!-- 탭 2 댓글 -->
-						<div id="tab-2" class="tab-pane fade show p-0">
+							<!-- 탭 2 댓글 -->
+							<c:if test="${mode == '2'}">
 							<table class="table table-hover mob_table">
 								<thead>
 									<tr>
@@ -152,6 +134,91 @@
 									<c:forEach var="dto" items="${list}" varStatus="status">
 										<tr>
 											<td>${totalCount - (page-1) * size - status.index}</td>
+											<td>${dto.num}</td>
+											<td class="left"><a href="${articleUrl}&num=${dto.num}"
+												class="text-reset">${dto.content}</a></td>
+											<td>${dto.content}</td>
+											<td>${dto.reg_date}</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+							</c:if>
+							<!-- //탭 2 -->
+							
+							<!-- 탭 3 -->
+							<c:if test="${mode == '3'}">
+							<table class="table table-hover mob_table">
+								<thead>
+									<tr>
+										<th scope="col">번호</th>
+										<th scope="col">제목</th>
+										<th scope="col">게시판</th>
+										<th scope="col">작성일</th>
+										<th scope="col">상태</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<%-- <c:forEach var="dto" items="${list}" varStatus="status">
+										<tr>
+											<td>${totalCount - (page-1) * size - status.index}</td>
+											<td class="left"><a href="${articleUrl}&num=${dto.num}"
+												class="text-reset">${dto.subject}</a></td>
+											<td>${dto.subject}</td>
+											<td>${dto.reg_date}</td>
+										</tr>
+									</c:forEach> --%>
+								</tbody>
+							</c:if>
+							<!-- //탭 3 -->
+							
+							
+							<!--페이징처리-->
+							<nav aria-label="Page navigation example">
+								<ul class="pagination d-flex justify-content-center pt-4">
+									<li class="page-item m_prev"><a class="page-link"
+										href="${pageContext.request.contextPath}/member/activity?mode=${mode}&pageNo=${startPage}"
+										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+									</a></li>
+									<c:forEach var="i" begin="${startPage}" end="${endPage}">
+										<li class="page-item ${i == pageNo ? 'active' : ''}"><a
+											class="page-link"
+											href="${pageContext.request.contextPath}/member/activity?mode=${mode}&pageNo=${i}">${i}</a>
+										</li>
+									</c:forEach>
+									<li
+										class="page-item m_next ${pageNo == total_page ? 'disabled' : ''}">
+										<a class="page-link"
+										href="${pageContext.request.contextPath}/member/activity?mode=${mode}&pageNo=${pageNo + 1}"
+										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+									</a>
+									</li>
+								</ul>
+							</nav>
+							<!--//페이징처리 -->
+
+						</div>
+						
+
+						<!-- 탭 2 댓글 -->
+						<%-- <div id="tab-2" class="tab-pane fade show p-0">
+							<table class="table table-hover mob_table">
+								<thead>
+									<tr>
+										<th scope="col">번호</th>
+										<th scope="col">게시판</th>
+										<th scope="col">내용</th>
+										<th scope="col">작성일</th>
+										<th scope="col">상태</th>
+									</tr>
+								</thead>
+								<!-- 댓글 -->
+								<tbody>
+									<c:forEach var="dto" items="${list}" varStatus="status">
+										<tr>
+											<td>${totalCount - (page-1) * size - status.index}</td>
+											<td>${dto.num}</td>
 											<td class="left"><a href="${articleUrl}&num=${dto.num}"
 												class="text-reset">${dto.content}</a></td>
 											<td>${dto.content}</td>
@@ -179,7 +246,7 @@
 
 						<!-- 탭 3 -->
 						<div id="tab-3" class="tab-pane fade show p-0">
-						
+
 							<table class="table table-hover mob_table">
 								<thead>
 									<tr>
@@ -191,7 +258,6 @@
 									</tr>
 								</thead>
 
-								<!-- 페이징처리 -->
 								<tbody>
 									<c:forEach var="dto" items="${list}" varStatus="status">
 										<tr>
@@ -211,14 +277,12 @@
 										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 									</a></li>
 									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
 									<li class="page-item m_next"><a class="page-link" href="#"
 										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 									</a></li>
 								</ul>
 							</nav>
-						</div>
+						</div> --%>
 						<!-- //탭 3 -->
 					</div>
 				</div>

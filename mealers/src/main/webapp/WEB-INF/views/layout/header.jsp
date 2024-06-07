@@ -91,10 +91,7 @@
 				<!-- 로그인하지 않은 사용자에게만 표시 -->
 				<c:if test="${sessionScope.member == null}">
 					<div class="d-flex m-3 me-0">
-						<a href="${pageContext.request.contextPath}/member/login"
-							class="position-relative me-4 my-auto"> <i
-							class="bi bi-box-arrow-in-right fa-2x"></i>
-						</a> <a href="${pageContext.request.contextPath}/member/mypage"
+						</a> <a href="${pageContext.request.contextPath}/member/login"
 							class="my-auto"> <i class="fas fa-user fa-2x"></i>
 						</a>
 					</div>

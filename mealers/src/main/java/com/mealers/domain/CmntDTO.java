@@ -19,6 +19,8 @@ public class CmntDTO {
 	private String fileName;
 	private List<String> fileList;
 	
+	private String type;
+	
 	public long getNum() {
 		return num;
 	}
@@ -96,6 +98,12 @@ public class CmntDTO {
 	}
 	public void setFileList(List<String> fileList) {
 		this.fileList = fileList;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	
