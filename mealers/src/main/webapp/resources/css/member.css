@@ -105,6 +105,7 @@
 	border-radius: .25rem;
 }
 
+/* 페이지네이션 */
 .pagination a {
 	border-radius: 50%;
 	padding: 4px 11px;

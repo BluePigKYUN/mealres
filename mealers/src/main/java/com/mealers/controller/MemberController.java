@@ -82,22 +82,33 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping(value="/member/member",method = RequestMethod.GET)
-	public ModelAndView singupForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException{	
-		ModelAndView mav = new ModelAndView("member/login");
-		
-		mav.addObject("title", "회원 가입");
-		mav.addObject("mode", "member");
-		
-		return mav;
-	}
+	/*
+	 * @RequestMapping(value="/member/login",method = RequestMethod.GET) public
+	 * ModelAndView singupForm(HttpServletRequest req, HttpServletResponse resp)
+	 * throws ServletException,IOException{ ModelAndView mav = new
+	 * ModelAndView("member/login");
+	 * 
+	 * return mav; }
+	 */
+//	@RequestMapping(value="/member/member",method = RequestMethod.GET)
+//	public ModelAndView singupForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException{	
+//		ModelAndView mav = new ModelAndView("member/login");
+//		
+//		mav.addObject("title", "회원 가입");
+//		mav.addObject("mode", "member");
+//		
+//		return mav;
+//	}
+	
 	
 	//회원가입
-	@RequestMapping(value="/member/member",method = RequestMethod.POST)
+	@RequestMapping(value="/member/join",method = RequestMethod.POST)
 	  public ModelAndView memberSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	      MemberDAO dao = new MemberDAO();
 	        String message = "";	     
-
+	        
+	        System.out.println("00");
+	        
 	        try {
 	            MemberDTO dto = new MemberDTO();
 	            dto.setMemberId(req.getParameter("memberId"));
@@ -105,24 +116,25 @@ public class MemberController {
 	            dto.setMem_Nick(req.getParameter("nickname"));
 	            dto.setMem_Email(req.getParameter("email"));
 
-	            // 디버깅을 위해 로그 추가
-	            System.out.println("MEMBERID: " + dto.getMemberId());
-	            System.out.println("MEMBERPWD: " + dto.getMemberPwd());
-	            System.out.println("MEM_NICK: " + dto.getMem_Nick());
-	            System.out.println("MEM_EMAIL: " + dto.getMem_Email());
-
 	            dao.insertMember(dto);
-
+	            
+	            System.out.println(req.getParameter("memberId"));
+	            System.out.println(req.getParameter("memberPwd"));
+	            System.out.println(req.getParameter("nickname"));
+	            System.out.println(req.getParameter("email"));
+	            
+				/* return new ModelAndView("redirect:/"); */
 	            return new ModelAndView("redirect:/");
-
+	            
+	    
 	        } catch (SQLException e) {
 	            message = "회원 가입 실패";
 	            e.printStackTrace();
 	        }
 
-	        ModelAndView mav = new ModelAndView("member/member");
+	        
+	        ModelAndView mav = new ModelAndView("member/join");
 	        mav.addObject("title", "회원 가입");
-	        mav.addObject("mode", "member");
 	        mav.addObject("message", message);
 
 	        return mav;
@@ -148,6 +160,7 @@ public class MemberController {
 		
 	}
 	
+	
 	@RequestMapping(value = "/member/pwd", method = RequestMethod.POST)
 	public ModelAndView pwdSubmit(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -157,9 +170,8 @@ public class MemberController {
 
 		try {
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
-
-			// DB에서 해당 회원 정보 가져오기
 			MemberDTO dto = dao.findById(info.getUserId());
+			
 			if (dto == null) {
 				session.invalidate();
 				return new ModelAndView("redirect:/");
@@ -181,19 +193,23 @@ public class MemberController {
 
 			if (mode.equals("delete")) {
 				// 회원탈퇴
+				
 				dao.deleteMember(info.getUserId());
 
-				session.removeAttribute("member");
-				session.invalidate();
+				
+				 session.removeAttribute("member"); 
+				 session.invalidate();
+				 
 
 				return new ModelAndView("redirect:/main");
 			}
 
+			
 			if (mode.equals("update") || mode.equals("pwdupdate")) {
 
 				dto.setMemberId(req.getParameter("memberId"));
 
-				// if(mode.equals("update"))
+			    if(mode.equals("update"))
 				dto.setMemberPwd(req.getParameter("memberPwd"));
 				
 				if (mode.equals("pwdupdate"))
@@ -206,7 +222,7 @@ public class MemberController {
 
 				return new ModelAndView("redirect:/member/mypage");
 
-				// dao.updateMember(dto);
+				
 			}
 
 			// 회원정보수정 - 회원수정폼으로 이동

@@ -59,26 +59,127 @@
 								<li class="nav-item"><a
 									class="nav-link active bg-primary text-white rounded-pill"
 									data-bs-toggle="pill" href="#tab-1"> <span
-										style="width: 130px;">게시물</span>
+										style="width: 130px;">
+										<a href="${pageContext.request.contextPath}/member/activity?mode=tab1">
+										게시물
+										<!-- </a> -->
+										</span>
+										<!-- ${pageContext.request.contextPath}/member/activity?mode=tab1 -->
 								</a></li>
 								<li class="nav-item"><a
 									class="nav-link bg-success text-white rounded-pill"
 									data-bs-toggle="pill" href="#tab-2"> <span
-										style="width: 130px;">댓글</span>
+										style="width: 130px;">
+									 <a href="${pageContext.request.contextPath}/member/activity?mode=tab2"> 
+										댓글
+										<!-- </a> -->
+										</span>
+										<!-- ${pageContext.request.contextPath}/member/activity?mode=tab2 -->
 								</a></li>
 								<li class="nav-item"><a
 									class="nav-link bg-danger text-white rounded-pill"
 									data-bs-toggle="pill" href="#tab-3"> <span
-										style="width: 130px;">좋아요</span>
+										style="width: 130px;">
+										<%-- <a href="${pageContext.request.contextPath}/member/activity?mode=tab3"> --%>
+										좋아요
+										<!-- </a> -->
+										</span>
 								</a></li>
-								<li class="nav-item">
+						
 							</ul>
 						</div>
-
 					</div>
 					<div class="tab-content">
 						<!-- 탭 1 나의 게시물 -->
 						<div id="tab-1" class="tab-pane fade show p-0 active">
+							<table class="table table-hover mob_table">
+								<thead>
+									<tr>
+										<th scope="col">번호</th>
+										<th scope="col">게시판</th>
+										<th scope="col">제목</th>
+										<th scope="col">작성일</th>
+										<th scope="col">상태</th>
+									</tr>
+								</thead>
+
+								<!--게시글 -->
+								<tbody>
+									<c:forEach var="dto" items="${list}" varStatus="status">
+										<tr>
+											<td>${totalCount - (page-1) * size - status.index}</td>
+											<%-- <td class="left"><a href="${articleUrl}&num=${dto.num}"
+												class="text-reset">${dto.subject}</a></td> --%>
+											<td>${dto.num }</td>
+											<td>${dto.subject}</td>
+											<td>${dto.reg_date}</td>
+											<td></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+						<!-- //게시글 -->
+							<nav aria-label="Page navigation">
+								<ul class="pagination d-flex justify-content-center pt-4">
+									<li class="page-item m_prev"><a class="page-link" href="#"
+										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+									</a></li>
+									<li class="page-item"><a class="page-link" href="#">1</a></li>
+									<li class="page-item m_next"><a class="page-link" href="#"
+										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+									</a></li>
+								</ul>
+							</nav>
+							<!--//페이징처리 -->
+							
+						</div>
+						<!-- //탭 1 -->
+
+						<!-- 탭 2 댓글 -->
+						<div id="tab-2" class="tab-pane fade show p-0">
+							<table class="table table-hover mob_table">
+								<thead>
+									<tr>
+										<th scope="col">번호</th>
+										<th scope="col">게시판</th>
+										<th scope="col">내용</th>
+										<th scope="col">작성일</th>
+										<th scope="col">상태</th>
+									</tr>
+								</thead>
+								<!-- 댓글 -->
+								<tbody>
+									<c:forEach var="dto" items="${list}" varStatus="status">
+										<tr>
+											<td>${totalCount - (page-1) * size - status.index}</td>
+											<td class="left"><a href="${articleUrl}&num=${dto.num}"
+												class="text-reset">${dto.content}</a></td>
+											<td>${dto.content}</td>
+											<td>${dto.reg_date}</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+							<!-- //댓글 -->
+							<nav aria-label="Page navigation">
+								<ul class="pagination d-flex justify-content-center pt-4">
+									<li class="page-item m_prev"><a class="page-link" href="#"
+										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+									</a></li>
+									<li class="page-item"><a class="page-link" href="#">1</a></li>
+									<li class="page-item"><a class="page-link" href="#">2</a></li>
+									<li class="page-item"><a class="page-link" href="#">3</a></li>
+									<li class="page-item m_next"><a class="page-link" href="#"
+										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+									</a></li>
+								</ul>
+							</nav>
+						</div>
+						<!-- //탭 2 -->
+
+						<!-- 탭 3 -->
+						<div id="tab-3" class="tab-pane fade show p-0">
+						
 							<table class="table table-hover mob_table">
 								<thead>
 									<tr>
@@ -103,115 +204,8 @@
 									</c:forEach>
 								</tbody>
 							</table>
-							
-						<!-- 페이징 처리 -->
-							<nav aria-label="Page navigation example">
-								<ul class="pagination d-flex justify-content-center pt-4">
-									<li class="page-item m_prev"><a class="page-link" href="#"
-										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-									</a></li>
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item m_next"><a class="page-link" href="#"
-										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-									</a></li>
-								</ul>
-							</nav>
-							<!--//페이징처리 -->
-							
-						</div>
-						<!-- //탭 1 -->
 
-						<!-- 탭 2 댓글 -->
-						<div id="tab-2" class="tab-pane fade show p-0">
-							<table class="table table-hover mob_table">
-								<thead>
-									<tr>
-										<th scope="col">번호</th>
-										<th scope="col">내용</th>
-										<th scope="col">게시판</th>
-										<th scope="col">작성일</th>
-										<th scope="col">상태</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th scope="row">1</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>식단</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-secondary">대기</span></td>
-									</tr>
-									<tr>
-										<th scope="row">2</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>운동</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-success">활동중</span></td>
-									</tr>
-									<tr>
-										<th scope="row">3</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>식단</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-success">활동중</span></td>
-									</tr>
-								</tbody>
-							</table>
-
-							<nav aria-label="Page navigation example">
-								<ul class="pagination d-flex justify-content-center pt-4">
-									<li class="page-item m_prev"><a class="page-link" href="#"
-										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-									</a></li>
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
-									<li class="page-item m_next"><a class="page-link" href="#"
-										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-									</a></li>
-								</ul>
-							</nav>
-						</div>
-						<!-- //탭 2 -->
-
-						<!-- 탭 3 -->
-						<div id="tab-3" class="tab-pane fade show p-0">
-							<table class="table table-hover mob_table">
-								<thead>
-									<tr>
-										<th scope="col">번호</th>
-										<th scope="col">제목</th>
-										<th scope="col">작성자</th>
-										<th scope="col">작성일</th>
-										<th scope="col">상태</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th scope="row">1</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>행복이</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-secondary">대기</span></td>
-									</tr>
-									<tr>
-										<th scope="row">2</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>불행이</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-success">활동중</span></td>
-									</tr>
-									<tr>
-										<th scope="row">3</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>슬픔이</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-success">활동중</span></td>
-									</tr>
-								</tbody>
-							</table>
-
-							<nav aria-label="Page navigation example">
+							<nav aria-label="Page navigation">
 								<ul class="pagination d-flex justify-content-center pt-4">
 									<li class="page-item m_prev"><a class="page-link" href="#"
 										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>

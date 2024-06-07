@@ -7,7 +7,7 @@
     <div class="container py-5">
         <div class="row g-4">
             <div class="col-lg-3">
-                <h2 class="text-primary mb-0"><a href="${pageContext.request.contextPath}/main" style="color: inherit; text-decoration: none;">MealLog</a></h2>
+                <h2 class="text-primary mb-0"><a href="${pageContext.request.contextPath}/main" style="color: inherit; text-decoration: none;">Mealers</a></h2>
             </div>
             <hr style="border-bottom: 1px solid rgb(32,201,151, 0.2);">
         </div>

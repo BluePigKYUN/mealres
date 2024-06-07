@@ -109,8 +109,8 @@
 								<a class="nav-link dropdown-toggle" href="#"
 									id="profileDropdown" role="button" data-bs-toggle="dropdown"
 									aria-expanded="false"> <img
-									src="${pageContext.request.contextPath}/resources/images/50.png" alt="Profile Picture"
-									class="profile-pic">
+									src="${pageContext.request.contextPath}/resources/images/50.png"
+									alt="Profile Picture" class="profile-pic">
 								</a>
 								<ul class="dropdown-menu dropdown-menu-end"
 									aria-labelledby="profileDropdown">
@@ -119,21 +119,23 @@
 											${pageContext.request.contextPath}/resources/img/50.png"
 										alt="Profile Picture" class="profile-pic">
 										<div class="user-info">
-											<span class="user-name">${sessionScope.member.userName}</span><span class="user-points">포인트:
-												1000</span>
+											<span class="user-name">${sessionScope.member.userName}</span><span
+												class="user-points">포인트: 1000</span>
 										</div></li>
 									<li><hr class="dropdown-divider"></li>
 									<li><a class="dropdown-item"
 										href="${pageContext.request.contextPath}/member/mypage"><i
 											class="fas fa-user-cog me-2"></i>정보 변경</a></li>
-									<li><a class="dropdown-item" href="${pageContext.request.contextPath}/group/main"><i
+									<li><a class="dropdown-item"
+										href="${pageContext.request.contextPath}/group/main"><i
 											class="fas fa-users me-2"></i>나의 그룹</a></li>
 									<li><a class="dropdown-item"
-										href="${pageContext.request.contextPath}/member/post"><i
+										href="${pageContext.request.contextPath}/member/activity"><i
 											class="fas fa-file-alt me-2"></i>작성한 게시물</a></li>
-												<li><a class="dropdown-item"
-										href="${pageContext.request.contextPath}/member/logout"><i
-											class="fas fa-sign-out-alt me-2"></i>로그아웃</a></li>
+									<li><a class="dropdown-item" href="#"
+										onclick="confirmLogout()"> <i
+											class="fas fa-sign-out-alt me-2"></i> 로그아웃
+									</a></li>
 								</ul>
 							</div>
 						</div>
@@ -143,3 +145,13 @@
 		</nav>
 	</div>
 </div>
+<!-- JavaScript Start -->
+<script>
+	function confirmLogout() {
+		event.preventDefault(); 
+		if (confirm("로그아웃 하시겠습니까?")) {
+			window.location.href = "${pageContext.request.contextPath}/member/logout";
+		}
+	}
+</script>
+<!-- JavaScript End -->

@@ -128,6 +128,7 @@
 	</footer>
 
 	<script>
+	
 		//비밀번호 확인
 		function sendOk(flag) {
 			const f = document.pwdForm;
@@ -171,18 +172,6 @@
 				$('#new-password-container').toggleClass('hidden');
 			});
 		});
-
-		function cancel() {
-			// 취소 버튼 클릭 시 동작
-			alert('취소되었습니다.');
-		}
-
-		function deleteAccount() {
-			// 회원 탈퇴 버튼 클릭 시 동작
-			if (confirm('정말로 회원 탈퇴하시겠습니까?')) {
-				alert('회원 탈퇴가 완료되었습니다.');
-			}
-		}
 
 		function previewProfilePicture(event) {
 			const reader = new FileReader();
