@@ -43,7 +43,7 @@
 						<div class="dropdown-menu m-0 bg-secondary rounded-0">
 							<a href="${pageContext.request.contextPath}/mealColumn/list"
 								class="dropdown-item">식단 칼럼</a> <a
-								href="${pageContext.request.contextPath}/mealColumn/list"
+								href="${pageContext.request.contextPath}/exrcsColumn/list"
 								class="dropdown-item">운동 칼럼</a>
 						</div>
 					</div>

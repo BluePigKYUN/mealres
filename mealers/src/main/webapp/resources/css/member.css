@@ -40,6 +40,16 @@
     background-size: cover;
 }
 
+.page-header-exrcsColumn {
+	position: relative;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(https://health.chosun.com/site/data/img_dir/2019/04/29/2019042900839_0.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+	
+	
+}
+
 .page-header-cmnt {
 	position: relative;
     background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(https://media.licdn.com/dms/image/D4E12AQHBMHlSdYZiBQ/article-cover_image-shrink_720_1280/0/1657307218470?e=2147483647&v=beta&t=lU7K89xpX7z5ezsJJbbietylfkBeT4pmjd8IlEpbT28);

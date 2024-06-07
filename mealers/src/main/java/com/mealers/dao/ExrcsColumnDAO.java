@@ -12,17 +12,17 @@ import com.mealers.domain.ReplyDTO;
 import com.mealers.util.DBConn;
 import com.mealers.util.DBUtil;
 
-public class MealColumnDAO {
+public class ExrcsColumnDAO {
 	private Connection conn = DBConn.getConnection();
 	
-	// 식단 칼럼에 데이터 넣기
-	public void insertMealColumn(ColumnDTO dto) throws SQLException {
+	// 운동 칼럼에 데이터 넣기
+	public void insertExrcsColumn(ColumnDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
 		try {
-			sql = "INSERT INTO mealColumn(num, subject, content, reg_date, hitCount, userNum  )"
-					+ " VALUES(mealCol_seq.NEXTVAL, ?, ?, SYSDATE, 0, ? ) ";
+			sql = "INSERT INTO exrcsColumn(num, subject, content, reg_date, hitCount, userNum  )"
+					+ " VALUES(exrcsCol_seq.NEXTVAL, ?, ?, SYSDATE, 0, ? ) ";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getSubject());
@@ -33,8 +33,8 @@ public class MealColumnDAO {
 			DBUtil.close(pstmt);
 			pstmt = null;
 			
-			sql = "INSERT INTO mealColumnFile(fileNum, num, saveFilename, originalFilename ) "
-					+ "VALUES(mealColFile_seq.NEXTVAL, mealCol_seq.CURRVAL, ?, ? ) ";
+			sql = "INSERT INTO exrcsColumnFile(fileNum, num, saveFilename, originalFilename ) "
+					+ "VALUES(exrcsColFile_seq.NEXTVAL, exrcsCol_seq.CURRVAL, ?, ? ) ";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, dto.getSaveFilename());
@@ -58,7 +58,7 @@ public class MealColumnDAO {
 		String sql;
 		
 		try {
-			sql = "SELECT NVL(COUNT(*), 0) FROM mealcolumn ";
+			sql = "SELECT NVL(COUNT(*), 0) FROM exrcsColumn ";
 			pstmt = conn.prepareStatement(sql);
 			
 			rs = pstmt.executeQuery();
@@ -89,7 +89,7 @@ public class MealColumnDAO {
 		
 		try {
 			sql = "SELECT NVL(COUNT(*), 0) "
-					+ " FROM mealcolumn n "
+					+ " FROM exrcsColumn n "
 					+ " JOIN member m ON n.userNum = m.userNum";
 			
 			if(schType.equals("all")) {
@@ -125,7 +125,7 @@ public class MealColumnDAO {
 	}
 	
 	// 리스트
-	public List<ColumnDTO> listMealColumn(int offset, int size) {
+	public List<ColumnDTO> listExrcsColumn(int offset, int size) {
 		List<ColumnDTO> list = new ArrayList<ColumnDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -135,9 +135,9 @@ public class MealColumnDAO {
 		try {
 			sql = "SELECT n.num, n.userNum, subject, content, hitCount, saveFilename, "
 					+ " TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date "
-					+ " FROM  mealcolumn n "
+					+ " FROM  exrcsColumn n "
 					+ " JOIN member m ON n.userNum = m.userNum "
-					+ " JOIN mealcolumnFile f ON n.num = f.num"
+					+ " JOIN exrcsColumnFile f ON n.num = f.num"
 					+ " ORDER BY reg_date DESC "
 					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
 			
@@ -172,7 +172,7 @@ public class MealColumnDAO {
 	}
 	
 	// 검색했을때 리스트
-	public List<ColumnDTO> listMealColumn(int offset, int size, String schType, String kwd) {
+	public List<ColumnDTO> listExrcsColumn(int offset, int size, String schType, String kwd) {
 		List<ColumnDTO> list = new ArrayList<ColumnDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -181,9 +181,9 @@ public class MealColumnDAO {
 		try {
 			sql = "SELECT n.num, n.userNum, subject, content, hitCount, saveFilename, "
 					+ " TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date "
-					+ " FROM  mealcolumn n "
+					+ " FROM  exrcsColumn n "
 					+ " JOIN member m ON n.userNum = m.userNum "
-					+ " JOIN mealcolumnFile f ON n.num = f.num ";
+					+ " JOIN exrcsColumnFile f ON n.num = f.num ";
 			
 			if(schType.equals("all")) {
 				sql += " WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ";
@@ -244,7 +244,7 @@ public class MealColumnDAO {
 		
 		
 		try {
-			sql = "UPDATE mealColumn SET hitCount = hitCount+1 WHERE num = ?";
+			sql = "UPDATE exrcsColumn SET hitCount = hitCount+1 WHERE num = ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -270,10 +270,10 @@ public class MealColumnDAO {
 			sql = "SELECT n.num, n.userNum, subject, content, saveFilename, originalFilename, hitCount, "
 					+ " TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date, "
 					+ " NVL(likeCount, 0) likeCount "
-					+ " FROM  mealColumn n "
+					+ " FROM  exrcsColumn n "
 					+ " JOIN member m ON n.userNum = m.userNum "
-					+ " JOIN mealcolumnfile f ON n.num = f.num "
-					+ " LEFT OUTER JOIN ( SELECT num, COUNT(*) likeCount FROM mealColumnLike GROUP BY num )"
+					+ " JOIN exrcsColumnFile f ON n.num = f.num "
+					+ " LEFT OUTER JOIN ( SELECT num, COUNT(*) likeCount FROM exrcsColumnLike GROUP BY num )"
 					+ " bc ON n.num = bc.num "
 					+ " WHERE n.num = ? ";
 			
@@ -312,12 +312,12 @@ public class MealColumnDAO {
 	}
 	
 	// 칼럼 수정
-	public void updateMealColumn(ColumnDTO dto) throws SQLException {
+	public void updateExrcsColumn(ColumnDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 
 		try {
-			sql = "UPDATE mealColumn SET subject= ?, content= ?  "
+			sql = "UPDATE exrcsColumn SET subject= ?, content= ?  "
 					+ "  WHERE num = ? ";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -333,7 +333,7 @@ public class MealColumnDAO {
 			// 파일 정보 수정
 	        if (dto.getSaveFilename() != null && !dto.getSaveFilename().isEmpty()) {
 	            // 기존 파일 정보가 있다면 삭제
-	            sql = "DELETE FROM mealColumnfile WHERE num = ?";
+	            sql = "DELETE FROM exrcsColumnFile WHERE num = ?";
 	            pstmt = conn.prepareStatement(sql);
 	            pstmt.setLong(1, dto.getNum());
 	            pstmt.executeUpdate();
@@ -341,17 +341,17 @@ public class MealColumnDAO {
 	            pstmt = null;
 
 	            // 새로운 파일 정보 추가
-	            sql = "INSERT INTO mealColumnfile(fileNum, num, saveFilename, originalFileName, filesize) "
-	                + " VALUES(mealColfile_seq.NEXTVAL, ?, ?, ?, ?)";
+	            sql = "INSERT INTO exrcsColumnFile(fileNum, num, saveFilename, originalFileName, filesize) "
+	                + " VALUES(exrcsColFile_seq.NEXTVAL, ?, ?, ?, ?)";
 	            pstmt = conn.prepareStatement(sql);
 	            pstmt.setLong(1, dto.getNum());
 	            pstmt.setString(2, dto.getSaveFilename());
 	            pstmt.setString(3, dto.getOriginalFilename());
 	            pstmt.setLong(4, dto.getFileSize());
-	            pstmt.executeUpdate();    
+	            pstmt.executeUpdate();   
 //			// 파일 수정
-//			sql = "INSERT INTO mealColumnfile(fileNum, num, saveFilename, originalFileName, filesize) "
-//					+ " VALUES(mealColfile_seq.NEXTVAL, ?, ?, ?, ? )";
+//			sql = "INSERT INTO exrcsColumnFile(fileNum, num, saveFilename, originalFileName, filesize) "
+//					+ " VALUES(exrcsColFile_seq.NEXTVAL, ?, ?, ?, ? )";
 //			
 //			pstmt = conn.prepareStatement(sql);
 //			pstmt.setLong(1, dto.getNum());
@@ -368,13 +368,13 @@ public class MealColumnDAO {
 	}
 	
 	// 게시물 삭제
-	public void deleteMealColumn(long num, String userNum) throws SQLException {
+	public void deleteExrcsColumn(long num, String userNum) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
 		try {
 			if( userNum.equals("1")) {
-				sql = "DELETE FROM mealColumn WHERE num = ? ";
+				sql = "DELETE FROM exrcsColumn WHERE num = ? ";
 				pstmt = conn.prepareStatement(sql);
 				
 				pstmt.setLong(1, num);
@@ -392,14 +392,14 @@ public class MealColumnDAO {
 	
 	
 	// 로그인 유저의 게시글 공감 유무
-	public boolean isUserMealCollike(long num, String userNum) {
+	public boolean isUserExrcsCollike(long num, String userNum) {
 		boolean result = false;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
 		
 		try {
-			sql = "SELECT num, userNum FROM mealColumnlike WHERE num = ? AND userNum = ? ";
+			sql = "SELECT num, userNum FROM exrcsColumnLike WHERE num = ? AND userNum = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -422,12 +422,12 @@ public class MealColumnDAO {
 	}
 	
 	// 게시물 공감 추가
-	public void insertMealColLike(long num, String userNum) throws SQLException {
+	public void insertExrcsColLike(long num, String userNum) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
 		try {
-			sql = "INSERT INTO mealColumnlike(num, userNum) VALUES (?, ?)";
+			sql = "INSERT INTO exrcsColumnLike(num, userNum) VALUES (?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setLong(1, num);
@@ -444,12 +444,12 @@ public class MealColumnDAO {
 	}
 	
 	// 게시글 공감 삭제
-		public void deleteMealColLike(long num, String userNum) throws SQLException {
+		public void deleteExrcsColLike(long num, String userNum) throws SQLException {
 			PreparedStatement pstmt = null;
 			String sql;
 			
 			try {
-				sql = "DELETE FROM mealColumnlike WHERE num = ? AND userNum = ? ";
+				sql = "DELETE FROM exrcsColumnLike WHERE num = ? AND userNum = ? ";
 				pstmt = conn.prepareStatement(sql);
 				
 				pstmt.setLong(1, num);
@@ -465,14 +465,14 @@ public class MealColumnDAO {
 		}
 	
 	// 게시물의 공감 개수
-		public int countMealColLike(long num) {
+		public int countExrcsColLike(long num) {
 			int result = 0;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			String sql;
 			
 			try {
-				sql = "SELECT NVL(COUNT(*), 0) FROM mealColumnlike WHERE num = ?";
+				sql = "SELECT NVL(COUNT(*), 0) FROM exrcsColumnLike WHERE num = ?";
 				pstmt = conn.prepareStatement(sql);
 				
 				pstmt.setLong(1, num);
@@ -493,13 +493,13 @@ public class MealColumnDAO {
 		}
 	
 	// 칼럼 댓글 추가
-	public void insertMealColReply(ReplyDTO dto) throws SQLException {
+	public void insertExrcsColReply(ReplyDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
 		try {
-			sql = "INSERT INTO mealcolumnReply(replyNum, num, userNum , content , reg_date)"
-					+ " VALUES(mealColReply_seq.NEXTVAL, ?, ?, ?, SYSDATE )  ";
+			sql = "INSERT INTO exrcscolumnReply(replyNum, num, userNum , content , reg_date)"
+					+ " VALUES(exrcsColReply_seq.NEXTVAL, ?, ?, ?, SYSDATE )  ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -519,7 +519,7 @@ public class MealColumnDAO {
 	}
 	
 	// 칼럼 댓글 개수 세기
-	public int dataCountMealColReply(long num) {
+	public int dataCountExrcsColReply(long num) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -527,7 +527,7 @@ public class MealColumnDAO {
 		
 		try {
 			sql = "SELECT NVL(COUNT(*), 0) "
-					+ " FROM mealcolumnReply "
+					+ " FROM exrcscolumnReply "
 					+ " WHERE num = ? ";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -549,7 +549,7 @@ public class MealColumnDAO {
 	}
 	
 	// 칼럼 댓글 리스트
-	public List<ReplyDTO> listMealColReply(long num, int offset, int size) {
+	public List<ReplyDTO> listExrcsColReply(long num, int offset, int size) {
 		List<ReplyDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -557,7 +557,7 @@ public class MealColumnDAO {
 		
 		try {
 			sb.append(" SELECT r.replyNum, r.userNum, m.mem_Nick, num, content, r.reg_date ");
-			sb.append(" FROM mealcolumnReply r ");
+			sb.append(" FROM exrcscolumnReply r ");
 			sb.append(" JOIN member m ON r.userNum = m.userNum ");
 			sb.append(" WHERE num = ? ");
 			sb.append(" ORDER BY r.replyNum DESC ");
@@ -602,7 +602,7 @@ public class MealColumnDAO {
 		
 		try {
 			sql = "SELECT r.replyNum, r.userNum, m.mem_Nick, num, content, r.reg_date "
-					+ " FROM mealcolumnReply r  "
+					+ " FROM exrcscolumnReply r  "
 					+ " JOIN member m ON r.userNum = m.userNum   "
 					+ " WHERE replyNum = ? ";
 			pstmt = conn.prepareStatement(sql);
@@ -632,7 +632,7 @@ public class MealColumnDAO {
 	}
 
 	// 칼럼의 댓글 삭제
-	public void deleteMealColReply(long replyNum, String userNum) throws SQLException {
+	public void deleteExrcsColReply(long replyNum, String userNum) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
@@ -644,7 +644,7 @@ public class MealColumnDAO {
 		}
 		
 		try {
-			sql = "DELETE FROM mealcolumnreply "
+			sql = "DELETE FROM exrcscolumnreply "
 					+ " WHERE replyNum = ? ";
 			
 			pstmt = conn.prepareStatement(sql);

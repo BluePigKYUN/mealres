@@ -34,7 +34,7 @@
 					<h1 class="text-primary p-3 m-3 text-center">${mode=='update'?'글 수정하기':'글 등록하기'}</h1>	
 				</div>
 				<div class="body-main">
-				<form name="mealColForm" method="post"	enctype="multipart/form-data">
+				<form name="exrcsColForm" method="post"	enctype="multipart/form-data">
 					<table class="table write-form">
 						<tr>
 							<td class="align-middle bg-light col-sm-2" scope="row">제 목</td>
@@ -46,10 +46,9 @@
 						<tr>
 						    <td class="align-middle bg-light col-sm-2" scope="row">카테고리</td>
 						    <td class="align-middle">
-						        <p class="text-start m-2">식단 칼럼</p>
+						        <p class="text-start m-2">운동 칼럼</p>
 						    </td>
 						</tr>
-	
 	
 						<tr>
 							<td class="align-middle bg-light col-sm-2" scope="row">내 용</td>
@@ -87,7 +86,7 @@
 							<td class="text-center">
 								<button type="button" class="text-white btn btn-primary m-2 py-2 rounded-pill" onclick="submitContents(this.form);">${mode=='update'?'수정완료':'등록하기'}&nbsp;<i class="bi bi-check2"></i></button>
 								<button type="reset" class="btn btn-light m-2 py-2 rounded-pill">다시입력</button>
-								<button type="button" class="btn btn-light m-2 py-2 rounded-pill" onclick="location.href='${pageContext.request.contextPath}/mealColumn/list';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
+								<button type="button" class="btn btn-light m-2 py-2 rounded-pill" onclick="location.href='${pageContext.request.contextPath}/exrcsColumn/list';">${mode=='update'?'수정취소':'등록취소'}&nbsp;<i class="bi bi-x"></i></button>
 								<input type="hidden" name="category" value="${category}">
 								<c:if test="${mode=='update'}">
 									<input type="hidden" name="num" value="${dto.num}">
@@ -117,7 +116,7 @@
    
 <script type="text/javascript">
 function check() {
-    const f = document.mealColForm;
+    const f = document.exrcsColForm;
 	let str;
 	
     str = f.subject.value.trim();
@@ -134,7 +133,7 @@ function check() {
         return false;
     }
 
-    f.action = "${pageContext.request.contextPath}/mealColumn/${mode}";
+    f.action = "${pageContext.request.contextPath}/exrcsColumn/${mode}";
     return true;
 }
 
@@ -143,7 +142,7 @@ function check() {
 		if( !confirm("파일을 삭제하시겠습니까 ?") ) {
 			return;
 		}
-		let url = "${pageContext.request.contextPath}/mealColumn/deleteFile?num=" + num + "&page=${page}";
+		let url = "${pageContext.request.contextPath}/exrcsColumn/deleteFile?num=" + num + "&page=${page}";
 		location.href = url;
 	}
 </c:if>
