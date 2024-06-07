@@ -251,7 +251,7 @@ public class MyUtilGeneral extends MyUtil {
 	
 	// 화면에 표시할 페이지를 중앙에 출력
 	@Override
-	public String melaersPagingUrl(int current_page, int total_page, String list_url) {
+	public String mealersPagingUrl(int current_page, int total_page, String list_url) {
 		StringBuilder sb = new StringBuilder();
 		
 		int numPerBlock = 10;
