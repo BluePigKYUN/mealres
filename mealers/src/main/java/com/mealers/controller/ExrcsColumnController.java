@@ -14,7 +14,7 @@ import com.mealers.annotation.Controller;
 import com.mealers.annotation.RequestMapping;
 import com.mealers.annotation.RequestMethod;
 import com.mealers.annotation.ResponseBody;
-import com.mealers.dao.MealColumnDAO;
+import com.mealers.dao.ExrcsColumnDAO;
 import com.mealers.domain.ColumnDTO;
 import com.mealers.domain.ReplyDTO;
 import com.mealers.domain.SessionInfo;
@@ -31,16 +31,16 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 
 @Controller
-public class MealColumnController {
+public class ExrcsColumnController {
 	
-	@RequestMapping(value = "/mealColumn/list")
-	public ModelAndView meallist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(value = "/exrcsColumn/list")
+	public ModelAndView exrcslist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 글리스트
 		// 넘어온 파라미터 : [페이지번호, size, 검색컬럼 검색값]
 		
-		ModelAndView mav = new ModelAndView("mealColumn/list");
+		ModelAndView mav = new ModelAndView("exrcsColumn/list");
 		
-		MealColumnDAO dao = new MealColumnDAO();
+		ExrcsColumnDAO dao = new ExrcsColumnDAO();
 		MyUtil util = new MyUtilBootstrap();
 		
 		try {
@@ -81,9 +81,9 @@ public class MealColumnController {
 			
 			List<ColumnDTO> list;
 			if(kwd.length() == 0 ) {
-				list = dao.listMealColumn(offset, size);
+				list = dao.listExrcsColumn(offset, size);
 			} else {
-				list = dao.listMealColumn(offset, size, schType, kwd);
+				list = dao.listExrcsColumn(offset, size, schType, kwd);
 			}
 			
 			
@@ -97,8 +97,8 @@ public class MealColumnController {
 				query += "&schType=" + schType + "&kwd=" + URLEncoder.encode(kwd, "UTF-8");
 			}
 			
-			listUrl = cp + "/mealColumn/list?" + query;
-			articleUrl = cp + "/mealColumn/article?page=" + current_page + "&" + query;
+			listUrl = cp + "/exrcsColumn/list?" + query;
+			articleUrl = cp + "/exrcsColumn/article?page=" + current_page + "&" + query;
 			String paging = util.paging(current_page, total_page, listUrl);
 			
 			// list 전달 속성
@@ -120,10 +120,10 @@ public class MealColumnController {
 	}
 	
 	// 글쓰기폼
-	@RequestMapping(value = "/mealColumn/write", method = RequestMethod.GET)
-	public ModelAndView mealwriteForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(value = "/exrcsColumn/write", method = RequestMethod.GET)
+	public ModelAndView exrcswriteForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		ModelAndView mav = new ModelAndView("mealColumn/write");
+		ModelAndView mav = new ModelAndView("exrcsColumn/write");
 		
 		mav.addObject("mode", "write");
 		
@@ -131,20 +131,20 @@ public class MealColumnController {
 	}
 	
 	// 글 등록하기
-	@RequestMapping(value = "/mealColumn/write", method = RequestMethod.POST)
-	public ModelAndView mealwriteSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(value = "/exrcsColumn/write", method = RequestMethod.POST)
+	public ModelAndView exrcswriteSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 넘어온 파라미터 : 제목, 내용 [, 파일]
-		MealColumnDAO dao = new MealColumnDAO();
+		ExrcsColumnDAO dao = new ExrcsColumnDAO();
 		
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		if(! "1".equals(info.getUserNum()) ) {
-			return new ModelAndView("redirect:/mealColumn/list");
+			return new ModelAndView("redirect:/exrcsColumn/list");
 		}
 		
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "mealColumn";
+		String pathname = root + "uploads" + File.separator + "exrcsColumn";
 		
 		FileManager filemanager = new FileManager();
 		
@@ -168,20 +168,20 @@ public class MealColumnController {
 				dto.setFileSize(size);
 			}
 			
-			dao.insertMealColumn(dto);
+			dao.insertExrcsColumn(dto);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return new ModelAndView("redirect:/mealColumn/list");
+		return new ModelAndView("redirect:/exrcsColumn/list");
 	}
 	
 	// 글 보기
-	@RequestMapping(value = "/mealColumn/article", method = RequestMethod.GET)
-	public ModelAndView mealarticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(value = "/exrcsColumn/article", method = RequestMethod.GET)
+	public ModelAndView exrcsarticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 넘어온 파라미터 : 글 번호, 페이지 번호
-		MealColumnDAO dao = new MealColumnDAO();
+		ExrcsColumnDAO dao = new ExrcsColumnDAO();
 		
 		
 		String page = req.getParameter("page");
@@ -210,14 +210,14 @@ public class MealColumnController {
 			ColumnDTO dto = dao.findByColumn(num);
 			
 			if(dto == null) {
-				return new ModelAndView("edirect:/mealColumn/list?" + query);
+				return new ModelAndView("edirect:/exrcsColumn/list?" + query);
 			}
 		
 			HttpSession session = req.getSession();
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
-			boolean isUserLike = dao.isUserMealCollike(num, info.getUserNum());
+			boolean isUserLike = dao.isUserExrcsCollike(num, info.getUserNum());
 			
-			ModelAndView mav = new ModelAndView("mealColumn/article");
+			ModelAndView mav = new ModelAndView("exrcsColumn/article");
 			
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
@@ -230,10 +230,10 @@ public class MealColumnController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new ModelAndView("redirect:/mealColumn/list?" + query);
+		return new ModelAndView("redirect:/exrcsColumn/list?" + query);
 	}
 	
-	@RequestMapping(value = "/mealColumn/update", method = RequestMethod.GET)
+	@RequestMapping(value = "/exrcsColumn/update", method = RequestMethod.GET)
 	public ModelAndView updateForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 수정폼
 		// 넘어온 파라미터 : 글번호, 페이지번호, size
@@ -242,10 +242,10 @@ public class MealColumnController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 		
 		if(! info.getUserNum().equals("1")) {
-			return new ModelAndView("redirect:/mealColumn/list");
+			return new ModelAndView("redirect:/exrcsColumn/list");
 		}
 		
-		MealColumnDAO dao = new MealColumnDAO();
+		ExrcsColumnDAO dao = new ExrcsColumnDAO();
 		
 		String page = req.getParameter("page");
 		String size = req.getParameter("size");
@@ -256,11 +256,11 @@ public class MealColumnController {
 			ColumnDTO dto = dao.findByColumn(num);
 			
 			if(dto == null) {
-				return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
+				return new ModelAndView("redirect:/exrcsColumn/list?page=" + page + "&size=" + size);
 			}
 			
 			
-			ModelAndView mav = new ModelAndView("mealColumn/write");
+			ModelAndView mav = new ModelAndView("exrcsColumn/write");
 			
 			mav.addObject("dto", dto);
 			mav.addObject("page", page);
@@ -273,13 +273,13 @@ public class MealColumnController {
 			e.printStackTrace();
 		}
 		
-		// return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
-		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
+		// return new ModelAndView("redirect:/exrcsColumn/list?page=" + page + "&size=" + size);
+		return new ModelAndView("redirect:/exrcsColumn/list?page=" + page);
 	}
 	
 	
 	// 컬럼 수정
-	@RequestMapping(value = "/mealColumn/update", method = RequestMethod.POST)
+	@RequestMapping(value = "/exrcsColumn/update", method = RequestMethod.POST)
 	public ModelAndView updateSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 수정 완료
 		// 넘어온 폼데이터 : 글번호, 제목, 내용, [, 파일], page, size
@@ -289,17 +289,17 @@ public class MealColumnController {
 		
 		
 		if(!  info.getUserNum().equals("1")) {
-			return new ModelAndView("redirect:/mealColumn/list");
+			return new ModelAndView("redirect:/exrcsColumn/list");
 		}
 		// 파일 저장 경로
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "mealColumn";
+		String pathname = root + "uploads" + File.separator + "exrcsColumn";
 		
 		String page = req.getParameter("page");
 	    // String size = req.getParameter("size");
 		
 		
-		MealColumnDAO dao = new MealColumnDAO();
+		ExrcsColumnDAO dao = new ExrcsColumnDAO();
 		FileManager fileManager = new FileManager();
 		try {
 			
@@ -331,18 +331,18 @@ public class MealColumnController {
 				dto.setFileSize(fileSize);
 			}
 
-			dao.updateMealColumn(dto);
+			dao.updateExrcsColumn(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		// return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
-		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
+		// return new ModelAndView("redirect:/exrcsColumn/list?page=" + page + "&size=" + size);
+		return new ModelAndView("redirect:/exrcsColumn/list?page=" + page);
 	}
 	
 	
 	// 칼럼 삭제
-	@RequestMapping(value = "/mealColumn/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/exrcsColumn/delete", method = RequestMethod.GET)
 	public ModelAndView delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 삭제
 		HttpSession session = req.getSession();
@@ -351,13 +351,13 @@ public class MealColumnController {
 		
 		// 파일 저장 경로
 		String root = session.getServletContext().getRealPath("/");   
-		String pathname = root + "uploads" + File.separator + "mealColumn";
+		String pathname = root + "uploads" + File.separator + "exrcsColumn";
 		
 		String page = req.getParameter("page");
 		String size = req.getParameter("size");
 		String query = "page=" + page + "&size=" + size;
 		
-		MealColumnDAO dao = new MealColumnDAO();
+		ExrcsColumnDAO dao = new ExrcsColumnDAO();
 		FileManager fileManager = new FileManager();
 
 		try {
@@ -377,12 +377,12 @@ public class MealColumnController {
 			
 			ColumnDTO dto  = dao.findByColumn(num);
 			if (dto == null) {
-				return new ModelAndView("redirect:/mealColumn/list?" + query);
+				return new ModelAndView("redirect:/exrcsColumn/list?" + query);
 			}
 			
 		   // admin 만 삭제 가능
 			if ( ! info.getUserNum().equals("1")) {
-					return new ModelAndView("redirect:/mealColumn/list?" + query );
+					return new ModelAndView("redirect:/exrcsColumn/list?" + query );
 			}
 			
 
@@ -391,26 +391,26 @@ public class MealColumnController {
 			}
 			
 			
-			dao.deleteMealColumn(num, info.getUserNum());
+			dao.deleteExrcsColumn(num, info.getUserNum());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
+		return new ModelAndView("redirect:/exrcsColumn/list?page=" + page);
 	}
 	
-	@RequestMapping(value = "/mealColumn/download", method = RequestMethod.GET)
+	@RequestMapping(value = "/exrcsColumn/download", method = RequestMethod.GET)
 	public void download(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 파일 다운로드
-		MealColumnDAO dao = new MealColumnDAO();
+		ExrcsColumnDAO dao = new ExrcsColumnDAO();
 		HttpSession session = req.getSession();
 		
 		FileManager fileManager = new FileManager();
 		
 		// 파일 저장 경로
 		String root = session.getServletContext().getRealPath("/");
-		String pathname = root + "uploads" + File.separator + "mealColumn";
+		String pathname = root + "uploads" + File.separator + "exrcsColumn";
 		
 		boolean b = false;
 
@@ -434,11 +434,11 @@ public class MealColumnController {
 	
 	// 게시물 공감 저장
 	@ResponseBody
-	@RequestMapping(value = "/mealColumn/insertMealColLike", method = RequestMethod.POST)
-	public Map<String, Object> insertMealColLike(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	@RequestMapping(value = "/exrcsColumn/insertExrcsColLike", method = RequestMethod.POST)
+	public Map<String, Object> insertExrcsColLike(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Map<String, Object> model = new HashMap<String, Object>();
 		
-		MealColumnDAO dao = new MealColumnDAO();
+		ExrcsColumnDAO dao = new ExrcsColumnDAO();
 		
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
@@ -451,12 +451,12 @@ public class MealColumnController {
 			String isNoLike = req.getParameter("isNoLike");
 			
 			if(isNoLike.equals("true")) {
-				dao.insertMealColLike(num, info.getUserNum());
+				dao.insertExrcsColLike(num, info.getUserNum());
 			} else {
-				dao.deleteMealColLike(num, info.getUserNum());
+				dao.deleteExrcsColLike(num, info.getUserNum());
 			}
 			
-			likeCount = dao.countMealColLike(num);
+			likeCount = dao.countExrcsColLike(num);
 			
 			state = "true";
 			
@@ -475,12 +475,12 @@ public class MealColumnController {
 	
 	// 댓글 저장
 	@ResponseBody
-	@RequestMapping(value = "/mealColumn/insertReply", method = RequestMethod.POST)
+	@RequestMapping(value = "/exrcsColumn/insertReply", method = RequestMethod.POST)
 	public Map<String, Object>  insertReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 넘어온 파라미터 : 칼럼 게시물 번호, 댓글
 		Map<String, Object> model = new HashMap<String, Object>();
 		
-		MealColumnDAO dao = new MealColumnDAO();
+		ExrcsColumnDAO dao = new ExrcsColumnDAO();
 		
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
@@ -495,7 +495,7 @@ public class MealColumnController {
 			dto.setUserNum(info.getUserNum());
 			dto.setContent(req.getParameter("content"));
 			
-			dao.insertMealColReply(dto);
+			dao.insertExrcsColReply(dto);
 			
 			state = "true";
 		} catch (Exception e) {
@@ -507,11 +507,11 @@ public class MealColumnController {
 	}
 	
 	// 칼럼 댓글 리스트 (AJAX)
-	@RequestMapping(value = "/mealColumn/listReply", method = RequestMethod.GET)
+	@RequestMapping(value = "/exrcsColumn/listReply", method = RequestMethod.GET)
 	public ModelAndView listReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// 파라미터 : 글번호(num) [, 페이지 번호]
 		
-		MealColumnDAO dao = new MealColumnDAO();
+		ExrcsColumnDAO dao = new ExrcsColumnDAO();
 		MyUtil util = new MyUtilBootstrap();
 		
 		try {
@@ -527,7 +527,7 @@ public class MealColumnController {
 			int total_page = 0;
 			int replyCount = 0;
 			
-			replyCount = dao.dataCountMealColReply(num);
+			replyCount = dao.dataCountExrcsColReply(num);
 			total_page = util.pageCount(replyCount, size);
 			
 			if(current_page > total_page) {
@@ -537,7 +537,7 @@ public class MealColumnController {
 			int offset = (current_page -1) * size;
 			if(offset <0 ) offset  = 0;
 			
-			List<ReplyDTO> listReply = dao.listMealColReply(num, offset, size);
+			List<ReplyDTO> listReply = dao.listExrcsColReply(num, offset, size);
 			
 			for(ReplyDTO dto : listReply) {
 				dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
@@ -545,7 +545,7 @@ public class MealColumnController {
 			// 페이징 : 자스 함수 (listPage)를 호출
 			String paging = util.pagingMethod(current_page, total_page, "listPage");
 			
-			ModelAndView mav = new ModelAndView("mealColumn/listReply");
+			ModelAndView mav = new ModelAndView("exrcsColumn/listReply");
 			
 			mav.addObject("listReply", listReply);
 			mav.addObject("pageNo", current_page);
@@ -564,11 +564,11 @@ public class MealColumnController {
 	
 	// 댓글 삭제 : ajax/json
 	@ResponseBody
-	@RequestMapping(value = "/mealColumn/deleteReply", method = RequestMethod.POST)
+	@RequestMapping(value = "/exrcsColumn/deleteReply", method = RequestMethod.POST)
 	public Map<String, Object> deleteReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Map<String, Object> model = new HashMap<String, Object>();
 		
-		MealColumnDAO dao = new MealColumnDAO();
+		ExrcsColumnDAO dao = new ExrcsColumnDAO();
 		
 		HttpSession session = req.getSession();
 		SessionInfo info = (SessionInfo)session.getAttribute("member");
@@ -579,7 +579,7 @@ public class MealColumnController {
 		try {
 			long replyNum = Long.parseLong(req.getParameter("replyNum"));
 			
-			dao.deleteMealColReply(replyNum, info.getUserNum());
+			dao.deleteExrcsColReply(replyNum, info.getUserNum());
 			
 			state = "true";
 			

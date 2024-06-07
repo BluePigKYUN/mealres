@@ -31,7 +31,7 @@
 
     <body>
         <!-- Single Page Header start -->
-        <div class="container-fluid page-header-mealColumn py-5">
+        <div class="container-fluid page-header-exrcsColumn py-5">
             <h1 class="text-center text-white display-6">Mealers가 알려주는 최신 건강 정보</h1>
         </div>
         <!-- Single Page Header End -->
@@ -44,7 +44,7 @@
                     <div class="col-lg-12">
                         <div class="row g-4">
                             <div class="col-xl-3">
-                                  <h1 class="mb-4 text-primary">식단 칼럼</h1>
+                                  <h1 class="mb-4 text-primary">운동 칼럼</h1>
                             </div>
                             <div class="col-6"></div>
                             <div class="col-xl-3">
@@ -77,7 +77,7 @@
 	                                        <div class="rounded position-relative fruite-item">
 	                                            <div class="fruite-img ratio ratio-4x3">
 	                                       			<a href="${articleUrl}&num=${dto.num}" class="text-reset">
-	                                                	<img src="${pageContext.request.contextPath}/uploads/mealColumn/${dto.saveFilename}" class="img-fluid w-100 rounded-top" alt=""> 
+	                                                	<img src="${pageContext.request.contextPath}/uploads/exrcsColumn/${dto.saveFilename}" class="img-fluid w-100 rounded-top" alt=""> 
 	                                                </a>
 	                                            </div>
 	                                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><i class="bi bi-eye" style="letter-spacing: 10px;"></i>${dto.hitCount}</div>
@@ -98,7 +98,7 @@
                                    
                                  <c:if test="${sessionScope.member.userNum == '1'}">
                                  <div id="right-buttons" class= "d-flex justify-content-end hidden">
-				                    <a href = "${pageContext.request.contextPath}/mealColumn/write"> 
+				                    <a href = "${pageContext.request.contextPath}/exrcsColumn/write"> 
 				                    	<button type="button" class="text-white btn btn-primary m-3 mt-4 py-2 rounded-pill">글등록하기</button>
 				                    </a>
 				                </div>
@@ -109,7 +109,7 @@
 				                </div>
 				                
                               <div class="justify-content-center row board-list-footer">
-									<form class="mb-4 justify-content-center row" name="searchForm" action="${pageContext.request.contextPath}/mealColumn/list" method="post">
+									<form class="mb-4 justify-content-center row" name="searchForm" action="${pageContext.request.contextPath}/exrcsColumn/list" method="post">
 										<div class="col-auto p-1">
 											<select name="schType" class="form-select">
 												<option value="all" ${schType=="all"?"selected":""}>제목+내용</option>
@@ -163,7 +163,7 @@
     function changeList() {
     	 var size = document.querySelector('select[name="size"]').value;
     	    var form = document.forms['listForm']; // 폼 요소를 찾음
-    	    form.action = '${pageContext.request.contextPath}/mealColumn/list?size=' + size; // 폼의 action 속성을 설정
+    	    form.action = '${pageContext.request.contextPath}/exrcsColumn/list?size=' + size; // 폼의 action 속성을 설정
     	    form.submit(); // 폼 제출
     }
     

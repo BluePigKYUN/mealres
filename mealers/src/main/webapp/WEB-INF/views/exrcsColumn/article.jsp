@@ -28,7 +28,7 @@
     
 <body>
  	
- 	<div class="container-fluid page-header-mealColumn py-5">
+ 	<div class="container-fluid page-header-exrcsColumn py-5">
             <h1 class="text-center text-white display-6">Mealers가 알려주는 최신 건강 정보</h1>
      </div>
      
@@ -63,7 +63,7 @@
 							
 							<tr>
 								<td colspan="2" class="text-center p-3" style="border-bottom: none;">
-									<button type="button" class="btn btn-outline-primary btnSendMealColLike" title="좋아요"><i class="bi bi-hand-thumbs-up-fill" style="color: ${isUserLike?'#20C997':'black'}"></i>&nbsp;&nbsp;<span id="mealColLikeCount">${dto.likeCount}</span></button>
+									<button type="button" class="btn btn-outline-primary btnSendExrcsColLike" title="좋아요"><i class="bi bi-hand-thumbs-up-fill" style="color: ${isUserLike?'#20C997':'black'}"></i>&nbsp;&nbsp;<span id="exrcsColLikeCount">${dto.likeCount}</span></button>
 								</td>
 							</tr>
 							
@@ -72,7 +72,7 @@
 									<c:if test="${not empty dto.saveFilename}">
 										<p class="border text-secondary mb-1 p-2">
 											<i class="bi bi-folder2-open"></i>
-											<a href="${pageContext.request.contextPath}/mealColumn/download?num=${dto.num}">${dto.originalFilename}</a>
+											<a href="${pageContext.request.contextPath}/exrcsColumn/download?num=${dto.num}">${dto.originalFilename}</a>
 										</p>
 									</c:if>
 								</td>
@@ -86,7 +86,7 @@
 						<td class="text-start">
 								<c:choose>
 									<c:when test="${sessionScope.member.userNum=='1'}">
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/mealColumn/update?num=${dto.num}&page=${page}';">수정</button>
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/exrcsColumn/update?num=${dto.num}&page=${page}';">수정</button>
 									</c:when>
 									<c:otherwise>
 										<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" disabled>수정</button>
@@ -95,7 +95,7 @@
 						    	
 								<c:choose>
 						    		<c:when test="${sessionScope.member.userNum=='1'}">
-						    			<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" onclick="deleteMealColumn();">삭제</button>
+						    			<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" onclick="deleteExrcsColumn();">삭제</button>
 						    		</c:when>
 						    		<c:otherwise>
 						    			<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" disabled>삭제</button>
@@ -103,7 +103,7 @@
 						    	</c:choose>
 						</td>
 						<td class="text-end">
-							<button type="button" class="btn btn-primary m-2 py-2 rounded-pill text-white" onclick="location.href='${pageContext.request.contextPath}/mealColumn/list?${query}';">리스트</button>
+							<button type="button" class="btn btn-primary m-2 py-2 rounded-pill text-white" onclick="location.href='${pageContext.request.contextPath}/exrcsColumn/list?${query}';">리스트</button>
 						</td>
 					</tr>
 				</table>
@@ -143,10 +143,10 @@
         <!-- Footer End -->
 
 		<script type="text/javascript">
-		function deleteMealColumn() {
+		function deleteExrcsColumn() {
 			if(confirm("게시글을 삭제 하시 겠습니까 ? ")) {
 				   let query = "num=${dto.num}&page=${page}";
-				   let url = "${pageContext.request.contextPath}/mealColumn/delete?" + query;
+				   let url = "${pageContext.request.contextPath}/exrcsColumn/delete?" + query;
 				 location.href = url;
 			
 			}
@@ -192,7 +192,7 @@
 
 		// 게시물 공감 여부
 		$(function(){
-			$(".btnSendMealColLike").click(function(){
+			$(".btnSendExrcsColLike").click(function(){
 				const $i = $(this).find("i");
 				let isNoLike = $i.css("color") == "rgb(0, 0, 0)";
 				let msg = isNoLike ? "게시글에 공감하시나요? 😊 " : "게시글 공감을 취소하시나요? 😢 ";
@@ -201,7 +201,7 @@
 					return false;
 				}
 				
-				let url = "${pageContext.request.contextPath}/mealColumn/insertMealColLike";
+				let url = "${pageContext.request.contextPath}/exrcsColumn/insertExrcsColLike";
 				let num = "${dto.num}";
 				let query = "num=" + num + "&isNoLike=" + isNoLike;;
 		
@@ -217,7 +217,7 @@
 						
 						let count = data.likeCount;
 						
-						$("#mealColLikeCount").text(count);
+						$("#exrcsColLikeCount").text(count);
 					} else if(state === "liked") {
 						alert("좋아요는 한번만 가능합니다. !!!");
 					}
@@ -233,7 +233,7 @@
 		});
 
 		function listPage(page) {
-			let url = "${pageContext.request.contextPath}/mealColumn/listReply";
+			let url = "${pageContext.request.contextPath}/exrcsColumn/listReply";
 			let query = "num=${dto.num}&pageNo=" + page;
 			let selector = "#listReply";
 			
@@ -258,7 +258,7 @@
 				}
 				content = encodeURIComponent(content);
 				
-				let url = "${pageContext.request.contextPath}/mealColumn/insertReply";
+				let url = "${pageContext.request.contextPath}/exrcsColumn/insertReply";
 				let query = "num=" + num + 	"&content=" + content;
 				
 				const fn = function(data) {
@@ -294,7 +294,7 @@
 				
 				let replyNum = $(this).attr("data-replyNum");
 				
-				let url = "${pageContext.request.contextPath}/mealColumn/deleteReply";
+				let url = "${pageContext.request.contextPath}/exrcsColumn/deleteReply";
 				let query = "replyNum=" + replyNum;
 				
 				const fn = function(data) {
