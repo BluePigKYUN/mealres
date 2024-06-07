@@ -248,5 +248,71 @@ public class MyUtilGeneral extends MyUtil {
 		
 		return sb.toString();
 	}
+	
+	// 화면에 표시할 페이지를 중앙에 출력
+	@Override
+	public String melaersPagingUrl(int current_page, int total_page, String list_url) {
+		StringBuilder sb = new StringBuilder();
+		
+		int numPerBlock = 10;
+		int n, page;
+		
+		if(current_page < 1 || total_page < current_page) {
+			return "";
+		}
+		
+		if(list_url.indexOf("?") != -1) {
+			list_url += "&";
+		} else {
+			list_url += "?";
+		}
+		
+		page = 1; // 출력할 시작 페이지
+		if(current_page > (numPerBlock / 2) + 1) {
+			page = current_page - (numPerBlock / 2) ;
+			
+			n = total_page - page;
+			if( n < numPerBlock ) {
+				page = total_page - numPerBlock + 1;
+			}
+			
+			if(page < 1) page = 1;
+		}
+
+		sb.append("<ul class='pagination d-flex justify-content-center'>");
+		
+		// 이전(한페이지 전)
+		n = current_page - 1;
+		if(current_page > 1) {
+			sb.append("<li class='page-item m-prev'><a class='page-link border border-secondary' href='" + list_url + "page=" + n
+					+ "' aria-label='Previous'><span aria-hidden='true'>&lt;</span></a></li>");
+		} else {
+			sb.append("<li class='page-item m-prev disabled'><a class='page-link border border-secondary' href='#' aria-disabled='true'><span aria-hidden='true'>&lt;</span></a></li>");
+		}
+
+		n = page;
+		while(page <= total_page && page < n + numPerBlock) {
+			if(page == current_page) {
+				sb.append("<li class='page-item'><a class='page-link border border-0 text-secondary fw-bold'>" + page + "</a></li>");
+			} else {
+				sb.append("<li class='page-item'><a class='page-link border border-0' href='" + list_url + "page=" + page + "'>" + page	+ "</a></li>");
+			}
+			page++;
+		}
+
+		// 다음(한페이지 다음)
+		n = current_page + 1;
+		if(current_page < total_page) {
+			sb.append("<li class='page-item m-next'><a class='page-link border border-secondary' href='" + list_url + "page=" + n
+					+ "' aria-label='Next'><span aria-hidden='true'>&gt;</span></a></li>");
+		} else {
+			sb.append("<li class='page-item m-next disabled'><a class='page-link border border-secondary' href='#' aria-disabled='true'><span aria-hidden='true'>&gt;</span></a></li>");
+		}
+
+		sb.append("</ul>");
+		
+		
+		return sb.toString();
+	}
 
 }
