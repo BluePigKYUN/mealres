@@ -19,20 +19,15 @@
     background-position: center;
     background-repeat: no-repeat;
 }
-
-
     
     .diary-item:hover {
     	box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
 	}
 
-	.diary-item:hover .featurs-item {
-	}
 	
     .ratio-4x3 {
-     	--bs-aspect-ratio: 65%
+     	--bs-aspect-ratio: 60%
     }
-    
     
 .vesitable .owl-nav .owl-prev {
     position: absolute;
@@ -135,7 +130,7 @@
                         </div>
                     </div>
                     <div class="tab-content">
-                         <div id="tab-1" class="tab-pane fade show p-0 active">
+                         <div id="tab-1" class="tab-pane fade show active">
 						        <div class="row g-4">
 						            <div class="col-lg-12">
 						                <div class="row g-4 m-3 mb-4">
@@ -150,9 +145,9 @@
 						                                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
 						                                    <i class="bi bi-eye" style="letter-spacing: 10px;"></i>${dto.hitCount}
 						                                </div>
-						                                <div class="p-4 border border-primary border-top-0 rounded-bottom">
-						                                    <h4>${dto.subject}</h4>
-						                                    <p class="mt-3">${dto.shortTextContent}</p>
+						                                <div class="p-4 border border-primary border-top-0 rounded-bottom text-center"">
+						                                    <h4 class="pb-1">${dto.subject}</h4>
+						                                    <!--   <p class="mt-3">${dto.shortTextContent}</p> -->
 						                                    <p>${dto.reg_date}</p>
 						                                </div>
 						                            </div>
@@ -171,9 +166,9 @@
 						                                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
 						                                    <i class="bi bi-eye" style="letter-spacing: 10px;"></i>${dto.hitCount}
 						                                </div>
-						                                <div class="p-4 border border-primary border-top-0 rounded-bottom">
-						                                    <h4>${dto.shortSubject}</h4>
-						                                    <p class="mt-3">${dto.shortTextContent}</p>
+						                                <div class="p-4 border border-primary border-top-0 rounded-bottom text-center"">
+						                                    <h4 class="pb-1">${dto.shortSubject}</h4>
+						                                    <!--  <p class="mt-3">${dto.shortTextContent}</p> -->
 						                                    <p>${dto.reg_date}</p>
 						                                </div>
 						                            </div>
@@ -184,24 +179,24 @@
                                 </div>
                             </div>
                           <!-- 운동 칼럼 시작 -->
-                         <div id="tab-2" class="tab-pane fade show p-0 active">
+                         <div id="tab-2" class="tab-pane fade">
 						        <div class="row g-4">
 						            <div class="col-lg-12">
 						                <div class="row g-4 m-3">
-						                    <c:forEach var="dto" items="${listExercol}" varStatus="state">
+						                    <c:forEach var="dto" items="${listExrcscol}" varStatus="state">
 						                        <div class="col-md-6 ${state.index % 2 == 0 ? 'order-md-1' : 'order-md-2'}">
 						                            <div class="rounded position-relative fruite-item">
 						                                <div class="fruite-img ratio ratio-4x3">
-						                                    <a href="${pageContext.request.contextPath}/mealColumn/article?page=1&num=${dto.num}&size=9" class="text-reset">
-						                                        <img src="${pageContext.request.contextPath}/uploads/mealColumn/${dto.saveFilename}" class="img-fluid w-100 rounded-top" alt=""> 
+						                                    <a href="${pageContext.request.contextPath}/exrcsColumn/article?page=1&num=${dto.num}&size=9" class="text-reset">
+						                                        <img src="${pageContext.request.contextPath}/uploads/exrcsColumn/${dto.saveFilename}" class="img-fluid w-100 rounded-top" alt=""> 
 						                                    </a>
 						                                </div>
 						                                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
 						                                    <i class="bi bi-eye" style="letter-spacing: 10px;"></i>${dto.hitCount}
 						                                </div>
-						                                <div class="p-4 border border-primary border-top-0 rounded-bottom">
-						                                    <h4>${dto.subject}</h4>
-						                                    <p>${dto.shortTextContent}</p>
+						                                <div class="p-4 border border-primary border-top-0 rounded-bottom text-center">
+						                                    <h4  class="pb-1">${dto.subject}</h4>
+						                                       <!--  <p class="mt-3">${dto.shortTextContent}</p> -->
 						                                    <p>${dto.reg_date}</p>
 						                                </div>
 						                            </div>
@@ -209,20 +204,20 @@
 						                    </c:forEach>
                                         </div>
                                         <div class="row g-4 mx-3">
-						                    <c:forEach var="dto" items="${listExercol2}" varStatus="state">
+						                    <c:forEach var="dto" items="${listExrcscol2}" varStatus="state">
 						                        <div class="col-md-4 ${state.index % 2 == 0 ? 'order-md-1' : 'order-md-2'}">
 						                            <div class="rounded position-relative fruite-item">
 						                                <div class="fruite-img ratio ratio-4x3">
-						                                    <a href="${pageContext.request.contextPath}/mealColumn/article?page=1&num=${dto.num}&size=9" class="text-reset">
-						                                        <img src="${pageContext.request.contextPath}/uploads/mealColumn/${dto.saveFilename}" class="img-fluid w-100 rounded-top" alt=""> 
+						                                    <a href="${pageContext.request.contextPath}/exrcsColumn/article?page=1&num=${dto.num}&size=9" class="text-reset">
+						                                        <img src="${pageContext.request.contextPath}/uploads/exrcsColumn/${dto.saveFilename}" class="img-fluid w-100 rounded-top" alt=""> 
 						                                    </a>
 						                                </div>
 						                                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
 						                                    <i class="bi bi-eye" style="letter-spacing: 10px;"></i>${dto.hitCount}
 						                                </div>
-						                                <div class="p-4 border border-primary border-top-0 rounded-bottom">
-						                                    <h4>${dto.shortSubject}</h4>
-						                                    <p>${dto.shortTextContent}</p>
+						                                <div class="p-4 border border-primary border-top-0 rounded-bottom text-center">
+						                                    <h4  class="pb-1">${dto.shortSubject}</h4>
+						                                    <!--  <p class="mt-3">${dto.shortTextContent}</p> -->
 						                                    <p>${dto.reg_date}</p>
 						                                </div>
 						                            </div>
@@ -245,8 +240,8 @@
         <div>
             <div>
                 <div class="py-4">
-                    <h4 class="display-8 text-center pb-2" style="color: #FFE400">오늘 당신의 하루는 어떠셨나요?</h4>
-                    <h2 class="display-6 text-center text-white">Mealers 에서 당신의 하루를 간직하세요</h2>
+                    <h4 class="display-8 text-center pb-2" style="color: #FFE400">오늘 하루, 어떤 순간을 기록하고 싶으세요?</h4>
+                    <h2 class="display-6 text-center text-white">Mealers와 함께 소중한 일상을 기록하세요</h2>
                     <div class="container py-5">
                         <div class="row g-4 justify-content-center"> 
                             <a href="${pageContext.request.contextPath}/log/event" class="text-reset diary-item counter rounded p-5 col-md-6 col-lg-3 g-2 m-2" style="background-color: #F6F6F6; text-decoration: none;">
@@ -284,11 +279,9 @@
         </div>
     </div>
 </div>
+<!-- 일기 배너 끝 -->
 
-
-        <!-- Banner Section End -->
-
-        <!-- 인기 커뮤니티 -->
+        <!-- 인기 커뮤니티 시작 -->
         <div class="container-fluid vesitable py-5">
             <div class="container py-5">
                 <h1 class="mb-0">실시간 인기 커뮤니티</h1>

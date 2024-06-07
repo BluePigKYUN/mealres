@@ -99,7 +99,7 @@ public class MealColumnController {
 			
 			listUrl = cp + "/mealColumn/list?" + query;
 			articleUrl = cp + "/mealColumn/article?page=" + current_page + "&" + query;
-			String paging = util.paging(current_page, total_page, listUrl);
+			String paging = util.mealersPagingUrl(current_page, total_page, listUrl);
 			
 			// list 전달 속성
 			mav.addObject("list", list);
@@ -274,7 +274,7 @@ public class MealColumnController {
 		}
 		
 		// return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
-		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
+		return new ModelAndView("redirect:/mealColumn/list");
 	}
 	
 	
@@ -296,7 +296,7 @@ public class MealColumnController {
 		String pathname = root + "uploads" + File.separator + "mealColumn";
 		
 		String page = req.getParameter("page");
-	    // String size = req.getParameter("size");
+	    String size = req.getParameter("size");
 		
 		
 		MealColumnDAO dao = new MealColumnDAO();
@@ -336,8 +336,8 @@ public class MealColumnController {
 			e.printStackTrace();
 		}
 
-		// return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
-		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
+	    return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
+		// return new ModelAndView("redirect:/mealColumn/list?page=" + page);
 	}
 	
 	
@@ -397,7 +397,7 @@ public class MealColumnController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
+		return new ModelAndView("redirect:/mealColumn/list?" + query);
 	}
 	
 	@RequestMapping(value = "/mealColumn/download", method = RequestMethod.GET)
@@ -543,7 +543,7 @@ public class MealColumnController {
 				dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
 			}
 			// 페이징 : 자스 함수 (listPage)를 호출
-			String paging = util.pagingMethod(current_page, total_page, "listPage");
+			String paging = util.mealersPagingUrl(current_page, total_page, "listPage");
 			
 			ModelAndView mav = new ModelAndView("mealColumn/listReply");
 			

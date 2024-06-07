@@ -92,6 +92,7 @@
 								<c:if test="${mode=='update'}">
 									<input type="hidden" name="num" value="${dto.num}">
 									<input type="hidden" name="page" value="${page}">
+    								<input type="hidden" name="size" value="${size != null ? size : '9'}">
 									<input type="hidden" name="fileSize" value="${dto.fileSize}">
 									<input type="hidden" name="saveFilename" value="${dto.saveFilename}">
 									<input type="hidden" name="originalFilename" value="${dto.originalFilename}">

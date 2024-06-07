@@ -99,7 +99,7 @@ public class ExrcsColumnController {
 			
 			listUrl = cp + "/exrcsColumn/list?" + query;
 			articleUrl = cp + "/exrcsColumn/article?page=" + current_page + "&" + query;
-			String paging = util.paging(current_page, total_page, listUrl);
+			String paging = util.mealersPagingUrl(current_page, total_page, listUrl);
 			
 			// list 전달 속성
 			mav.addObject("list", list);
@@ -274,7 +274,7 @@ public class ExrcsColumnController {
 		}
 		
 		// return new ModelAndView("redirect:/exrcsColumn/list?page=" + page + "&size=" + size);
-		return new ModelAndView("redirect:/exrcsColumn/list?page=" + page);
+		return new ModelAndView("redirect:/exrcsColumn/list");
 	}
 	
 	
@@ -296,7 +296,7 @@ public class ExrcsColumnController {
 		String pathname = root + "uploads" + File.separator + "exrcsColumn";
 		
 		String page = req.getParameter("page");
-	    // String size = req.getParameter("size");
+	    String size = req.getParameter("size");
 		
 		
 		ExrcsColumnDAO dao = new ExrcsColumnDAO();
@@ -336,8 +336,8 @@ public class ExrcsColumnController {
 			e.printStackTrace();
 		}
 
-		// return new ModelAndView("redirect:/exrcsColumn/list?page=" + page + "&size=" + size);
-		return new ModelAndView("redirect:/exrcsColumn/list?page=" + page);
+		return new ModelAndView("redirect:/exrcsColumn/list?page=" + page + "&size=" + size);
+		// return new ModelAndView("redirect:/exrcsColumn/list?page=" + page);
 	}
 	
 	
@@ -397,7 +397,7 @@ public class ExrcsColumnController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("redirect:/exrcsColumn/list?page=" + page);
+		return new ModelAndView("redirect:/exrcsColumn/list?" + query);
 	}
 	
 	@RequestMapping(value = "/exrcsColumn/download", method = RequestMethod.GET)
@@ -543,7 +543,7 @@ public class ExrcsColumnController {
 				dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
 			}
 			// 페이징 : 자스 함수 (listPage)를 호출
-			String paging = util.pagingMethod(current_page, total_page, "listPage");
+			String paging = util.mealersPagingUrl(current_page, total_page, "listPage");
 			
 			ModelAndView mav = new ModelAndView("exrcsColumn/listReply");
 			

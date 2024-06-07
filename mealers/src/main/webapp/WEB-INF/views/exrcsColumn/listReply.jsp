@@ -1,6 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<style>
+    .deleteReply {
+        cursor: pointer;
+    }
+    .deleteReply:hover {
+        text-decoration: underline;
+        color: red;
+    }
+</style>
 
 <div class='my-3 py-3 border-bottom reply-info'>
 	<span class='text-primary reply-count'>댓글 ${replyCount}개&nbsp</span>
