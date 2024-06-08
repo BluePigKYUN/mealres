@@ -543,7 +543,7 @@ public class MealColumnController {
 				dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
 			}
 			// 페이징 : 자스 함수 (listPage)를 호출
-			String paging = util.mealersPagingUrl(current_page, total_page, "listPage");
+			String paging = util.pagingMethodReply(current_page, total_page, "listPage");
 			
 			ModelAndView mav = new ModelAndView("mealColumn/listReply");
 			

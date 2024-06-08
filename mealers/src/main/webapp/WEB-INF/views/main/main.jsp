@@ -75,7 +75,7 @@
                         <h3 class="mb-3 text-secondary">하루하루 쌓아가는 건강, 함께하는 변화</h3>
                         <h4 class="my-2 display-3 text-primary">Mealers와 함께해요 !</h4>
                         <form class="mt-4 position-relative mx-auto" name="searchForm" action="${pageContext.request.contextPath}/search/main" method="post">
-                            <input  name="kwd" value="${kwd}" class="form-control border-2 border-secondary-main w-75 py-3 px-4 rounded-pill" type="text" placeholder="원하는 음식을 검색해보세요">
+                            <input  name="kwd" value="${kwd}" class="form-control border-2 border-secondary-main w-75 py-3 px-4 rounded-pill" type="text" placeholder="원하는 음식을 검색">
                             <button type="submit" class="btn btn-primary border-2 border-secondary-main py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%;">영양성분 검색 </button>
                         </form>
                     </div>

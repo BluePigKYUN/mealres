@@ -9,6 +9,36 @@
         text-decoration: underline;
         color: red;
     }
+    
+       
+    .pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+	}
+
+	.pagination .page-item {
+	    margin: 0 5px;
+	}
+	
+	.pagination .page-link {
+	    color: var(--bs-dark);
+	    text-decoration: none;
+	    padding: 10px 16px;
+	    transition: 0.5s;
+	}
+	
+	.pagination .page-item.active .page-link {
+	border-radius: 50%;
+	    color: var(--bs-white);
+	}
+	
+	.pagination .page-item.disabled .page-link {
+	 border-radius: 50%;
+	 cursor: not-allowed;
+	}
+	
 </style>
 
 <div class='my-3 py-3 border-bottom reply-info'>
