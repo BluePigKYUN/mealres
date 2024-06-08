@@ -218,3 +218,42 @@
 	background-color: transparent !important;
 }
  */
+ 
+/* 게시판 뱃지 */
+.type_1 {
+    background-color: #0d6efd !important;
+}
+.type_2 {
+    background-color: #6c757d !important;
+}
+.type_3 {
+    background-color: #dc3545 !important;
+}
+.type_4 {
+    background-color: #198754 !important;
+}
+.type_5 {
+    background-color: #ffc107 !important;
+}
+.type_6 {
+    background-color: #0dcaf0 !important;
+}
+.type_7 {
+    background-color: #212529 !important;
+}
+
+.nav-link.text-white.rounded-pill > a{color: #fff !important;}
+.activity_tab > li{margin: 0 4px;}
+
+
+.bi-x-square-fill::before {
+	content: "\f628";
+    color: #f88264c9;
+    font-size: 15px;
+}
+
+.btn-delete{
+    padding: 0;
+    border: 0px;
+    background: transparent;
+}

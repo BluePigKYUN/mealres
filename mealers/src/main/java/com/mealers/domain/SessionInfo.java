@@ -5,6 +5,7 @@ public class SessionInfo {
 	private String userName;
 	private String userNum;
 	private int userRoll;
+	private String fileName;
 	
 	public String getUserNum() {
 		return userNum;
@@ -29,5 +30,11 @@ public class SessionInfo {
 	}
 	public void setUserRoll(int userRoll) {
 		this.userRoll = userRoll;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 }

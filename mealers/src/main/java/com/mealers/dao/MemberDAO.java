@@ -29,7 +29,7 @@ public class MemberDAO {
 		String sql;
 
 		try {
-			sql = "SELECT USERNUM, MEMBERID, MEMBERPWD, MEM_NICK, MEM_EMAIL, SIGN_REG_DATE,MODIFY_DATE "
+			sql = "SELECT USERNUM, MEMBERID, MEMBERPWD, MEM_NICK, MEM_EMAIL, SIGN_REG_DATE,MODIFY_DATE,FILENAME "
 					+ " FROM MEMBER" + " WHERE MEMBERID = ? AND MEMBERPWD = ? AND ENABLED = 1";
 
 			pstmt = conn.prepareStatement(sql);
@@ -49,6 +49,8 @@ public class MemberDAO {
 				dto.setMem_Email(rs.getString("MEM_EMAIL"));
 				dto.setSign_reg_date(rs.getString("SIGN_REG_DATE"));
 				dto.setModify_date(rs.getString("MODIFY_DATE"));
+				dto.setFileName(rs.getString("FILENAME"));
+				
 
 			}
 		} catch (SQLException e) {
@@ -127,6 +129,7 @@ public class MemberDAO {
 				dto.setMem_Email(rs.getString("MEM_EMAIL"));
 				dto.setSign_reg_date(rs.getString("SIGN_REG_DATE"));
 				dto.setModify_date(rs.getString("MODIFY_DATE"));
+				dto.setFileName(rs.getString("FILENAME"));
 
 			}
 
@@ -156,7 +159,6 @@ public class MemberDAO {
 
 			pstmt.executeUpdate();
 
-			System.out.println("test");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -182,6 +184,7 @@ public class MemberDAO {
 			pstmt.setString(3, dto.getMem_Email());
 			pstmt.setString(4, dto.getMemberId());
 
+			
 			pstmt.executeUpdate();
 
 		} catch (Exception e) {
@@ -190,6 +193,26 @@ public class MemberDAO {
 			DBUtil.close(pstmt);
 		}
 
+	}
+	
+	public void updateProfile(MemberDTO dto) throws ServletException,IOException{
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql="UPDATE MEMBER SET MODIFY_DATE=SYSDATE,FILENAME=? "
+					+ "WHERE USERNUM=?";
+			pstmt = conn.prepareStatement(sql);
+			
+			  pstmt.setString(1, dto.getFileName()); 
+			  pstmt.setString(2, dto.getUserNum());
+			  
+			  pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.close(pstmt);
+		}
 	}
 
 }

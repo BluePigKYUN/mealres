@@ -149,6 +149,8 @@
 										href="${pageContext.request.contextPath}/group/write">가입</a></li>
 									<li><a
 										href="${pageContext.request.contextPath}/group/main">리스트</a></li>
+												<li><a
+										href="${pageContext.request.contextPath}/group/create">만들기</a></li>
 								</ul>
 							</div>
 						</div>

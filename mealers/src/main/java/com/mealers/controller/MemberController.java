@@ -1,5 +1,6 @@
 package com.mealers.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -13,11 +14,14 @@ import com.mealers.dao.MemberDAO;
 import com.mealers.domain.MemberDTO;
 import com.mealers.domain.SessionInfo;
 import com.mealers.servlet.ModelAndView;
+import com.mealers.util.FileManager;
+import com.mealers.util.MyMultipartFile;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @Controller
 public class MemberController {
@@ -48,6 +52,9 @@ public class MemberController {
 			info.setUserId(dto.getMemberId());
 			info.setUserName(dto.getMem_Nick());
 			info.setUserNum(dto.getUserNum());
+			
+			//중요
+			info.setFileName(dto.getFileName());
 
 			
 			session.setAttribute("member", info);
@@ -99,9 +106,7 @@ public class MemberController {
 	  public ModelAndView memberSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	      MemberDAO dao = new MemberDAO();
 	        String message = "";	     
-	        
-	        System.out.println("00");
-	        
+	        	        
 	        try {
 	            MemberDTO dto = new MemberDTO();
 	            dto.setMemberId(req.getParameter("memberId"));
@@ -227,5 +232,38 @@ public class MemberController {
 
 		return new ModelAndView("redirect:/");
 	}
+	
+	@RequestMapping(value = "/profile/update", method = RequestMethod.POST)
+	public ModelAndView updateProfile(HttpServletRequest req, HttpServletResponse resp)
+	        throws ServletException, IOException {
+	    MemberDAO dao = new MemberDAO();
+	    HttpSession session = req.getSession();
+	    SessionInfo info = (SessionInfo) session.getAttribute("member");
 
+	    FileManager fileManager = new FileManager();
+
+	    String root = session.getServletContext().getRealPath("/");
+	    String pathname = root + "uploads" + File.separator + "member";
+
+	    try {
+	        MemberDTO dto = new MemberDTO();
+
+	        dto.setUserNum(info.getUserNum());
+	        
+	        String filename = null;
+	        Part p = req.getPart("profile-picture");
+	        MyMultipartFile multipart = fileManager.doFileUpload(p, pathname);
+
+	        if (multipart != null) {
+	             filename = multipart.getSaveFilename();
+	            dto.setFileName(filename);
+	        }
+
+	        dao.updateProfile(dto);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return new ModelAndView("redirect:/member/mypage");
+	}
 }

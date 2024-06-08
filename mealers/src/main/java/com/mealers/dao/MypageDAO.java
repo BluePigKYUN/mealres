@@ -74,7 +74,7 @@ public class MypageDAO {
 			pstmt.setInt(3, size);
 
 			rs = pstmt.executeQuery();
-			// System.out.println(sb.toString());
+			System.out.println(userNum + "/" + offset + "/" + size);
 
 			while (rs.next()) {
 				CmntDTO dto = new CmntDTO();
@@ -173,26 +173,33 @@ public class MypageDAO {
 
 		try {
 			sb.append("SELECT * FROM ( ");
-			sb.append("    SELECT replyNum, content, reg_date, num, userNum ");
+			sb.append("    SELECT replyNum, content, reg_date, num, userNum, ");
+			sb.append("'1' AS type ");
 			sb.append("    FROM mealCmntReply ");
 			sb.append("    UNION ALL ");
-			sb.append("    SELECT replyNum, content, reg_date, num, userNum ");
+			sb.append("    SELECT replyNum, content, reg_date, num, userNum, ");
+			sb.append("'2' AS type ");
 			sb.append("    FROM exerCmntReply ");
 			sb.append("    UNION ALL ");
-			sb.append("    SELECT replyNum, content, reg_date, num, userNum ");
+			sb.append("    SELECT replyNum, content, reg_date, num, userNum, ");
+			sb.append("'3' AS type ");
 			sb.append("    FROM freeCmntReply ");
 			sb.append("    UNION ALL ");
-			sb.append("    SELECT replyNum, content, reg_date, num, userNum ");
+			sb.append("    SELECT replyNum, content, reg_date, num, userNum, ");
+			sb.append("'4' AS type ");
 			sb.append("    FROM oMemberCmntReply ");
 			sb.append("    UNION ALL ");
-			sb.append("    SELECT replyNum, content, reg_date, num, userNum ");
+			sb.append("    SELECT replyNum, content, reg_date, num, userNum, ");
+			sb.append("'5' AS type ");
 			sb.append("    FROM concernCmntReply ");
 			sb.append("    UNION ALL ");
-			sb.append("    SELECT replyNum, content, reg_date, num, userNum ");
-			sb.append("    FROM exrcsColumnReply ");
-			sb.append("    UNION ALL ");
-			sb.append("    SELECT replyNum, content, reg_date, num, userNum ");
+			sb.append("    SELECT replyNum, content, reg_date, num, userNum, ");
+			sb.append("'6' AS type ");
 			sb.append("    FROM mealColumnReply ");
+			sb.append("    UNION ALL ");
+			sb.append("    SELECT replyNum, content, reg_date, num, userNum, ");
+			sb.append("'7' AS type ");
+			sb.append("    FROM exrcsColumnReply ");
 			sb.append(") all_reply ");
 			sb.append("WHERE userNum = ? ");
 			sb.append("ORDER BY reg_date DESC ");
@@ -203,14 +210,14 @@ public class MypageDAO {
 			pstmt.setInt(2, offset);
 			pstmt.setInt(3, size);
 			
-			System.out.println(userNum + "/" + offset + "/" + size);
+			//System.out.println(userNum + "/" + offset + "/" + size);
 
 			rs = pstmt.executeQuery();
-
 			while (rs.next()) {
 				CmntDTO dto = new CmntDTO();
 				dto.setNum(rs.getInt("num"));
-				dto.setSubject(rs.getString("content"));
+				dto.setType(rs.getString("type"));
+				dto.setContent(rs.getString("content"));
 				dto.setReg_date(rs.getString("reg_date"));
 				list.add(dto);
 
@@ -233,7 +240,7 @@ public class MypageDAO {
 		StringBuilder sb = new StringBuilder();
 
 		try {
-			sb.append("SELECT COUNT(*) AS total_comments ");
+			sb.append("SELECT COUNT(*) AS total ");
 			sb.append("FROM ( ");
 			sb.append("    SELECT replyNum, userNum FROM mealCmntReply ");
 			sb.append("    UNION ALL ");

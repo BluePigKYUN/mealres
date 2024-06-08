@@ -53,13 +53,20 @@
 				<div class="bg-light rounded p-5">
 					<!-- 프로필 사진 업로드 -->
 					<div class="text-center mb-4">
-						<div class="profile-picture-container">
-							<img id="profile-picture-preview" src="default-profile.png"
-								alt="Profile Picture" class="rounded-circle"
-								style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;">
-							<input type="file" id="profile-picture" class="form-control mt-2"
-								accept="image/*" style="display: none;">
-						</div>
+						<form id="profile-form" action="" method="post"
+							enctype="multipart/form-data">
+							<div class="profile-picture-container">
+								<img id="profile-picture-preview" src="${pageContext.request.contextPath}/uploads/member/${dto.fileName}"
+									alt="프로필" class="rounded-circle"
+									style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;"
+									onclick="triggerFileInput()"> 
+								<input type="file" name="profile-picture" id="profile-picture"
+									class="form-control mt-2" accept="image/*" style="display: none;" onchange="previewProfilePicture(event)">
+							</div>
+							<div class="button-container">
+								<button type="button" class="btn btn-primary" onclick="submitForm()">프로필 변경</button>
+							</div>
+						</form>
 					</div>
 
 					<h1 class="text-primary text-center mb-4">${dto.mem_Nick}</h1>
@@ -196,6 +203,21 @@
 				reader.readAsDataURL(event.target.files[0]);
 			});
 		});
+		 function submitForm() {
+		        const form = document.getElementById('profile-form');
+		        
+		        // 필요한 유효성 검사를 수행합니다.
+		        // 예를 들어, 파일 입력이 비어 있지 않은지 확인할 수 있습니다.
+		        const fileInput = document.getElementById('profile-picture');
+		        if (fileInput.files.length === 0) {
+		            alert('프로필 사진을 선택하세요.');
+		            return;
+		        }
+		        
+		        // 폼을 제출합니다.
+		        form.action = "${pageContext.request.contextPath}/profile/update";
+		        form.submit();
+		    }
 	</script>
 </body>
 </html>

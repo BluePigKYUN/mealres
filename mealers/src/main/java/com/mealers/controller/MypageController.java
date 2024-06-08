@@ -41,6 +41,11 @@ public class MypageController {
 		SessionInfo info = (SessionInfo) session.getAttribute("member");
 
 		MemberDTO dto = dao.findById(info.getUserId());
+		
+		info.setUserId(dto.getMemberId());
+		info.setUserName(dto.getMem_Nick());
+		info.setUserNum(dto.getUserNum());
+		info.setFileName(dto.getFileName());
 
 		ModelAndView mav = new ModelAndView("member/mypage");
 		mav.addObject("dto", dto);
@@ -68,10 +73,12 @@ public class MypageController {
 			}
 
 			// 모드에 따른 총개수
-			int dataCount = dao.getTotalCount(info.getUserNum());
+			int dataCount = 0;
 			if("2".equals(mode))
 			{
 				dataCount = dao.getTotalReply(info.getUserNum());
+			}else {
+				dataCount = dao.getTotalCount(info.getUserNum());
 			}
 			
 			int size = 10;
@@ -89,12 +96,20 @@ public class MypageController {
 			}
 
 			int offset = (current_page - 1) * size;
+			//System.out.println("offset: "+offset + "/ current_page: " + current_page + "/ size: " + size + "/ dataCount: " + dataCount);
+//			offset: 0current_page: 1size: 10dataCount: 56
+//			40/0/10
+			
+//			offset: -10current_page: 0size: 10dataCount: 0
+//			40/-10/10
 			
 			// 모드에 따른 보여줄 리스트
-			List<CmntDTO> list = dao.listPost(offset, size, info.getUserNum());
+			List<CmntDTO> list;
 			if("2".equals(mode))
 			{
 				list = dao.listReply(offset, size, info.getUserNum());
+			}else {
+				list = dao.listPost(offset, size, info.getUserNum());
 			}
 			
 			String cp = req.getContextPath();
