@@ -4,15 +4,47 @@
 <!DOCTYPE html>
 <html>
 <style>
-.replyDelBtn:hover {
+
+.replyContent .adoptLine {
+	background-color: rgba(148, 148, 148, 0.4);
+
+}
+
+.replyDelBtn:hover, .pagination:hover {
 	cursor: pointer;
 } 
 
 .replyContent {
-	border-bottom: 1px solid #BDBDBD;
+	border-bottom: 1px solid #949494;
 }
 
+.pagination {
+	display: flex;
+	justify-content: center;
+	list-style: none;
+	padding: 0;
+ }
 
+.pagination .page-item {
+	margin: 0 5px;
+ }
+  
+.pagination .page-link {
+	color: var(--bs-dark);
+	text-decoration: none;
+	padding: 10px 16px;
+	transition: 0.5s;
+ }
+  
+.pagination .page-item.active .page-link {
+	border-radius: 50%;
+	color: var(--bs-white);
+ }
+  
+.pagination .page-item.disabled .page-link {
+	border-radius: 50%;
+	cursor: not-allowed;
+ }
 </style>
 <head>
 <meta charset="UTF-8">
@@ -28,9 +60,9 @@
 		</c:if>
 			
 		<c:forEach var="dto" items="${replyList}">		
-			<div class="replyContent mx-1 ">
+			<div class="replyContent mx-1">
 				
-				<span class="py-2 ps-3 text-white bg-secondary adoptLine" style="display: none">채택된 댓글</span>
+				<span class="py-2 ps-3 my-1 rounded text-white fw-bold adoptLine" style="display: none">채택 댓글</span>
 				
 				<div class="d-flex justify-content-between fw-bold pb-2 topReply">
 					<c:choose>
@@ -54,7 +86,8 @@
 						</c:choose>
 						<div>
 							<c:if test="${dto.conUserNum == sessionScope.member.userNum}">
-								<button type="button" class="border border-primary rounded ms-3 text-primary fw-bold adoptBtn" data-replyNum="${dto.replyNum}" data-pageNo="${pageNo}">
+								<button type="button" class="border border-primary rounded ms-3 text-primary fw-bold adoptBtn" 
+									data-replyNum="${dto.replyNum}" data-pageNo="${pageNo}" style="display: ${isAdoptByNum? 'none' : 'block'}">
 								채택
 								</button>
 							</c:if>
@@ -67,6 +100,9 @@
 				</div>
 			</div>
 		</c:forEach>
+		<div class="page-navigation mt-3">
+			${paging}
+		</div>	
 	</div>
 </body>
 </html>

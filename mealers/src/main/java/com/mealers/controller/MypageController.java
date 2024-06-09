@@ -24,15 +24,6 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class MypageController {
 
-	/*
-	 * @RequestMapping(value="/member/mypage",method=RequestMethod.GET) public
-	 * ModelAndView myPageForm(HttpServletRequest req, HttpServletResponse
-	 * resp)throws ServletException,IOException{ ModelAndView mav = new
-	 * ModelAndView("member/mypage");
-	 * 
-	 * return mav; }
-	 */
-
 	@RequestMapping(value = "/member/mypage", method = RequestMethod.GET)
 	public ModelAndView myPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -53,7 +44,8 @@ public class MypageController {
 		return mav;
 	}
 	
-	//마이페이지 
+	
+	//마이페이지,게시글 
 	@RequestMapping(value = "/member/activity", method = RequestMethod.GET)
 	public ModelAndView post(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("member/activity");
@@ -96,12 +88,6 @@ public class MypageController {
 			}
 
 			int offset = (current_page - 1) * size;
-			//System.out.println("offset: "+offset + "/ current_page: " + current_page + "/ size: " + size + "/ dataCount: " + dataCount);
-//			offset: 0current_page: 1size: 10dataCount: 56
-//			40/0/10
-			
-//			offset: -10current_page: 0size: 10dataCount: 0
-//			40/-10/10
 			
 			// 모드에 따른 보여줄 리스트
 			List<CmntDTO> list;
@@ -115,7 +101,7 @@ public class MypageController {
 			String cp = req.getContextPath();
 			String articleUrl = cp + "/member/activity?mode=" + mode + "&pageNo=" + current_page;
 
-			// ModelAndView에 데이터 전달
+			
 			mav.addObject("list", list);
 			mav.addObject("pageNo", current_page);
 			mav.addObject("total_page", total_page);
@@ -132,58 +118,88 @@ public class MypageController {
 
 		return mav;
 	}
+	
+	//마이페이지에서 게시글 삭제 
+	@RequestMapping(value = "/member/postDelete", method = RequestMethod.GET)
+	public ModelAndView deletePost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	
+		MypageDAO dao = new MypageDAO();
+		
+		try {
+			String type = req.getParameter("type");
+			long num = Long.parseLong(req.getParameter("num"));
+			
+			String tableName="";
+			
+			switch (type) {
+			case "1": tableName="MEALCMNT";
+				break;
+			case "2": tableName="EXERCMNT";
+			break;
+			case "3": tableName="FREECMNT";
+			break;
+			case "4": tableName="OMEMBERCMNT";
+			break;
+			case "5": tableName="CONCERNCMNT";
+			break;
+			case "6": tableName="MEALCOLUMN";
+			break;
+			case "7": tableName="EXRCSCOLUMN";
+			break;
 
-//	  @RequestMapping(value = "/member/activity", method = RequestMethod.GET)
-//	  public ModelAndView post(HttpServletRequest req, HttpServletResponse resp)
-//	  throws ServletException, IOException { ModelAndView mav = new
-//	  ModelAndView("member/activity");
-//	  
-//	  try { String mode = req.getParameter("mode"); if (mode == null ||
-//	  mode.isEmpty()) { mode = "1"; }
-//	  
-//	  MypageDAO dao = new MypageDAO();
-//	  
-//	  int page = 1; int size = 10;
-//	  
-//	  if (req.getParameter("page") != null) { page =
-//	  Integer.parseInt(req.getParameter("page")); }
-//	  
-//	  int offset = (page - 1) * size;
-//	  
-//	  HttpSession session = req.getSession(); SessionInfo info = (SessionInfo)
-//	  session.getAttribute("member");
-//	  
-//	  if (info != null) { String userNum = info.getUserNum();
-//	  System.out.println("info"+info);
-//	  System.out.println("getUserNum"+info.getUserNum()); List<CmntDTO> list =
-//	  null;
-//	  
-//	  if (mode.equals("1")) { list = dao.listPost(userNum, offset, size); } else if
-//	  (mode.equals("2")) { list = dao.listReply(userNum, offset, size); } else if
-//	  (mode.equals("3")) { // 탭 3의 데이터 불러오기 // list = dao.listLike(userNum, offset,
-//	  size); }
-//	  
-//	  int totalCount = dao.getTotalCount(userNum);
-//	  System.out.println("userNum"+userNum);
-//	  System.out.println("totalCount"+totalCount);
-//	  
-//	  // 페이징 처리를 위한 데이터 설정 int pageCount = (int) Math.ceil((double) totalCount /
-//	  size); // 총 페이지 수 int startPage = (page - 1) / 10 * 10 + 1; // 시작 페이지 int
-//	  endPage = startPage + 9; // 끝 페이지 if (endPage > pageCount) { endPage =
-//	  pageCount; }
-//	  
-//	  // ModelAndView에 데이터 전달 mav.addObject("list", list);
-//	  mav.addObject("totalCount", totalCount); mav.addObject("pageCount",
-//	  pageCount); mav.addObject("startPage", startPage); mav.addObject("endPage",
-//	  endPage); mav.addObject("page", page); mav.addObject("mode", mode); // **현재
-//	  모드 정보를 추가**
-//	  
-//	  System.out.println(mode);
-//	  
-//	  } else { mav = new ModelAndView("redirect:/login"); }
-//	  
-//	  } catch (Exception e) { e.printStackTrace(); }
-//	  
-//	  return mav; }
+			}
+			
+			dao.deletePost(tableName,num);
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String mode = req.getParameter("mode");
+		String pageNo = req.getParameter("pageNo");
+		
+			return new ModelAndView("redirect:/member/activity?mode=" + mode + "&pageNo=" + pageNo);
+		
+	}
+	
+	//마이페이지에서 댓글 삭제 
+	@RequestMapping(value = "/member/replyDelete", method = RequestMethod.GET)
+	public ModelAndView deleteReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	
+		MypageDAO dao = new MypageDAO();
+		
+		try {
+			String type = req.getParameter("type");
+			long num = Long.parseLong(req.getParameter("num"));
+			
+			String tableName="";
+			
+			switch (type) {
+			case "1": tableName="MEALCMNTREPLY";
+				break;
+			case "2": tableName="EXERCMNTREPLY";
+			break;
+			case "3": tableName="FREECMNTREPLY";
+			break;
+			case "4": tableName="OMEMBERCMNTREPLY";
+			break;
+			case "5": tableName="CONCERNCMNTREPLY";
+			break;
+			case "6": tableName="MEALCOLUMNREPLY";
+			break;
+			case "7": tableName="EXRCSCOLUMNREPLY";
+			break;
+
+			}
+			
+			dao.deleteReply(tableName,num);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String mode = req.getParameter("mode");
+		String pageNo = req.getParameter("pageNo");
+		
+			return new ModelAndView("redirect:/member/activity?mode=" + mode + "&pageNo=" + pageNo);
+		
+	}
 }

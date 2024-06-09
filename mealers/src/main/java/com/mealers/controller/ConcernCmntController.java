@@ -70,7 +70,7 @@ public class ConcernCmntController {
 				dataCount = dao.dataCount(schCategory, schContent);
 			}
 			
-			int size = 8;
+			int size = 10;
 			int total_page = util.pageCount(dataCount, size);
 			if(current_page > total_page) {
 				current_page = total_page;
@@ -443,6 +443,7 @@ public class ConcernCmntController {
 		
 		try {
 			long num = Long.parseLong(req.getParameter("num"));
+			
 			String pageNo = req.getParameter("pageNo");
 			int current_page = 1;
 			if(pageNo != null) {
@@ -466,7 +467,10 @@ public class ConcernCmntController {
 				dto.setContent(dto.getContent().replace("\n", "<br>"));
 			}
 			
-			String paging = util.pagingMethod(current_page, total_page, "listPage");
+			String paging = util.pagingMethodReply(current_page, total_page, "listPage");
+			
+			boolean isAdoptByNum = dao.isAdoptByNum(num);
+			boolean isAdopt = dao.isAdopt(num);
 			
 			ModelAndView mav = new ModelAndView("concernCmnt/replyList");
 			
@@ -475,6 +479,8 @@ public class ConcernCmntController {
 			mav.addObject("replyCount", replyCount);
 			mav.addObject("total_page", total_page);
 			mav.addObject("paging", paging);
+			mav.addObject("isAdoptByNum", isAdoptByNum);
+			mav.addObject("isAdopt", isAdopt);
 			
 			return mav;
 			
@@ -518,7 +524,7 @@ public class ConcernCmntController {
 		
 		try {
 			long replyNum = Long.parseLong(req.getParameter("replyNum"));
-			
+
 			dao.replyAdoptCal(replyNum);
 			
 			state = "ok";

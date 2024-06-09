@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.mealers.annotation.Controller;
 import com.mealers.annotation.RequestMapping;
+import com.mealers.dao.ExerCmntDAO;
 import com.mealers.dao.ExrcsColumnDAO;
 import com.mealers.dao.MealCmntDAO;
 import com.mealers.dao.MealColumnDAO;
@@ -35,7 +36,12 @@ public class MainController {
 		
 		// 실시간 인기 커뮤니티(식단)
 		MealCmntDAO mealCmntDAO = new MealCmntDAO();
-		List<CmntDTO> listMealCmnt = mealCmntDAO.listMeal(0, 10, "hitcount");
+		List<CmntDTO> listMealCmnt = mealCmntDAO.listMeal(0, 5, "hitcount");
+		
+		
+		// 실시간 인기 커뮤니티(운동)
+		ExerCmntDAO exerCmntDAO = new ExerCmntDAO();
+		List<CmntDTO> listExerCmnt = exerCmntDAO.listExer(0, 5,"hitcount");
 		
 		
 		mav.addObject("listMealcol", listMealcol);
@@ -43,6 +49,7 @@ public class MainController {
 		mav.addObject("listExrcscol", listExrcscol);
 		mav.addObject("listExrcscol2", listExrcscol2);
 		mav.addObject("listMealCmnt", listMealCmnt);
+		mav.addObject("listExerCmnt", listExerCmnt);
 		
 		
 		return mav;

@@ -9,11 +9,19 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 
+<style type="text/css">
+#moreInfo:hover {text-decoration: underline;}
+</style>
+
+<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
 <script type="text/javascript">
 function searchList() {
 	const f = document.searchForm;
 	f.submit();
 }
+
+
+
 </script>
 
 </head>
@@ -29,16 +37,20 @@ function searchList() {
 		<div class="container">
        		<div class="row">
            		<div class="col-md-8">
+           			<h5> 등록된 음식 데이터 : ${totalCount}</h5>
 					<div class="row g-5 align-items-center">
                         <form class="position-relative mx-auto" name="searchForm" action="${pageContext.request.contextPath}/search/main" method="post">
                             <input name="kwd" value="${kwd}" class="form-control border-2 border-secondary py-3 px-4 rounded-pill" type="text" placeholder="음식 이름 검색">
                             <button type="button" onclick="searchList()" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 2%;">검색하기</button>
                         </form>
 					</div>
+					<div class="mx-3 pt-2"> 총 검색결과 ${dataCount}개</div>
 					<div class="row">
 						<div class="col-6">
 							<h4 class="ms-3 pt-3"> 밀러 등록 </h4>
-							<ul class="list-group my-3">
+							<c:if test="${kwd.length() != 0}">
+							</c:if>
+							<ul id="mealerList" class="list-group my-3">
 								<c:forEach var="dto" items="${list}">
 									<c:if test="${dto.userNum == 0}">
 										<li class="list-group-item list-group-item-action d-flex gap-2">
@@ -56,7 +68,7 @@ function searchList() {
 						<div class=" col-6">
 							<h4 class="ms-3 pt-3"> 유저 등록 </h4>
 							<ul class="list-group my-3">
-								<c:forEach var="dto" items="${list}">
+								<c:forEach var="dto" items="${listUser}">
 									<c:if test="${dto.userNum != 0}">
 										<li class="list-group-item list-group-item-action d-flex gap-2">
 											<div class="me-auto ">
@@ -71,13 +83,20 @@ function searchList() {
 							</ul>
 						</div>
 					</div>
+					<form id="moreForm">
+						<input type="hidden" id="pageCount" name="page" value="${page}">
+						<input type="hidden" name="kwd" value="${kwd}">
+					</form>
+					<c:if test="${kwd.length() != 0}">
+						<a id="moreInfo" style="color: tomato; cursor: pointer;}">더보기</a>
+					</c:if>
 					
-					<div class="page-navigation d-flex">${paging}</div>
-					
-					<div class="my-3">
-						검색결과가 없습니다...&nbsp;
-						<a href="${pageContext.request.contextPath}/search/reg">눌러서 영양정보 등록하기</a>
-					</div>
+					<c:if test="${list.isEmpty()}">
+						<div class="my-3">
+							검색결과가 없습니다...&nbsp;
+							<a href="${pageContext.request.contextPath}/search/reg">눌러서 영양정보 등록하기</a>
+						</div>
+					</c:if>
 					
 					<div class="my-3">
 						원하는 식품이 없다면 ? &nbsp;
@@ -120,14 +139,72 @@ function searchList() {
         </div>
     </div>
            
-	
-	
-	
-	
-
 </body>
 <footer>
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
 </footer>
+<script type="text/javascript">
+	var $j = jQuery.noConflict();
+	$j(document).ready(function() {
+		
+		
+		$("#moreInfo").click(function() {
+			let page = document.querySelector("#pageCount");
+			page.value++;
+			console.log(page.value);
+			
+			
+			$.ajax({
+				type: "POST",
+				url: "${pageContext.request.contextPath}/search/mainAjax",
+				data: $("#moreForm").serialize(),
+				dataType: "json",
+				success: function(data) {
+					console.log(data);
+					console.log(data.list.length);
+					
+					let content = "";
+					
+					if(data.list.length == 0) {
+						alert("마지막입니다.");
+						return;
+					}
+					
+					for(let list of data.list) {
+						console.log(list.kcal);
+						
+						content += "<li class=\"list-group-item list-group-item-action d-flex gap-2\">"
+						content += "<div class=\"me-auto\">"
+						content += "<a href=\"" + data.articleUrl + "&num=" + list.food_num +"\" style=\"color: black\">"
+						content	+= list.food_name + "(" + list.maker + ", " + list.kcal + "kcal)"
+						content += "</a>"
+						content += "</div>"
+						content += "</li>"
+					}
+					
+					$("#mealerList li:last").after(content);
+				},
+				error: function(err) {
+					console.log(err.responseText);
+				}
+			});
+		});
+	});
+</script>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -4,13 +4,41 @@
 <!DOCTYPE html>
 <html>
 <style>
-.replyDelBtn:hover {
+.replyDelBtn:hover, .pagination:hover {
 	cursor: pointer;
 } 
 
 .replyContent {
 	border-bottom: 1px solid #BDBDBD;
 }
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	list-style: none;
+	padding: 0;
+ }
+
+.pagination .page-item {
+	margin: 0 5px;
+ }
+  
+.pagination .page-link {
+	color: var(--bs-dark);
+	text-decoration: none;
+	padding: 10px 16px;
+	transition: 0.5s;
+ }
+  
+.pagination .page-item.active .page-link {
+	border-radius: 50%;
+	color: var(--bs-white);
+ }
+  
+.pagination .page-item.disabled .page-link {
+	border-radius: 50%;
+	cursor: not-allowed;
+ }
 </style>
 <head>
 <meta charset="UTF-8">
@@ -56,6 +84,9 @@
 				</div>
 			</div>
 		</c:forEach>
+		<div class="page-navigation mt-3">
+			${paging}
+		</div>	
 	</div>
 </body>
 </html>

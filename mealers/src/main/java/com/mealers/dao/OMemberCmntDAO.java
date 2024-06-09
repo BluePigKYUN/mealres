@@ -291,8 +291,7 @@ public class OMemberCmntDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				CmntDTO dto = new CmntDTO();
-				dto.setLevel(rs.getString("levelName"));
+				level = rs.getString("levelName");
 			}
 			
 		} catch (Exception e) {

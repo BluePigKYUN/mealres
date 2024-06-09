@@ -83,7 +83,7 @@
 		<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 	</header>
 
-	<div class="container-fluid page-header py-5">
+	<div class="container-fluid page-header-cmnt py-5">
 		<h1 class="text-center text-white display-6">커뮤니티</h1>
 	</div>
 	

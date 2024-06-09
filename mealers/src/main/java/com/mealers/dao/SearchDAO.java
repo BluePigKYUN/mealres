@@ -100,7 +100,7 @@ public class SearchDAO {
 		try {
 			sb.append(" SELECT food_num, food_name, nvl(maker, '제조사정보없음') maker, kcal, nvl(userNum, 0) userNum");
 			sb.append(" FROM nutrient ");
-			sb.append(" WHERE INSTR(food_name, ?) >= 1 ");
+			sb.append(" WHERE INSTR(food_name, ?) >= 1 and userNum is null");
 			sb.append(" order by food_name ");
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 
@@ -134,6 +134,49 @@ public class SearchDAO {
 		return list;
 	}
 	
+	public List<SearchDTO> listFoodUser(int offset, int size, String kwd) {
+		List<SearchDTO> list = new ArrayList<SearchDTO>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			sb.append(" SELECT food_num, food_name, nvl(maker, '제조사정보없음') maker, kcal, nvl(userNum, 0) userNum");
+			sb.append(" FROM nutrient ");
+			sb.append(" WHERE INSTR(food_name, ?) >= 1 and userNum > 0");
+			sb.append(" order by food_name ");
+			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
+			
+			kwd = kwd.replaceAll("(\\-|\\/|\\.)", "");
+			pstmt = conn.prepareStatement(sb.toString());
+			
+			pstmt.setString(1, kwd);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
+			
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				SearchDTO dto = new SearchDTO();
+				
+				dto.setFood_num(rs.getLong("food_num"));
+				dto.setFood_name(rs.getString("food_name"));
+				dto.setMaker(rs.getString("maker"));
+				dto.setKcal(rs.getString("kcal"));
+				dto.setUserNum(rs.getLong("userNum"));
+				
+				list.add(dto);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return list;
+	}
+	
 	public List<SearchDTO> listRank() {
 		List<SearchDTO> list = new ArrayList<SearchDTO>();
 		PreparedStatement pstmt = null;
@@ -145,7 +188,7 @@ public class SearchDAO {
 			sql = " select n.food_num, food_name, nvl(maker, '제조사정보없음') maker, kcal, count(*), nvl(userNum, 0) userNum "
 				+ " from foodSearchNum f "
 				+ " join nutrient n on f.food_num = n.food_num "
-				+ " where search_date between trunc(sysdate, 'iw') and trunc(sysdate, 'iw')+6 "
+				+ " where search_date between trunc(sysdate, 'iw') and trunc(sysdate, 'iw')+7 "
 				+ " group by n.food_num, food_name, maker, kcal, userNum "
 				+ " order by count(*) desc "
 				+ " OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY";
@@ -373,6 +416,32 @@ public class SearchDAO {
 		} finally {
 			DBUtil.close(pstmt);
 		}
+	}
+
+	public int totalCount() {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		int result = 0;
+		
+		try {
+			sql = "select count(*) from nutrient";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(pstmt);
+		}
+		
+		return result;
 	}
 
 }

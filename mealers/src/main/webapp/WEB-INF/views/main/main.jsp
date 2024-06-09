@@ -145,7 +145,7 @@
 						                                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
 						                                    <i class="bi bi-eye" style="letter-spacing: 10px;"></i>${dto.hitCount}
 						                                </div>
-						                                <div class="p-4 border border-primary border-top-0 rounded-bottom text-center"">
+						                                <div class="p-4 border border-primary border-top-0 rounded-bottom text-center">
 						                                    <h4 class="pb-1">${dto.subject}</h4>
 						                                    <!--   <p class="mt-3">${dto.shortTextContent}</p> -->
 						                                    <p>${dto.reg_date}</p>
@@ -166,7 +166,7 @@
 						                                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">
 						                                    <i class="bi bi-eye" style="letter-spacing: 10px;"></i>${dto.hitCount}
 						                                </div>
-						                                <div class="p-4 border border-primary border-top-0 rounded-bottom text-center"">
+						                                <div class="p-4 border border-primary border-top-0 rounded-bottom text-center">
 						                                    <h4 class="pb-1">${dto.shortSubject}</h4>
 						                                    <!--  <p class="mt-3">${dto.shortTextContent}</p> -->
 						                                    <p>${dto.reg_date}</p>
@@ -245,7 +245,7 @@
                     <div class="container py-5">
                         <div class="row g-4 justify-content-center"> 
                             <a href="${pageContext.request.contextPath}/log/event" class="text-reset diary-item counter rounded p-5 col-md-6 col-lg-3 g-2 m-2" style="background-color: #F6F6F6; text-decoration: none;">
-                               <!-- 옆에 엑박은 무시해도 됩니다.. html5부터 a태그로 div태그 감싸는거 가넝하다고 합니닷 -->
+                     <!-- 옆에 엑박은 무시해도 됩니다.. html5부터 a태그로 div태그 감싸는거 가넝하다고 합니닷 -->
                                 <div class="featurs-item text-center rounded bg-light p-4" style="background-color: gray;"> 
                                     <i class="bi bi-calendar-check fa-3x text-secondary"></i>
                                     <div class="featurs-content text-center">
@@ -293,9 +293,10 @@
                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdzcu5K55vm0QzxXsXf8j-XmOnJkc77sGhKw&s" class="img-fluid w-100 rounded-top" alt="">
                         </div>
                         <div class="p-4 rounded-bottom">
-                            <h4>${dto.subject}</h4>
+                            <h4 class="cmnt-subject">${dto.subject}</h4>
                             <div>
-								<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">${dto.mem_Nick}</div>
+								<!--   <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><i class="bi bi-person-fill"></i> ${dto.mem_Nick} </div> -->
+								<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"> 식단 커뮤니티</div>
 							</div>
                             <p class="cmnt-content">${dto.content}</p>
                             <div class="d-flex flex-lg-wrap position-relative start-25 ">
@@ -303,7 +304,30 @@
 								<span class="text-dark mb-3">조회수 ${dto.hitCount}</span>
 							</div>
                             <div class="d-flex justify-content-between flex-lg-wrap">
-                                <a href="${pageContext.request.contextPath}/mealCmnt/article?${articleUrl}&num=${dto.num}" class="btn border border-secondary rounded-pill px-3 text-secondary">자세히보기</a>
+                                <a href="${pageContext.request.contextPath}/mealCmnt/article?${articleUrl}&num=${dto.num}&page=1&mealSort=popular" class="btn border border-secondary rounded-pill px-3 text-secondary">자세히보기</a>
+                            </div>
+                        </div>
+                    </div>
+                    </c:forEach>
+                	<c:forEach var="dto" items="${listExerCmnt}" varStatus="state">
+                    <div class="border border-primary rounded position-relative vesitable-item">
+                        <div class="vesitable-img">
+                            <!--   <img src="${pageContext.request.contextPath}/uploads/exerCmnt/${dto.fileName}" class="img-fluid w-100 rounded-top" alt=""> -->
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdzcu5K55vm0QzxXsXf8j-XmOnJkc77sGhKw&s" class="img-fluid w-100 rounded-top" alt="">
+                        </div>
+                        <div class="p-4 rounded-bottom">
+                            <h4 class="cmnt-subject">${dto.subject}</h4>
+                            <div>
+								<!--   <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><i class="bi bi-person-fill"></i> ${dto.mem_Nick} </div> -->
+								<div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">  운동 커뮤니티</div>
+							</div>
+                            <p class="cmnt-content">${dto.content}</p>
+                            <div class="d-flex flex-lg-wrap position-relative start-25 ">
+								<span class="text-dark mb-2 pe-2">댓글 10</span> 
+								<span class="text-dark mb-3">조회수 ${dto.hitCount}</span>
+							</div>
+                            <div class="d-flex justify-content-between flex-lg-wrap">
+                                <a href="${pageContext.request.contextPath}/exerCmnt/article?${articleUrl}&num=${dto.num}&page=1&exerSort=popular" class="btn border border-primary rounded-pill px-3 text-primary">자세히보기</a>
                             </div>
                         </div>
                     </div>
@@ -331,6 +355,15 @@
         const contents = document.querySelectorAll('.cmnt-content');
         contents.forEach(content => {
             const maxLength = 30;
+            if (content.textContent.length > maxLength) {
+                content.textContent = content.textContent.substring(0, maxLength) + '...';
+            }
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        const contents = document.querySelectorAll('.cmnt-subject');
+        contents.forEach(content => {
+            const maxLength = 18;
             if (content.textContent.length > maxLength) {
                 content.textContent = content.textContent.substring(0, maxLength) + '...';
             }

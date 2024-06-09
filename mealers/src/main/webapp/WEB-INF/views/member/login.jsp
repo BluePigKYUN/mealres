@@ -1,4 +1,4 @@
-﻿<%@ page contentType="text/html; charset=UTF-8" %>
+﻿<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
@@ -8,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-<title>로그인/회원가입</title>
+<title>Mealers</title>
 
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -114,15 +114,16 @@ form .input__block.signup-input__block::before {
 	transition: 0.2s linear;
 }
 
-form .input__block{display:flex;gap: 15px;}
+form .input__block {
+	display: flex;
+	gap: 15px;
+}
 
 form .input__block input {
 	display: block;
-	/* width: 90%; */
 	width: 100%;
 	max-width: 680px;
 	height: 50px;
-	/* margin: 0 auto; */
 	border-radius: 8px;
 	border: none;
 	background: rgba(15, 19, 42, 0.1);
@@ -132,24 +133,21 @@ form .input__block input {
 	font-family: "Montserrat", sans-serif;
 }
 
-form .input_btn_box{}
-
-
-form .input_btn_box .btn_check{
+form .input_btn_box .btn_check {
 	background: #20c997;
-    color: white;
-    display: block;
-    width: 20%;
-    max-width: 100px;
-    height: 50px;
-    border-radius: 8px;
-    margin: 0 auto;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-family: "Montserrat", sans-serif;
-    box-shadow: 0 15px 30px rgba(0, 150, 136, 0.16);
-    transition: 0.2s linear;
+	color: white;
+	display: block;
+	width: 20%;
+	max-width: 100px;
+	height: 50px;
+	border-radius: 8px;
+	margin: 0 auto;
+	border: none;
+	cursor: pointer;
+	font-size: 14px;
+	font-family: "Montserrat", sans-serif;
+	box-shadow: 0 15px 30px rgba(0, 150, 136, 0.16);
+	transition: 0.2s linear;
 }
 
 form .input__block input:focus, form .input__block input:active {
@@ -158,15 +156,7 @@ form .input__block input:focus, form .input__block input:active {
 	color: #0f132a;
 }
 
-/* form .input__block input.repeat__password {
-	opacity: 0;
-	display: none;
-	transition: 0.2s linear;
-} */
-
-/* form .signin__btn, */
-form .login__btn
- {
+form .login__btn {
 	background: #20c997;
 	color: white;
 	display: block;
@@ -184,8 +174,7 @@ form .login__btn
 	transition: 0.2s linear;
 }
 
-/* form .signin__btn:hover, */
-form .login__btn:hover{
+form .login__btn:hover {
 	box-shadow: 0 0 0 rgba(233, 30, 99, 0);
 }
 
@@ -310,255 +299,289 @@ footer p a .fa-behance {
 	font-weight: normal;
 	font-style: normal;
 }
+
+.btn_check {
+	background: #20c997;
+	color: white;
+	display: block;
+	width: 40%;
+	max-width: 680px;
+	height: 50px;
+	border-radius: 8px;
+	margin: 0 auto;
+	border: none;
+	font-size: 14px;
+	font-family: "Montserrat", sans-serif;
+	box-shadow: 0 15px 30px rgba(0, 150, 136, 0.16);
+	transition: 0.2s linear;
+}
+
+.btn_check {
+	background: #20c997;
+	color: white;
+	display: block;
+	width: 40%;
+	max-width: 680px;
+	height: 50px;
+	border-radius: 8px;
+	margin: 0 auto;
+	border: none;
+	font-size: 14px;
+	font-family: "Montserrat", sans-serif;
+	box-shadow: 0 15px 30px rgba(0, 150, 136, 0.16);
+	transition: 0.2s linear;
+}
+
+#idCheckResult {
+	margin-top: 5px;
+	font-size: 12px;
+	font-weight: 700;
+}
 </style>
 
-<!-- <head>
-    <meta charset="UTF-8">
-    <title>회원가입</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        .container {
-            width: 300px;
-            margin: 0 auto;
-        }
-        .input__block {
-            margin-bottom: 10px;
-        }
-        .help-block {
-            color: red;
-            font-size: 12px;
-        }
-    </style> -->
 </head>
 <body>
-    <div class="container">
-        <h1>Mealers</h1>
-        <ul class="links">
-            <li><a href="#" id="signin">로그인</a></li>
-            <li><a href="#" id="signup">회원가입</a></li>
-            <li><a href="#" id="reset">RESET</a></li>
-        </ul>
-		
-		
-		<!-- 로그인 -->		
-        <form name="loginForm" id="loginForm" action="" method="post">
-            <div class="first-input input__block">
-                <input type="text" name="memberId" placeholder="아이디" class="input" id="memberId" value="admin">
-            </div>
-            <div class="input__block">
-                <input type="password" name="memberPwd" placeholder="비밀번호" class="input" id="password1" value="admin">
-            </div>
-            <!-- 비밀번호 유무 -->
-            <p class="form-control-plaintext text-center">${message}</p>
-            <button class="login__btn" type="button" onclick="sendLogin();">로그인</button>
-        </form>
+	<div class="container">
+		<h1>Mealers</h1>
+		<ul class="links">
+			<li><a href="#" id="signin">로그인</a></li>
+			<li><a href="#" id="signup">회원가입</a></li>
+			<li><a href="#" id="reset">RESET</a></li>
+		</ul>
+
+
+		<!-- 로그인 -->
+		<form name="loginForm" id="loginForm" action="" method="post">
+			<div class="first-input input__block">
+				<input type="text" name="memberId" placeholder="아이디" class="input"
+					id="memberId" value="test2">
+			</div>
+			<div class="input__block">
+				<input type="password" name="memberPwd" placeholder="비밀번호"
+					class="input" id="password1" value="1234">
+			</div>
+			<!-- 비밀번호 유무 -->
+			<p class="form-control-plaintext text-center">${message}</p>
+			<button class="login__btn" type="button" onclick="sendLogin();">로그인</button>
+		</form>
 
 
 		<!-- 회원가입 -->
-        <form name="joinForm" id="joinForm" method="post">
-            <div class="first-input input__block">
-                <input type="text" name="email" placeholder="이메일" class="input" id="email" />
-            </div>
-            <div class="input__block">
-                <input type="text" name="memberId" placeholder="ID" class="input" id="memberId2" />
-                <button type="button" class="btn_check" onclick="userIdCheck()">확인</button>
-                <span class="help-block" id="idCheckResult"></span>
-                <input type="hidden" name="userIdValid" id="userIdValid" value="false">
-            </div>
-            <div class="input__block">
-                <input type="text" name="nickname" placeholder="닉네임" class="input" id="nickname" />
-            </div>
-            <div class="input__block">
-                <input type="password" name="memberPwd" placeholder="비밀번호" class="input" id="password2" />
-            </div>
-            <div class="input__block">
-                <input type="password" placeholder="비밀번호 확인" class="input repeat__password" id="repeat__password" />
-            </div>
-            <p class="form-control-plaintext text-center">${message}</p>
-            <button class="login__btn" type="submit" onclick="">test</button>
-            <button class="login__btn" type="button" onclick="sendJoin();">회원가입</button>
-        </form>
-    </div>
+		<form name="joinForm" id="joinForm" method="post">
+			<div class="first-input input__block">
+				<input type="text" name="email" placeholder="이메일" class="input"
+					id="email" />
+			</div>
+			<div class="input__block">
+				<input type="text" name="memberId" placeholder="아이디 (영문, 숫자, 5~20자)"
+					class="input" id="memberId2" />
+				<button type="button" class="btn_check" onclick="userIdCheck()">확인</button>
+				<input type="hidden" name="userIdValid" id="userIdValid"
+					value="false">
+				<div id="idCheckResult" style="margin-top: 10px;"></div>
+				<!-- 이 부분 -->
+			</div>
+			<div class="input__block">
+				<input type="text" name="nickname" placeholder="닉네임" class="input"
+					id="nickname" />
+			</div>
+			<div class="input__block">
+				<input type="password" name="memberPwd" placeholder="비밀번호 (최소 8자, 대문자, 소문자, 숫자 포함)"
+					class="input" id="password2" />
+			</div>
+			<div class="input__block">
+				<input type="password" placeholder="비밀번호 확인"
+					class="input repeat__password" id="repeat__password" />
+			</div>
+			<p class="form-control-plaintext text-center">${message}</p>
+			<button class="login__btn" type="button" onclick="sendJoin();">회원가입</button>
+		</form>
+	</div>
 
-    <script type="text/javascript">
-    	
-    	//유효성검사
-        function validateEmail(email) {
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailPattern.test(email);
-        }
+	<script type="text/javascript">
+		//유효성검사
+		function validateEmail(email) {
+			const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			return emailPattern.test(email);
+		}
 
-        function validatePassword(password) {
-            const passwordPattern = /^[0-9]+$/; 
-            	
-            	/* /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/; */
-            return passwordPattern.test(password);
-        }
-		
-        //로그인
-        function sendLogin() {
-            const f = document.loginForm;
-            let str;
+		function validatePassword(password) {
+			const passwordPattern = /^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z\d]{8,}$/;
+			return passwordPattern.test(password);
+		}
 
-            str = f.memberId.value;
-            if (!str) {
-                alert("아이디를 입력하세요.");
-                f.memberId.focus();
-                return;
-            }
+		//로그인
+		function sendLogin() {
+			const f = document.loginForm;
+			let str;
 
-            str = f.memberPwd.value;
-            if (!str) {
-                alert("비밀번호를 입력하세요.");
-                f.memberPwd.focus();
-                return;
-            }
+			str = f.memberId.value;
+			if (!str) {
+				alert("아이디를 입력하세요.");
+				f.memberId.focus();
+				return;
+			}
 
-            f.action = "${pageContext.request.contextPath}/member/login";
-            f.submit();
-        }
-		
-        //회원가입
-        function sendJoin() {
-            const f = document.joinForm;
-            let str;
+			str = f.memberPwd.value;
+			if (!str) {
+				alert("비밀번호를 입력하세요.");
+				f.memberPwd.focus();
+				return;
+			}
 
-            str = f.email.value;
-            if (!str || !validateEmail(str)) {
-                alert("유효한 이메일을 입력하세요.");
-                f.email.focus();
-                return;
-            }
+			f.action = "${pageContext.request.contextPath}/member/login";
+			f.submit();
+		}
 
-            str = f.memberId2.value;
-            if (!str) {
-                alert("ID를 입력하세요.");
-                f.userId2.focus();
-                return;
-            }
-            
-            str = f.nickname.value;
-            if (!str) {
-                alert("닉네임을 입력하세요.");
-                f.nickname.focus();
-                return;
-            }
+		//회원가입
+		function sendJoin() {
+			const f = document.joinForm;
+			let str;
 
-             str = f.memberPwd.value;
-            if (!str || !validatePassword(str)) {
-                alert("비밀번호는 최소 8자 이상, 대문자, 소문자, 숫자를 포함해야 합니다.");
-                f.memberPwd.focus();
-                return;
-            } 
+			str = f.email.value;
+			if (!str || !validateEmail(str)) {
+				alert("유효한 이메일을 입력하세요.");
+				f.email.focus();
+				return;
+			}
 
-            const repeatPwd = document.getElementById("repeat__password").value;
-            if (str !== repeatPwd) {
-                alert("비밀번호가 일치하지 않습니다.");
-                document.getElementById("repeat__password").focus();
-                return;
-            } 
+			str = f.memberId2.value;
+			if (!str) {
+				alert("ID를 입력하세요.");
+				f.userId2.focus();
+				return;
+			}
 
-            if (f.userIdValid.value === "false") {
-                alert("아이디 중복 검사를 실행하세요.");
-                f.userId.focus();
-                return;
-            }
-            
-            f.action = "${pageContext.request.contextPath}/member/join";
-            f.submit();
-        
-        }
-		
-        //ajax id 중복검사 
-        function userIdCheck() {
-            let memberId2 = $("#memberId2").val();
+			str = f.nickname.value;
+			if (!str) {
+				alert("닉네임을 입력하세요.");
+				f.nickname.focus();
+				return;
+			}
 
-            if (!memberId2) {
-                alert("ID를 입력하세요.");
-                return;
-            }
+			str = f.memberPwd.value;
+			if (!str || !validatePassword(str)) {
+				alert("비밀번호는 최소 8자 이상, 대문자, 소문자, 숫자를 포함해야 합니다.");
+				f.memberPwd.focus();
+				return;
+			}
 
-            let url = "${pageContext.request.contextPath}/member/userIdCheck";
-            let query =  "memberId=" + memberId2;
+			const repeatPwd = document.getElementById("repeat__password").value;
+			if (str !== repeatPwd) {
+				alert("비밀번호가 일치하지 않습니다.");
+				document.getElementById("repeat__password").focus();
+				return;
+			}
 
-            $.ajax({
-                type: "post",
-                url: url,
-                data: query,
-                dataType: "json",
-                success: function(data) {
-                    let passed = data.passed;
+			if (f.userIdValid.value === "false") {
+				alert("아이디 중복 검사를 실행하세요.");
+				f.userId.focus();
+				return;
+			}
 
-                    if (passed === "true") {
-                        let s = "<span style='color:blue; font-weight:700;'>사용 가능한 ID입니다.</span>";
-                        $("#idCheckResult").html(s);
-                        $("#userIdValid").val("true");
-                    } else {
-                        let s = "<span style='color:red; font-weight:700;'>사용할 수 없는 ID입니다.</span>";
-                        $("#idCheckResult").html(s);
-                        $("#userIdValid").val("false");
-                    }
-                },
-                error: function(e) {
-                    console.log(e.responseText);
-                }
-            });
-        }
+			f.action = "${pageContext.request.contextPath}/member/join";
+			f.submit();
 
-        $(document).ready(function() {
-            let signup = $(".links").find("li").find("#signup");
-            let signin = $(".links").find("li").find("#signin");
-            let reset = $(".links").find("li").find("#reset");
-            let first_input = $("form").find(".first-input");
-            let hidden_input = $("form").find(".input__block").find("#repeat__password");
-            let nickname_block = $("#nickname_block");
+		}
 
-            $("#joinForm").css({
-                "opacity": "0",
-                "display": "none"
-            });
+		//ajax id 중복검사 
+		function userIdCheck() {
+			let memberId2 = $("#memberId2").val();
 
-            signup.on("click", function(e) {
-                e.preventDefault();
-                $(this).parent().parent().siblings("h1").text("SIGN UP");
-                $(this).parent().css("opacity", "1");
-                $(this).parent().siblings().css("opacity", ".6");
+			if (!memberId2) {
+				alert("ID를 입력하세요.");
+				return;
+			}
 
-                first_input.removeClass("first-input__block").addClass("signup-input__block");
+			let url = "${pageContext.request.contextPath}/member/userIdCheck";
+			let query = "memberId=" + memberId2;
 
-                $("#loginForm").css({
-                    "opacity": "0",
-                    "display": "none"
-                });
-                $("#joinForm").css({
-                    "opacity": "1",
-                    "display": "block"
-                });
-            });
+			$
+					.ajax({
+						type : "post",
+						url : url,
+						data : query,
+						dataType : "json",
+						success : function(data) {
+							let passed = data.passed;
 
-            signin.on("click", function(e) {
-                e.preventDefault();
-                $(this).parent().parent().siblings("h1").text("SIGN IN");
-                $(this).parent().css("opacity", "1");
-                $(this).parent().siblings().css("opacity", ".6");
+							if (passed === "true") {
+								let s = "<span style='font-weight:700;'>사용 가능</span>";
+								$("#idCheckResult").html(s);
+								$("#userIdValid").val("true");
+							} else {
+								let s = "<span style='color:red; font-weight:700;'>사용 불가 ID</span>";
+								$("#idCheckResult").html(s);
+								$("#userIdValid").val("false");
+							}
+						},
+						error : function(e) {
+							console.log(e.responseText);
+						}
+					});
+		}
 
-                first_input.addClass("first-input__block").removeClass("signup-input__block");
+		$(document).ready(
+				function() {
+					let signup = $(".links").find("li").find("#signup");
+					let signin = $(".links").find("li").find("#signin");
+					let reset = $(".links").find("li").find("#reset");
+					let first_input = $("form").find(".first-input");
+					let hidden_input = $("form").find(".input__block").find(
+							"#repeat__password");
+					let nickname_block = $("#nickname_block");
 
-                $("#loginForm").css({
-                    "opacity": "1",
-                    "display": "block"
-                });
-                $("#joinForm").css({
-                    "opacity": "0",
-                    "display": "none"
-                });
-            });
+					$("#joinForm").css({
+						"opacity" : "0",
+						"display" : "none"
+					});
 
-            reset.on("click", function(e) {
-                e.preventDefault();
-                $(this).closest(".container").find("form").find(".input__block").find(".input").val("");
-            });
-        });
-    </script>
+					signup.on("click", function(e) {
+						e.preventDefault();
+						$(this).parent().parent().siblings("h1")
+								.text("SIGN UP");
+						$(this).parent().css("opacity", "1");
+						$(this).parent().siblings().css("opacity", ".6");
+
+						first_input.removeClass("first-input__block").addClass(
+								"signup-input__block");
+
+						$("#loginForm").css({
+							"opacity" : "0",
+							"display" : "none"
+						});
+						$("#joinForm").css({
+							"opacity" : "1",
+							"display" : "block"
+						});
+					});
+
+					signin.on("click", function(e) {
+						e.preventDefault();
+						$(this).parent().parent().siblings("h1")
+								.text("SIGN IN");
+						$(this).parent().css("opacity", "1");
+						$(this).parent().siblings().css("opacity", ".6");
+
+						first_input.addClass("first-input__block").removeClass(
+								"signup-input__block");
+
+						$("#loginForm").css({
+							"opacity" : "1",
+							"display" : "block"
+						});
+						$("#joinForm").css({
+							"opacity" : "0",
+							"display" : "none"
+						});
+					});
+
+					reset.on("click", function(e) {
+						e.preventDefault();
+						$(this).closest(".container").find("form").find(
+								".input__block").find(".input").val("");
+					});
+				});
+	</script>
 </body>
 </html>
