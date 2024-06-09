@@ -15,7 +15,7 @@
 <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 
         <!-- Checkout Page Start -->
-        <div class="container-fluid py-5 my-5">
+        <div class="container-fluid py-2 my-3">
             <div class="container my-5">
                     <div class="row g-5">
                         <div class="col-md-12 col-lg-6 col-xl-7">

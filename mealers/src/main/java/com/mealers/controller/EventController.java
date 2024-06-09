@@ -35,7 +35,8 @@ public class EventController {
 		String today = String.format("%04d%02d%02d", year, month, date);
 		
 		ModelAndView mav = new ModelAndView("log/dailyEvent");
-		mav.addObject("today", EventDAO.formatDate(today));
+		mav.addObject("today", today);
+		mav.addObject("totoday", EventDAO.formatDate(today));
 		return mav;
 	}
 	

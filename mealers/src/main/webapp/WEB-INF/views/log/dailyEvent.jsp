@@ -38,7 +38,7 @@
 <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 
 	<div class="container-fluid py-3">
-		<div class="container py-5 my-5">
+		<div class="container py-2 my-3">
 			<div class="row">
 			
 				<div class="col-md-7">
@@ -62,7 +62,7 @@
 				<!--    -->
 				<div class="col-md-4">
 					<h3>오늘일정</h3>
-					<span>${today}</span><br><br>
+					<span>${totoday}</span><br><br>
 					<div id="todaysEvent">
 					
 					</div>
