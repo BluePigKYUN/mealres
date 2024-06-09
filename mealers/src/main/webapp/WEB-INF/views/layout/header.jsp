@@ -98,14 +98,15 @@
 				</c:if>
 
 				<!-- 로그인한 사용자에게만 표시 -->
-							<c:if test="${sessionScope.member != null}">
-					<%-- 이미지 URL 설정 --%>
+				<c:if test="${sessionScope.member != null}">
 					<c:choose>
 						<c:when test="${not empty sessionScope.member.fileName}">
-							<c:set var="profileImage" value="${pageContext.request.contextPath}/uploads/member/${sessionScope.member.fileName}" />
+							<c:set var="profileImage"
+								value="${pageContext.request.contextPath}/uploads/member/${sessionScope.member.fileName}" />
 						</c:when>
 						<c:otherwise>
-							<c:set var="profileImage" value="${pageContext.request.contextPath}/resources/images/default.png" />
+							<c:set var="profileImage"
+								value="${pageContext.request.contextPath}/resources/images/default.png" />
 						</c:otherwise>
 					</c:choose>
 
@@ -115,18 +116,17 @@
 							<div class="dropdown">
 								<a class="nav-link dropdown-toggle" href="#"
 									id="profileDropdown" role="button" data-bs-toggle="dropdown"
-									aria-expanded="false">
-									<img src="${profileImage}" alt="Profile Picture" class="profile-pic">
+									aria-expanded="false"> <img src="${profileImage}"
+									alt="Profile Picture" class="profile-pic">
 								</a>
 								<ul class="dropdown-menu dropdown-menu-end"
 									aria-labelledby="profileDropdown">
-									<li class="dropdown-header">
-										<img src="${profileImage}" alt="Profile Picture" class="profile-pic">
+									<li class="dropdown-header"><img src="${profileImage}"
+										alt="Profile Picture" class="profile-pic">
 										<div class="user-info">
 											<span class="user-name">${sessionScope.member.userName}</span>
 											<span class="user-points">포인트: 1000</span>
-										</div>
-									</li>
+										</div></li>
 									<li><hr class="dropdown-divider"></li>
 									<li><a class="dropdown-item"
 										href="${pageContext.request.contextPath}/member/mypage"><i
@@ -138,9 +138,8 @@
 										href="${pageContext.request.contextPath}/member/activity?mode=1"><i
 											class="fas fa-file-alt me-2"></i>작성한 게시물</a></li>
 									<li><a class="dropdown-item" href="#"
-										onclick="confirmLogout()"> <i
-											class="fas fa-sign-out-alt me-2"></i> 로그아웃
-									</a></li>
+										onclick="confirmLogout()"><i
+											class="fas fa-sign-out-alt me-2"></i> 로그아웃</a></li>
 								</ul>
 							</div>
 						</div>

@@ -1,176 +1,298 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
+<title>그룹 게시물</title>
 <style>
-.custom-card {
-	max-width: 350px;
-	margin: 20px auto;
-	border: 1px solid #ddd;
-	border-radius: 15px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	overflow: hidden;
+body {
+	background-color: #f5f8fa;
+	font-family: Arial, sans-serif;
+	padding-top
 }
 
-.custom-card-header {
-	background-color: #20c997;
-	color: white;
-	font-weight: bold;
-	text-align: center;
-	padding: 10px;
+.card {
+	border: none;
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
-.custom-card-body {
-	font-size: 0.9rem;
-	color: #555;
-	padding: 15px;
+.card-footer a {
+	color: #6c757d;
+	text-decoration: none;
 }
 
-.custom-card-footer {
-	background-color: #f8f9fa;
-	text-align: center;
-	padding: 10px;
-	font-size: 0.8rem;
-	color: #777;
+.card-footer a:hover {
+	color: #212529;
 }
+
+.bi {
+	font-size: 1.2rem;
+	vertical-align: middle;
+}
+
+.list-group-item {
+	border: none;
+	padding: 0.5rem 0;
+}
+
+.comment-list {
+	max-height: 200px;
+	overflow-y: auto;
+}
+
+.btn-sm {
+	padding: 0.25rem 0.5rem;
+	font-size: 0.875rem;
+	border-radius: 0.2rem;
+}
+
+
 </style>
 </head>
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
-</header>
 <body>
-	<div class="container-fluid page-header py-5">
-		<h1 class="text-center text-white display-6">그룹방</h1>
-	</div>
-	<!-- Page -->
-	<div class="container mt-5">
-		<div class="row">
-
-			<div class="col-lg-8">
-				<div class="card mb-4">
-					<a href="#!"><img class="card-img-top"
-						src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
-					<div class="card-body">
-						<div class="small text-muted">정원</div>
-						<h2 class="card-title">그룹명</h2>
-						<p class="card-text">그룹소개글</p>
-						<a class="btn btn-primary" href="#!">입장</a>
+	<header>
+		<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp" />
+		<jsp:include page="/WEB-INF/views/layout/header.jsp" />
+	</header>
+	<main>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8">
+					<!-- 그룹 게시글 작성폼 -->
+					<form id="postForm">
+						<input type="hidden" name="groupnum" value="${groupNum}">
+						<!-- groupnum을 hidden 필드로 전송 -->
+						<div class="card mb-3">
+							<div class="card-body">
+								<textarea class="form-control" name="content" rows="3"
+									placeholder="무슨 일이 있었나요?" maxlength="140"></textarea>
+								<small id="charCount" class="form-text text-muted">0/140</small>
+								<div class="d-flex justify-content-between mt-2">
+									<div class="form-group">
+										<label for="uploadImage" class="form-label"><i
+											class="bi-image me-2"></i>사진 첨부</label> <input type="file"
+											id="uploadImage" class="form-control" name="image"
+											accept="image/*">
+										<div id="preview" class="mt-2"></div>
+									</div>
+									<div class="g_btn_box">
+										<button type="button" class="btn btn-primary btn-sm"
+											onclick="submitForm()">게시하기</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					<!-- 그룹 게시글 리스트 -->
+					<div class="card mb-3" id="postList">
+						<c:forEach var="post" items="${list}" varStatus="status">
+							<div class="card mb-3">
+								<div class="card-body">
+									<div class="d-flex">
+										<img src="${pageContext.request.contextPath}/uploads/member/${sessionScope.member.fileName}" 
+										<%-- "${pageContext.request.contextPath}/resources/images/default.png" --%>
+										<%-- ${post.imageUrl ? post.imageUrl : ''} --%>
+											class="rounded-circle me-2" alt="프로필 이미지">
+										<div>
+											<h5 class="mb-0">${post.reg_Date}</h5>
+											<small class="text-muted">${post.groupNum}</small>
+										</div>
+									</div>
+									<p class="mt-2 mb-0">${post.content}</p>
+								</div>
+								<div class="card-footer">
+									<a href="#" class="comment-btn me-3" data-bs-toggle="modal"
+										data-bs-target="#commentModal"><i class="bi bi-chat me-1"></i>댓글
+										달기</a> <a href="#" class="me-3"><i class="bi bi-heart me-1"></i>좋아요</a>
+									<a href="#"><i class="bi bi-share me-1"></i>공유하기</a>
+								</div>
+							</div>
+						</c:forEach>
+						<!-- 게시물 생성 -->
 					</div>
+					<!-- 마지막 감시 DIV -->
+					<div class="sentinel" data-loading="false"></div>
 				</div>
-
-				<div class="row">
-					<div class="col-lg-6">
-						<!-- Blog post-->
-						<div class="card mb-4">
-							<a href="#!"><img class="card-img-top"
-								src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-							<div class="card-body">
-								<div class="small text-muted">정원</div>
-								<h2 class="card-title h4">그룹명</h2>
-								<p class="card-text">소개글</p>
-								<a class="btn btn-primary" href="#!">입장</a>
-							</div>
-						</div>
-						<!-- Blog post-->
-						<div class="card mb-4">
-							<a href="#!"><img class="card-img-top"
-								src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-							<div class="card-body">
-								<div class="small text-muted">정원</div>
-								<h2 class="card-title h4">그룹명</h2>
-								<p class="card-text">소개글</p>
-								<a class="btn btn-primary" href="#!">입장</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6">
-						<!-- Blog post-->
-						<div class="card mb-4">
-							<a href="#!"><img class="card-img-top"
-								src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-							<div class="card-body">
-								<div class="small text-muted">정원</div>
-								<h2 class="card-title h4">그룹명</h2>
-								<p class="card-text">소개글</p>
-								<a class="btn btn-primary" href="#!">입장</a>
-							</div>
-						</div>
-						<!-- Blog post-->
-						<div class="card mb-4">
-							<a href="#!"><img class="card-img-top"
-								src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-							<div class="card-body">
-								<div class="small text-muted">정원</div>
-								<h2 class="card-title h4">그룹명</h2>
-								<p class="card-text">소개글</p>
-								<a class="btn btn-primary" href="#!">입장</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- Pagination-->
-				<nav aria-label="Page navigation example">
-					<ul class="pagination d-flex justify-content-center pt-4">
-						<li class="page-item m_prev"><a class="page-link" href="#"
-							aria-label="Previous"> <span aria-hidden="true">&laquo;</span></a></li>
-						<li class="page-item"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item m_next"><a class="page-link" href="#"
-							aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>
-					</ul>
-				</nav>
 			</div>
-			<!-- Side widgets-->
-			<div class="col-lg-4">
-				<!-- Search widget-->
-				<div class="card mb-4">
-					<div class="card-header">Search</div>
-					<div class="card-body">
-						<div class="input-group">
-							<input class="form-control" type="text" placeholder="그룹명 검색"
-								aria-label="Enter search term..."
-								aria-describedby="button-search" />
-							<button class="btn btn-primary" id="button-search" type="button">Go!</button>
-						</div>
-					</div>
+		</div>
+	</main>
+	<footer>
+		<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
+	</footer>
+	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
+
+	<!-- 모달 예시 -->
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+		data-bs-target="#exampleModal">Launch demo modal</button>
+
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
 				</div>
-				<!-- Categories widget-->
-				<div class="card mb-4">
-					<div class="card-header"></div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col-sm-6">
-								<ul class="list-unstyled mb-0">
-									<li><a
-										href="${pageContext.request.contextPath}/group/write">가입</a></li>
-									<li><a
-										href="${pageContext.request.contextPath}/group/main">리스트</a></li>
-												<li><a
-										href="${pageContext.request.contextPath}/group/create">만들기</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- Side widget-->
-				<div class="card custom-card">
-					<div class="card-header custom-card-header">공지사항</div>
-					<div class="card-body custom-card-body">다양한 그룹을 둘러보고 마음에 드는
-						그룹에 가입 신청하세요. 그룹장의 승인을 받으면 활동에 참여할 수 있습니다. 같은 목표를 가진 사람들과 소통하며 즐거운
-						시간을 보내세요!</div>
-					<div class="card-footer custom-card-footer">마지막 업데이트:
-						2024-05-31</div>
+				<div class="modal-body">...</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
 				</div>
 			</div>
 		</div>
 	</div>
-<footer>
-	<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
-</footer>
-	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
+
+	<script>
+    function submitForm() {
+        var formData = new FormData(document.getElementById('postForm'));
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/post/insert',
+            type: 'POST',
+            data: formData,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log(response); // 서버 응답 데이터 확인
+                if (response.state === "true") {
+                    let post = JSON.parse(response.post);
+                    $('#postList').prepend(createPostHTML(post)); // append 대신 prepend 사용
+                    $('#postForm')[0].reset();
+                    $('#preview').empty();
+                    alert('게시물이 저장되었습니다.');
+                } else {
+                    alert('게시물 저장에 실패했습니다.');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('오류가 발생했습니다: ' + textStatus);
+            }
+        });
+    }
+
+    let htmlText = "";
+    function createPostHTML(post) {
+        return `
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <img src="${post.imageUrl ? post.imageUrl : ''}" class="rounded-circle me-2" alt="프로필 이미지">
+                        <div>
+                            <h5 class="mb-0">` + post.userNum + `</h5>
+                            <small class="text-muted">` + post.groupNum + `</small>
+                        </div>
+                    </div>
+                    <p class="mt-2 mb-0">` + post.content + `</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="comment-btn me-3" data-bs-toggle="modal" data-bs-target="#commentModal"><i class="bi bi-chat me-1"></i>댓글 달기</a>
+                    <a href="#" class="me-3"><i class="bi bi-heart me-1"></i>좋아요</a>
+                    <a href="#"><i class="bi bi-share me-1"></i>공유하기</a>
+                </div>
+            </div>
+        `;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        function ajaxFun(url, method, query, dataType, fn) {
+            const sentinelNode = document.querySelector('.sentinel');
+
+            $.ajax({
+                type: method,
+                url: url,
+                data: query,
+                dataType: dataType,
+                success: function(data) {
+                    fn(data);
+                },
+                beforeSend: function(jqXHR) {
+                    sentinelNode.setAttribute('data-loading', 'true');
+                    jqXHR.setRequestHeader("AJAX", true);
+                },
+                error: function(jqXHR) {
+                    if (jqXHR.status === 403) {
+                        login();
+                        return false;
+                    } else if (jqXHR.status === 400) {
+                        alert("요청 처리가 실패 했습니다.");
+                        return false;
+                    }
+                    console.log(jqXHR.responseText);
+                }
+            });
+        }
+
+        function addNewContent(data) {
+            const itemCount = document.querySelector('.item-count');
+
+            if (itemCount) {
+                let dataCount = data.dataCount;
+                let pageNo = data.pageNo;
+                let total_page = data.total_page;
+
+
+                listNode.setAttribute('data-pageNo', pageNo);
+                listNode.setAttribute('data-totalPage', total_page);
+
+                sentinelNode.style.display = 'none';
+
+                if (parseInt(dataCount) === 0) {
+                    listNode.innerHTML = '';
+                    return;
+                }
+
+                for (let post of data.list) {
+                    $('#postList').append(createPostHTML(post));
+                }
+
+                if (pageNo < total_page) {
+                    sentinelNode.setAttribute('data-loading', 'false');
+                    sentinelNode.style.display = 'block';
+                    io.observe(sentinelNode); // 관찰할 대상 등록
+                }
+            }
+        }
+
+        const listNode = document.querySelector('#postList');
+        const sentinelNode = document.querySelector('.sentinel');
+
+        function loadContent(page) {
+            let url = '${pageContext.request.contextPath}/group/list';
+            let query = "pageNo=" + page + "&groupNum=" + '${groupNum}';
+            
+            ajaxFun(url, "get", query, "json", addNewContent);
+        }
+
+        const ioCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    let loading = sentinelNode.getAttribute('data-loading');
+                    if (loading !== 'false') {
+                        return;
+                    }
+
+                    observer.unobserve(entry.target);
+
+                    let pageNo = parseInt(listNode.getAttribute('data-pageNo'));
+                    let total_page = parseInt(listNode.getAttribute('data-totalPage'));
+
+                    if (pageNo === 0 || pageNo < total_page) {
+                        pageNo++;
+                        loadContent(pageNo);
+                    }
+                }
+            });
+        };
+
+        const io = new IntersectionObserver(ioCallback);
+        io.observe(sentinelNode);
+
+        loadContent(1);
+    });
+    </script>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.mealers.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +75,6 @@ public class MypageDAO {
 			pstmt.setInt(3, size);
 
 			rs = pstmt.executeQuery();
-			System.out.println(userNum + "/" + offset + "/" + size);
 
 			while (rs.next()) {
 				CmntDTO dto = new CmntDTO();
@@ -210,8 +210,6 @@ public class MypageDAO {
 			pstmt.setInt(2, offset);
 			pstmt.setInt(3, size);
 			
-			//System.out.println(userNum + "/" + offset + "/" + size);
-
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				CmntDTO dto = new CmntDTO();
@@ -219,6 +217,7 @@ public class MypageDAO {
 				dto.setType(rs.getString("type"));
 				dto.setContent(rs.getString("content"));
 				dto.setReg_date(rs.getString("reg_date"));
+				dto.setReplyNum(rs.getInt("replyNum"));
 				list.add(dto);
 
 			}
@@ -273,5 +272,45 @@ public class MypageDAO {
 		}
 
 		return totalCount;
+	}
+	
+	public void deletePost(String tableName,long num) throws SQLException{
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "DELETE FROM "+ tableName + " WHERE num = ?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setLong(1, num);
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			DBUtil.close(pstmt);
+		}
+	}
+	
+	public void deleteReply(String tableName,long num)throws SQLException{
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		
+		try {
+			sql = "DELETE FROM "+ tableName + " WHERE REPLYNUM = ?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setLong(1, num);
+			System.out.println("댓글삭제");
+			System.out.println(tableName);
+			System.out.println("num:"+num);
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}finally {
+			DBUtil.close(pstmt);
+		}
 	}
 }
