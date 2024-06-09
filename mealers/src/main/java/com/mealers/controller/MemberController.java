@@ -1,5 +1,6 @@
 package com.mealers.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -13,11 +14,14 @@ import com.mealers.dao.MemberDAO;
 import com.mealers.domain.MemberDTO;
 import com.mealers.domain.SessionInfo;
 import com.mealers.servlet.ModelAndView;
+import com.mealers.util.FileManager;
+import com.mealers.util.MyMultipartFile;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 @Controller
 public class MemberController {
@@ -31,8 +35,7 @@ public class MemberController {
 	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
 	public ModelAndView loginSubmit(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// 로그인 처리
-		// 세션객체. 세션 정보는 서버에 저장(로그인 정보, 권한등을 저장)
+		
 		HttpSession session = req.getSession();
 
 		MemberDAO dao = new MemberDAO();
@@ -45,20 +48,27 @@ public class MemberController {
 			
 			session.setMaxInactiveInterval(20 * 60);
 
-			//세션에 ID와 닉네임, userNum 을 담아줌
 			SessionInfo info = new SessionInfo();
 			info.setUserId(dto.getMemberId());
 			info.setUserName(dto.getMem_Nick());
 			info.setUserNum(dto.getUserNum());
+			
+			//중요
+			info.setFileName(dto.getFileName());
 
-			//세션에 member이라는 이름으로 저장
+			
 			session.setAttribute("member", info);
-
-			//메인화면으로 리다이렉트
+			
+			String preLoginURI = (String)session.getAttribute("preLoginURI");
+			session.removeAttribute("preLoginURI");
+			if(preLoginURI != null) {
+				// 로그인 전페이지로 리다이렉트
+				return new ModelAndView(preLoginURI);
+			} 
+			
 			return new ModelAndView("redirect:/");
 		}
 
-		// 로그인 실패인 경우(다시 로그인 폼으로)
 		ModelAndView mav = new ModelAndView("member/login");
 
 		String msg = "아이디 또는 패스워드가 일치하지 않습니다.";
@@ -82,22 +92,21 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping(value="/member/member",method = RequestMethod.GET)
-	public ModelAndView singupForm(HttpServletRequest req, HttpServletResponse resp) throws ServletException,IOException{	
-		ModelAndView mav = new ModelAndView("member/login");
-		
-		mav.addObject("title", "회원 가입");
-		mav.addObject("mode", "member");
-		
-		return mav;
-	}
+	/*
+	 * @RequestMapping(value="/member/login",method = RequestMethod.GET) public
+	 * ModelAndView singupForm(HttpServletRequest req, HttpServletResponse resp)
+	 * throws ServletException,IOException{ ModelAndView mav = new
+	 * ModelAndView("member/login");
+	 * 
+	 * return mav; }
+	 */
 	
 	//회원가입
-	@RequestMapping(value="/member/member",method = RequestMethod.POST)
+	@RequestMapping(value="/member/join",method = RequestMethod.POST)
 	  public ModelAndView memberSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	      MemberDAO dao = new MemberDAO();
 	        String message = "";	     
-
+	        	        
 	        try {
 	            MemberDTO dto = new MemberDTO();
 	            dto.setMemberId(req.getParameter("memberId"));
@@ -105,24 +114,19 @@ public class MemberController {
 	            dto.setMem_Nick(req.getParameter("nickname"));
 	            dto.setMem_Email(req.getParameter("email"));
 
-	            // 디버깅을 위해 로그 추가
-	            System.out.println("MEMBERID: " + dto.getMemberId());
-	            System.out.println("MEMBERPWD: " + dto.getMemberPwd());
-	            System.out.println("MEM_NICK: " + dto.getMem_Nick());
-	            System.out.println("MEM_EMAIL: " + dto.getMem_Email());
-
 	            dao.insertMember(dto);
-
+	            
 	            return new ModelAndView("redirect:/");
-
+	            
+	    
 	        } catch (SQLException e) {
 	            message = "회원 가입 실패";
 	            e.printStackTrace();
 	        }
 
-	        ModelAndView mav = new ModelAndView("member/member");
+	        
+	        ModelAndView mav = new ModelAndView("member/join");
 	        mav.addObject("title", "회원 가입");
-	        mav.addObject("mode", "member");
 	        mav.addObject("message", message);
 
 	        return mav;
@@ -148,18 +152,18 @@ public class MemberController {
 		
 	}
 	
+	
 	@RequestMapping(value = "/member/pwd", method = RequestMethod.POST)
 	public ModelAndView pwdSubmit(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// 패스워드 확인
+		
 		MemberDAO dao = new MemberDAO();
 		HttpSession session = req.getSession();
 
 		try {
 			SessionInfo info = (SessionInfo) session.getAttribute("member");
-
-			// DB에서 해당 회원 정보 가져오기
 			MemberDTO dto = dao.findById(info.getUserId());
+			
 			if (dto == null) {
 				session.invalidate();
 				return new ModelAndView("redirect:/");
@@ -181,19 +185,23 @@ public class MemberController {
 
 			if (mode.equals("delete")) {
 				// 회원탈퇴
+				
 				dao.deleteMember(info.getUserId());
 
-				session.removeAttribute("member");
-				session.invalidate();
+				
+				 session.removeAttribute("member"); 
+				 session.invalidate();
+				 
 
 				return new ModelAndView("redirect:/main");
 			}
 
+			
 			if (mode.equals("update") || mode.equals("pwdupdate")) {
 
 				dto.setMemberId(req.getParameter("memberId"));
 
-				// if(mode.equals("update"))
+			    if(mode.equals("update"))
 				dto.setMemberPwd(req.getParameter("memberPwd"));
 				
 				if (mode.equals("pwdupdate"))
@@ -206,7 +214,7 @@ public class MemberController {
 
 				return new ModelAndView("redirect:/member/mypage");
 
-				// dao.updateMember(dto);
+				
 			}
 
 			// 회원정보수정 - 회원수정폼으로 이동
@@ -224,5 +232,38 @@ public class MemberController {
 
 		return new ModelAndView("redirect:/");
 	}
+	
+	@RequestMapping(value = "/profile/update", method = RequestMethod.POST)
+	public ModelAndView updateProfile(HttpServletRequest req, HttpServletResponse resp)
+	        throws ServletException, IOException {
+	    MemberDAO dao = new MemberDAO();
+	    HttpSession session = req.getSession();
+	    SessionInfo info = (SessionInfo) session.getAttribute("member");
 
+	    FileManager fileManager = new FileManager();
+
+	    String root = session.getServletContext().getRealPath("/");
+	    String pathname = root + "uploads" + File.separator + "member";
+
+	    try {
+	        MemberDTO dto = new MemberDTO();
+
+	        dto.setUserNum(info.getUserNum());
+	        
+	        String filename = null;
+	        Part p = req.getPart("profile-picture");
+	        MyMultipartFile multipart = fileManager.doFileUpload(p, pathname);
+
+	        if (multipart != null) {
+	             filename = multipart.getSaveFilename();
+	            dto.setFileName(filename);
+	        }
+
+	        dao.updateProfile(dto);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return new ModelAndView("redirect:/member/mypage");
+	}
 }

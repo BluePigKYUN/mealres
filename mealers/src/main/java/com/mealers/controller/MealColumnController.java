@@ -15,7 +15,7 @@ import com.mealers.annotation.RequestMapping;
 import com.mealers.annotation.RequestMethod;
 import com.mealers.annotation.ResponseBody;
 import com.mealers.dao.MealColumnDAO;
-import com.mealers.domain.MealColumnDTO;
+import com.mealers.domain.ColumnDTO;
 import com.mealers.domain.ReplyDTO;
 import com.mealers.domain.SessionInfo;
 import com.mealers.servlet.ModelAndView;
@@ -79,7 +79,7 @@ public class MealColumnController {
 			int offset = (current_page - 1) * size;
 			if(offset < 0) offset = 0;
 			
-			List<MealColumnDTO> list;
+			List<ColumnDTO> list;
 			if(kwd.length() == 0 ) {
 				list = dao.listMealColumn(offset, size);
 			} else {
@@ -99,7 +99,7 @@ public class MealColumnController {
 			
 			listUrl = cp + "/mealColumn/list?" + query;
 			articleUrl = cp + "/mealColumn/article?page=" + current_page + "&" + query;
-			String paging = util.paging(current_page, total_page, listUrl);
+			String paging = util.mealersPagingUrl(current_page, total_page, listUrl);
 			
 			// list 전달 속성
 			mav.addObject("list", list);
@@ -149,7 +149,7 @@ public class MealColumnController {
 		FileManager filemanager = new FileManager();
 		
 		try {
-			MealColumnDTO dto = new MealColumnDTO();
+			ColumnDTO dto = new ColumnDTO();
 			
 			dto.setUserNum(info.getUserNum());
 			
@@ -207,7 +207,7 @@ public class MealColumnController {
 			dao.updateHitCount(num);
 			
 			// 게시물 가져오기
-			MealColumnDTO dto = dao.findByColumn(num);
+			ColumnDTO dto = dao.findByColumn(num);
 			
 			if(dto == null) {
 				return new ModelAndView("edirect:/mealColumn/list?" + query);
@@ -253,7 +253,7 @@ public class MealColumnController {
 		try {
 			long num = Long.parseLong(req.getParameter("num"));
 			
-			MealColumnDTO dto = dao.findByColumn(num);
+			ColumnDTO dto = dao.findByColumn(num);
 			
 			if(dto == null) {
 				return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
@@ -274,7 +274,7 @@ public class MealColumnController {
 		}
 		
 		// return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
-		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
+		return new ModelAndView("redirect:/mealColumn/list");
 	}
 	
 	
@@ -296,14 +296,14 @@ public class MealColumnController {
 		String pathname = root + "uploads" + File.separator + "mealColumn";
 		
 		String page = req.getParameter("page");
-	    // String size = req.getParameter("size");
+	    String size = req.getParameter("size");
 		
 		
 		MealColumnDAO dao = new MealColumnDAO();
 		FileManager fileManager = new FileManager();
 		try {
 			
-			MealColumnDTO dto = new MealColumnDTO();
+			ColumnDTO dto = new ColumnDTO();
 			
 			dto.setNum(Long.parseLong(req.getParameter("num")));
 			dto.setSubject(req.getParameter("subject"));
@@ -336,8 +336,8 @@ public class MealColumnController {
 			e.printStackTrace();
 		}
 
-		// return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
-		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
+	    return new ModelAndView("redirect:/mealColumn/list?page=" + page + "&size=" + size);
+		// return new ModelAndView("redirect:/mealColumn/list?page=" + page);
 	}
 	
 	
@@ -375,7 +375,7 @@ public class MealColumnController {
 			
 			long num = Long.parseLong(req.getParameter("num"));
 			
-			MealColumnDTO dto  = dao.findByColumn(num);
+			ColumnDTO dto  = dao.findByColumn(num);
 			if (dto == null) {
 				return new ModelAndView("redirect:/mealColumn/list?" + query);
 			}
@@ -397,7 +397,7 @@ public class MealColumnController {
 			e.printStackTrace();
 		}
 
-		return new ModelAndView("redirect:/mealColumn/list?page=" + page);
+		return new ModelAndView("redirect:/mealColumn/list?" + query);
 	}
 	
 	@RequestMapping(value = "/mealColumn/download", method = RequestMethod.GET)
@@ -417,7 +417,7 @@ public class MealColumnController {
 		try {
 			long num = Long.parseLong(req.getParameter("num"));
 			
-			MealColumnDTO dto = dao.findByColumn(num);
+			ColumnDTO dto = dao.findByColumn(num);
 			if (dto != null) {
 				b = fileManager.doFiledownload(dto.getSaveFilename(), dto.getOriginalFilename(), pathname, resp);
 			}
@@ -543,7 +543,7 @@ public class MealColumnController {
 				dto.setContent(dto.getContent().replaceAll("\n", "<br>"));
 			}
 			// 페이징 : 자스 함수 (listPage)를 호출
-			String paging = util.pagingMethod(current_page, total_page, "listPage");
+			String paging = util.pagingMethodReply(current_page, total_page, "listPage");
 			
 			ModelAndView mav = new ModelAndView("mealColumn/listReply");
 			

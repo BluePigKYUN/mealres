@@ -10,7 +10,6 @@ public class CmntDTO {
 	private String content;
 	private String reg_date;
 	private int hitCount;
-	
 	private int likeCount;
 	private int replyCount;
 	private int timeGap;
@@ -18,6 +17,10 @@ public class CmntDTO {
 	private long fileNum;
 	private String fileName;
 	private List<String> fileList;
+	
+	private String type;
+	
+	private String level;
 	
 	public long getNum() {
 		return num;
@@ -97,7 +100,17 @@ public class CmntDTO {
 	public void setFileList(List<String> fileList) {
 		this.fileList = fileList;
 	}
-	
-	
-	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getLevel() {
+		return level;
+	}
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
 }

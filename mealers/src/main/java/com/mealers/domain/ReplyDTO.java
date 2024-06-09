@@ -9,7 +9,8 @@ public class ReplyDTO {
 	private String mem_Nick;
 	private String content; 
 	private String reg_date;
-	
+	private int replyAdopt;
+	private String conUserNum;
 	
 	public String getMem_Nick() {
 		return mem_Nick;
@@ -59,5 +60,19 @@ public class ReplyDTO {
 	public void setReg_date(String reg_date) {
 		this.reg_date = reg_date;
 	}
+	public int getReplyAdopt() {
+		return replyAdopt;
+	}
+	public void setReplyAdopt(int replyAdort) {
+		this.replyAdopt = replyAdort;
+	}
+	public String getConUserNum() {
+		return conUserNum;
+	}
+	public void setConUserNum(String conUserNum) {
+		this.conUserNum = conUserNum;
+	}
+	
+	
 	
 }

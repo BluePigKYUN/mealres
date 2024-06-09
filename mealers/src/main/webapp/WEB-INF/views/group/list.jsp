@@ -43,14 +43,13 @@
 </header>
 <body>
 	<div class="container-fluid page-header py-5">
-		<h1 class="text-center text-white display-6">Mypage</h1>
+		<h1 class="text-center text-white display-6">그룹방</h1>
 	</div>
-	<!-- Page content -->
+	<!-- Page -->
 	<div class="container mt-5">
 		<div class="row">
-			<!-- Blog entries-->
+
 			<div class="col-lg-8">
-				<!-- Featured blog post-->
 				<div class="card mb-4">
 					<a href="#!"><img class="card-img-top"
 						src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
@@ -61,7 +60,7 @@
 						<a class="btn btn-primary" href="#!">입장</a>
 					</div>
 				</div>
-				<!-- Nested row for non-featured blog posts-->
+
 				<div class="row">
 					<div class="col-lg-6">
 						<!-- Blog post-->
@@ -150,6 +149,8 @@
 										href="${pageContext.request.contextPath}/group/write">가입</a></li>
 									<li><a
 										href="${pageContext.request.contextPath}/group/main">리스트</a></li>
+												<li><a
+										href="${pageContext.request.contextPath}/group/create">만들기</a></li>
 								</ul>
 							</div>
 						</div>
@@ -167,22 +168,9 @@
 			</div>
 		</div>
 	</div>
-	<!-- Footer-->
-	<footer class="py-5 bg-dark">
-		<div class="container">
-			<p class="m-0 text-center text-white">Copyright &copy; Your
-				Website 2023</p>
-		</div>
-	</footer>
-	<!-- Bootstrap core JS-->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-	<!-- Core theme JS-->
-	<script src="js/scripts.js"></script>
-</body>
-</html>
-
 <footer>
 	<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
 </footer>
-<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
+</body>
+</html>

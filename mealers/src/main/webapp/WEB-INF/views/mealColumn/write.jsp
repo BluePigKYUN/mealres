@@ -44,11 +44,12 @@
 						</tr>
 	        
 						<tr>
-							<td class="align-middle bg-light col-sm-2" scope="row">카테고리</td>
-	 						<td>
-								<p class=" text-start">식단 칼럼</p>
-							</td>
+						    <td class="align-middle bg-light col-sm-2" scope="row">카테고리</td>
+						    <td class="align-middle">
+						        <p class="text-start m-2">식단 칼럼</p>
+						    </td>
 						</tr>
+	
 	
 						<tr>
 							<td class="align-middle bg-light col-sm-2" scope="row">내 용</td>
@@ -91,6 +92,7 @@
 								<c:if test="${mode=='update'}">
 									<input type="hidden" name="num" value="${dto.num}">
 									<input type="hidden" name="page" value="${page}">
+    								<input type="hidden" name="size" value="${size != null ? size : '9'}">
 									<input type="hidden" name="fileSize" value="${dto.fileSize}">
 									<input type="hidden" name="saveFilename" value="${dto.saveFilename}">
 									<input type="hidden" name="originalFilename" value="${dto.originalFilename}">

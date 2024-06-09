@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mealers.domain.CmntDTO;
+import com.mealers.domain.ReplyDTO;
 import com.mealers.util.DBConn;
 import com.mealers.util.DBUtil;
 
@@ -108,11 +109,11 @@ public class MealCmntDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("SELECT c.num, m.userNum, mem_Nick, subject, content, reg_date, hitCount, fileName ");
+			sb.append("SELECT c.num, m.userNum, mem_Nick, subject, content, reg_date, hitCount, c.fileName ");
 			sb.append(" FROM mealCmnt c ");
 			sb.append(" JOIN member m ON c.userNum = m.userNum ");
 			if(mealSort.equals("recent")) {
-				sb.append(" ORDER BY reg_date DESC ");				
+				sb.append(" ORDER BY reg_date DESC, num DESC ");				
 			} else if(mealSort.equals("hitcount")) {
 				sb.append(" ORDER BY hitCount DESC, reg_date DESC ");
 			} else {
@@ -121,7 +122,7 @@ public class MealCmntDAO {
 				sb.append(" 	FROM mealCmntLike ");	
 				sb.append(" 	GROUP BY num ");	
 				sb.append(" ) ml ON c.num = ml.num ");	
-				sb.append(" ORDER BY NVL(ml.likeCount,0) DESC, c.num "); 	
+				sb.append(" ORDER BY NVL(ml.likeCount,0) DESC, reg_date DESC "); 	
 			}
 			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
 			
@@ -162,21 +163,21 @@ public class MealCmntDAO {
 		StringBuilder sb = new StringBuilder();
 		
 		try {
-			sb.append("SELECT c.num, m.userNum, mem_Nick, subject, content, reg_date, hitCount, fileName");
+			sb.append("SELECT c.num, m.userNum, mem_Nick, subject, content, reg_date, hitCount, c.fileName");
 			sb.append(" FROM mealCmnt c ");
 			sb.append(" JOIN member m ON c.userNum = m.userNum ");	
 			
 			switch(mealSort) {
 			case "recent" : 
 				switch(schCategory) {
-				case "subcon" : sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ORDER BY num DESC "); break;
-				default : sb.append(" WHERE INSTR(" + schCategory + ", ?) >= 1  ORDER BY num ASC "); break;
+				case "subcon" : sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ORDER BY reg_date DESC, num DESC"); break;
+				default : sb.append(" WHERE INSTR(" + schCategory + ", ?) >= 1  ORDER BY reg_date DESC, num DESC "); break;
 				}
 				break;
 			case "hitcount" : 
 				switch(schCategory) {
-				case "subcon" : sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ORDER BY hitCount DESC "); break;
-				default : sb.append(" WHERE INSTR(" + schCategory + ", ?) >= 1  ORDER BY hitCount DESC "); break;
+				case "subcon" : sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ORDER BY hitCount DESC, reg_date DESC "); break;
+				default : sb.append(" WHERE INSTR(" + schCategory + ", ?) >= 1  ORDER BY hitCount DESC, reg_date DESC "); break;
 				}
 				break;
 			default : 
@@ -186,8 +187,8 @@ public class MealCmntDAO {
 				sb.append(" 	GROUP BY num ");	
 				sb.append(" ) ml ON c.num = ml.num ");		
 				switch(schCategory) {
-				case "subcon" : sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ORDER BY NVL(ml.likeCount,0) DESC, c.num "); break;
-				default : sb.append(" WHERE INSTR(" + schCategory + ", ?) >= 1 ORDER BY NVL(ml.likeCount,0) DESC, c.num "); break;
+				case "subcon" : sb.append(" WHERE INSTR(subject, ?) >= 1 OR INSTR(content, ?) >= 1 ORDER BY NVL(ml.likeCount,0) DESC, reg_date DESC "); break;
+				default : sb.append(" WHERE INSTR(" + schCategory + ", ?) >= 1 ORDER BY NVL(ml.likeCount,0) DESC, reg_date DESC "); break;
 				}
 				break;
 			}
@@ -353,7 +354,7 @@ public class MealCmntDAO {
 		
 		try {
 			sql = "SELECT num, m.userNum, mem_Nick, subject, content, TO_CHAR(reg_date,'YYYY-MM-DD') reg_date, "
-					+ " hitCount, fileName "
+					+ " hitCount, c.fileName "
 					+ " FROM mealCmnt c "
 					+ " JOIN member m ON c.userNum = m.userNum "
 					+ " WHERE num = ? ";
@@ -424,5 +425,165 @@ public class MealCmntDAO {
 			DBUtil.close(pstmt);
 		}
 	}
+	
+	public void addReply(ReplyDTO dto) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		try {
+			sql = "INSERT INTO mealCmntReply(replyNum, num, userNum, content, reg_date) "
+					+ " VALUES(mealCmntReply_seq.NEXTVAL, ?, ?, ?, SYSDATE)";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, dto.getNum());
+			pstmt.setString(2, dto.getUserNum());
+			pstmt.setString(3, dto.getContent());
+			
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
+	}
+	
+	public int replyCount(long num) {
+		int countReply = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT NVL(COUNT(*), 0) "
+					+ " FROM mealCmntReply "
+					+ " WHERE num = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, num);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				countReply = rs.getInt(1);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		return countReply;
+	}
 
+	public List<ReplyDTO> replyList(long num, int offset, int size) {
+		List<ReplyDTO> list = new ArrayList<ReplyDTO>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+			sb.append("SELECT replyNum, num, m.userNum, mem_Nick, content, TO_CHAR(reg_date,'YYYY-MM-DD') reg_date ");
+			sb.append(" FROM mealCmntReply c ");
+			sb.append(" JOIN member m ON c.userNum = m.userNum ");
+			sb.append(" WHERE num = ? ");
+			sb.append(" ORDER BY replyNum DESC");
+			sb.append(" OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ");
+			
+			pstmt = conn.prepareStatement(sb.toString());
+			
+			pstmt.setLong(1, num);
+			pstmt.setInt(2, offset);
+			pstmt.setInt(3, size);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ReplyDTO dto = new ReplyDTO();
+				dto.setReplyNum(rs.getLong("replyNum"));
+				dto.setNum(rs.getLong("num"));
+				dto.setUserNum(rs.getString("userNum"));
+				dto.setMem_Nick(rs.getString("mem_Nick"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg_date(rs.getString("reg_date"));
+				
+				list.add(dto);
+			}
+	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return list;
+	}
+	
+	
+	public ReplyDTO findReply(long replyNum) {
+		ReplyDTO dto = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT replyNum, num, m.userNum, mem_Nick, content, reg_date "
+					+ " FROM mealCmntReply c "
+					+ " JOIN member m ON c.userNum = m.userNum "
+					+ " WHERE replyNum = ? ";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, replyNum);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new ReplyDTO();
+				dto.setReplyNum(rs.getLong("replyNum"));
+				dto.setNum(rs.getLong("num"));
+				dto.setUserNum(rs.getString("userNum"));
+				dto.setMem_Nick(rs.getString("mem_Nick"));
+				dto.setContent(rs.getString("content"));
+				dto.setReg_date(rs.getString("reg_date"));
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(rs);
+			DBUtil.close(pstmt);
+		}
+		
+		return dto;
+	}
+	
+	
+	public void removeReply(long replyNum, String userNum) throws SQLException {
+		PreparedStatement pstmt = null;
+		String sql;
+		
+		if(! userNum.equals("1")) {
+			ReplyDTO dto = findReply(replyNum);
+			if(dto == null || (! userNum.equals(dto.getUserNum()))) {
+				return;
+			}
+		}
+		
+		try {
+			sql = "DELETE FROM mealCmntReply WHERE replyNum = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setLong(1, replyNum);
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			DBUtil.close(pstmt);
+		}
+	}
 }

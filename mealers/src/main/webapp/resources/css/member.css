@@ -40,6 +40,16 @@
     background-size: cover;
 }
 
+.page-header-exrcsColumn {
+	position: relative;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(https://health.chosun.com/site/data/img_dir/2019/04/29/2019042900839_0.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+	
+	
+}
+
 .page-header-cmnt {
 	position: relative;
     background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(https://media.licdn.com/dms/image/D4E12AQHBMHlSdYZiBQ/article-cover_image-shrink_720_1280/0/1657307218470?e=2147483647&v=beta&t=lU7K89xpX7z5ezsJJbbietylfkBeT4pmjd8IlEpbT28);
@@ -95,6 +105,7 @@
 	border-radius: .25rem;
 }
 
+/* 페이지네이션 */
 .pagination a {
 	border-radius: 50%;
 	padding: 4px 11px;
@@ -207,3 +218,42 @@
 	background-color: transparent !important;
 }
  */
+ 
+/* 게시판 뱃지 */
+.type_1 {
+    background-color: #0d6efd !important;
+}
+.type_2 {
+    background-color: #6c757d !important;
+}
+.type_3 {
+    background-color: #dc3545 !important;
+}
+.type_4 {
+    background-color: #198754 !important;
+}
+.type_5 {
+    background-color: #ffc107 !important;
+}
+.type_6 {
+    background-color: #0dcaf0 !important;
+}
+.type_7 {
+    background-color: #212529 !important;
+}
+
+.nav-link.text-white.rounded-pill > a{color: #fff !important;}
+.activity_tab > li{margin: 0 4px;}
+
+
+.bi-x-square-fill::before {
+	content: "\f628";
+    color: #f88264c9;
+    font-size: 15px;
+}
+
+.btn-delete{
+    padding: 0;
+    border: 0px;
+    background: transparent;
+}

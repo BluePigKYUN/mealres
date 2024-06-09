@@ -55,177 +55,162 @@
 							<h1 class="mb-0">내 활동</h1>
 						</div>
 						<div class="col-lg-8 text-end">
-							<ul class="nav nav-pills d-inline-flex text-center mb-5">
-								<li class="nav-item"><a
+							<ul class="nav nav-pills d-inline-flex text-center mb-5 activity_tab">
+								<li class="nav-item"><span
 									class="nav-link active bg-primary text-white rounded-pill"
-									data-bs-toggle="pill" href="#tab-1"> <span
-										style="width: 130px;">게시물</span>
-								</a></li>
-								<li class="nav-item"><a
+									data-bs-toggle="pill">
+										<a style="width: 130px;" href="${pageContext.request.contextPath}/member/activity?mode=1"> 
+												게시물
+										</a> <!-- ${pageContext.request.contextPath}/member/activity?mode=tab1 -->
+									</span>
+								</li>
+								<li class="nav-item"><span
 									class="nav-link bg-success text-white rounded-pill"
-									data-bs-toggle="pill" href="#tab-2"> <span
-										style="width: 130px;">댓글</span>
-								</a></li>
-								<li class="nav-item"><a
+									data-bs-toggle="pill">
+										<a style="width: 130px;" href="${pageContext.request.contextPath}/member/activity?mode=2">
+												댓글
+										</a> <!-- ${pageContext.request.contextPath}/member/activity?mode=tab2 -->
+								</span></li>
+								<li class="nav-item"><span
 									class="nav-link bg-danger text-white rounded-pill"
-									data-bs-toggle="pill" href="#tab-3"> <span
-										style="width: 130px;">좋아요</span>
-								</a></li>
-								<li class="nav-item">
+									data-bs-toggle="pill" >
+									
+									<a style="width: 130px;" href="${pageContext.request.contextPath}/member/activity?mode=3"> 
+											좋아요
+									</a>
+								</span></li>
+
 							</ul>
 						</div>
-
 					</div>
 					<div class="tab-content">
-						<!-- 탭 1 나의 게시물 -->
+						<%
+						    String[] dtoType = {"식단", "운동", "자유", "우수회원", "고민", "식단컬럼", "운동컬럼"};
+							String[] dtoUrl = {"식단", "운동", "자유", "우수회원", "고민", "mealColumn/article", "exrcsColumn/article"};
+						    request.setAttribute("dtoType", dtoType);
+						    request.setAttribute("dtoUrl", dtoUrl);
+						%>
 						<div id="tab-1" class="tab-pane fade show p-0 active">
+							
+							<!-- 탭 1 나의 게시물 -->
+							<c:if test="${mode == '1'}">
 							<table class="table table-hover mob_table">
 								<thead>
 									<tr>
 										<th scope="col">번호</th>
-										<th scope="col">제목</th>
 										<th scope="col">게시판</th>
+										<th scope="col">제목</th>
 										<th scope="col">작성일</th>
 										<th scope="col">상태</th>
 									</tr>
 								</thead>
-
-								<!-- 페이징처리 -->
 								<tbody>
 									<c:forEach var="dto" items="${list}" varStatus="status">
 										<tr>
-											<td>${totalCount - (page-1) * size - status.index}</td>
-											<td class="left"><a href="${articleUrl}&num=${dto.num}"
-												class="text-reset">${dto.subject}</a></td>
-											<td>${dto.subject}</td>
+											<td>${dataCount - (pageNo-1) * size - status.index}</td>
+											<td>
+												<c:set var="index" value="${dto.type}" />
+												<span class="badge type_${dto.type}">
+													<c:out value="${dtoType[index-1]}" />
+												</span>
+											</td>
+											<td class="left">
+												<%-- <a href="naver.com" class="text-reset">${dto.subject}</a> --%>
+												<a href="../<c:out value="${dtoUrl[index-1]}" />?num=${dto.num}" class="text-reset">${dto.subject}</a>
+											</td>
+											<td>${dto.reg_date}</td>
+											<td><button class="btn-delete" type="button" onclick="deleteBtn(${dto.num}, ${dto.type});"><i class="bi bi-x-square-fill" ></i></button></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+							</c:if>
+							<!-- //탭 1 -->
+							
+							<!-- 탭 2 댓글 -->
+							<c:if test="${mode == '2'}">
+							<table class="table table-hover mob_table">
+								<thead>
+									<tr>
+										<th scope="col">번호</th>
+										<th scope="col">게시판</th>
+										<th scope="col">내용</th>
+										<th scope="col">작성일</th>
+										<th scope="col">상태</th>
+									</tr>
+								</thead>
+								<!-- 댓글 -->
+								<tbody>
+									<c:forEach var="dto" items="${list}" varStatus="status">
+										<tr>
+											<td>${dataCount - (pageNo-1) * size - status.index}</td>
+											<td>
+												<c:set var="index" value="${dto.type}" />
+												<span class="badge type_${dto.type}">
+													<c:out value="${dtoType[index-1]}" />
+												</span>
+											</td>
+											<td class="left"><a href="${articleUrl}?num=${dto.num}"
+												class="text-reset">${dto.content}</a></td>
 											<td>${dto.reg_date}</td>
 										</tr>
 									</c:forEach>
 								</tbody>
 							</table>
-							
-						<!-- 페이징 처리 -->
-							<nav aria-label="Page navigation example">
-								<ul class="pagination d-flex justify-content-center pt-4">
-									<li class="page-item m_prev"><a class="page-link" href="#"
-										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-									</a></li>
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item m_next"><a class="page-link" href="#"
-										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-									</a></li>
-								</ul>
-							</nav>
-							<!--//페이징처리 -->
-							
-						</div>
-						<!-- //탭 1 -->
-
-						<!-- 탭 2 댓글 -->
-						<div id="tab-2" class="tab-pane fade show p-0">
-							<table class="table table-hover mob_table">
-								<thead>
-									<tr>
-										<th scope="col">번호</th>
-										<th scope="col">내용</th>
-										<th scope="col">게시판</th>
-										<th scope="col">작성일</th>
-										<th scope="col">상태</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th scope="row">1</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>식단</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-secondary">대기</span></td>
-									</tr>
-									<tr>
-										<th scope="row">2</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>운동</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-success">활동중</span></td>
-									</tr>
-									<tr>
-										<th scope="row">3</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>식단</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-success">활동중</span></td>
-									</tr>
-								</tbody>
-							</table>
-
-							<nav aria-label="Page navigation example">
-								<ul class="pagination d-flex justify-content-center pt-4">
-									<li class="page-item m_prev"><a class="page-link" href="#"
-										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-									</a></li>
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
-									<li class="page-item m_next"><a class="page-link" href="#"
-										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-									</a></li>
-								</ul>
-							</nav>
-						</div>
-						<!-- //탭 2 -->
-
-						<!-- 탭 3 -->
-						<div id="tab-3" class="tab-pane fade show p-0">
+							</c:if>
+							<!-- //탭 2 -->
+							<!-- 탭 3 -->
+							<c:if test="${mode == '3'}">
 							<table class="table table-hover mob_table">
 								<thead>
 									<tr>
 										<th scope="col">번호</th>
 										<th scope="col">제목</th>
-										<th scope="col">작성자</th>
+										<th scope="col">게시판</th>
 										<th scope="col">작성일</th>
 										<th scope="col">상태</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<th scope="row">1</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>행복이</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-secondary">대기</span></td>
-									</tr>
-									<tr>
-										<th scope="row">2</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>불행이</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-success">활동중</span></td>
-									</tr>
-									<tr>
-										<th scope="row">3</th>
-										<td><a href="#">제목입니다. 제목입니다.</a></td>
-										<td>슬픔이</td>
-										<td>2099-99-99</td>
-										<td><span class="badge text-bg-success">활동중</span></td>
-									</tr>
-								</tbody>
-							</table>
 
+								<tbody>
+									<%-- <c:forEach var="dto" items="${list}" varStatus="status">
+										<tr>
+											<td>${dataCount - (pageNo-1) * size - status.index}</td>
+											<td class="left"><a href="${articleUrl}&num=${dto.num}"
+												class="text-reset">${dto.subject}</a></td>
+											<td>${dto.subject}</td>
+											<td>${dto.reg_date}</td>
+										</tr>
+									</c:forEach> --%>
+								</tbody>
+							</c:if>
+							<!-- //탭 3 -->
+							
+							
+							<!--페이징처리-->
 							<nav aria-label="Page navigation example">
 								<ul class="pagination d-flex justify-content-center pt-4">
-									<li class="page-item m_prev"><a class="page-link" href="#"
+									<li class="page-item m_prev"><a class="page-link"
+										href="${pageContext.request.contextPath}/member/activity?mode=${mode}&pageNo=${startPage}"
 										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 									</a></li>
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
-									<li class="page-item m_next"><a class="page-link" href="#"
+									<c:forEach var="i" begin="${startPage}" end="${endPage}">
+										<li class="page-item ${i == pageNo ? 'active' : ''}"><a
+											class="page-link"
+											href="${pageContext.request.contextPath}/member/activity?mode=${mode}&pageNo=${i}">${i}</a>
+										</li>
+									</c:forEach>
+									<li
+										class="page-item m_next ${pageNo == total_page ? 'disabled' : ''}">
+										<a class="page-link"
+										href="${pageContext.request.contextPath}/member/activity?mode=${mode}&pageNo=${pageNo + 1}"
 										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-									</a></li>
+									</a>
+									</li>
 								</ul>
 							</nav>
+							<!--//페이징처리 -->
 						</div>
-						<!-- //탭 3 -->
 					</div>
 				</div>
 			</div>
@@ -304,6 +289,15 @@
 	</footer>
 	<!-- Footer End -->
 	<script>
+
+	function deleteBtn(postNum,postType){
+		 //window.location.href = newHref;
+			let url = "${pageContext.request.contextPath}/member/delete?num=" + postNum + "&type=" + postType;
+			location.href = url;	
+		
+		
+	}
+	
 		/* 	document.getElementById('change-password-btn').addEventListener(
 					'click',
 					function() {
@@ -322,6 +316,7 @@
 				alert('회원 탈퇴가 완료되었습니다.');
 			}
 		} */
+		
 	</script>
 </body>
 </html>

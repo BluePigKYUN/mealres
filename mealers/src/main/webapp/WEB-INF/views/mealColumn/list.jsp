@@ -32,7 +32,7 @@
     <body>
         <!-- Single Page Header start -->
         <div class="container-fluid page-header-mealColumn py-5">
-            <h1 class="text-center text-white display-6">Mealers가 알려주는 건강 정보</h1>
+            <h1 class="text-center text-white display-6">Mealers가 알려주는 최신 건강 정보</h1>
         </div>
         <!-- Single Page Header End -->
 
@@ -127,21 +127,12 @@
 										</div>
 									</form>
 							</div>
+							
+							
+     						<nav class="text-center text-primary" aria-label="Page navigation example">
+     							${dataCount == 0 ? "등록된 게시물이 없습니다." : paging}
+     						</nav>
 
-                                <nav aria-label="Page navigation example">
-								<ul class="pagination d-flex justify-content-center">
-									<li class="page-item m_prev"><a class="page-link" href="#"
-										aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-									</a></li>
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
-									<li class="page-item m_next"><a class="page-link" href="#"
-										aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-									</a></li>
-								</ul>
-							    </nav>
-							    
                                 </div>
                             </div>
                         </div>
@@ -162,9 +153,9 @@
     
     function changeList() {
     	 var size = document.querySelector('select[name="size"]').value;
-    	    var form = document.forms['listForm']; // 폼 요소를 찾음
-    	    form.action = '${pageContext.request.contextPath}/mealColumn/list?size=' + size; // 폼의 action 속성을 설정
-    	    form.submit(); // 폼 제출
+    	    var form = document.forms['listForm']; 
+    	    form.action = '${pageContext.request.contextPath}/mealColumn/list?size=' + size; 
+    	    form.submit(); 
     }
     
     </script>

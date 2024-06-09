@@ -24,23 +24,17 @@
 	align-items: center;
 }
 
-</style>
-
-
-    
+</style>   
 </head>
 <body>
 	<header>
 		<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 	</header>
     
-    <!-- Single Page Header start -->
 	<div class="container-fluid page-header py-5 ">
 		<h1 class="text-center text-white display-6">커뮤니티</h1>
 	</div>
-	<!-- Single Page Header End -->
 
-    <!-- 본문 영역 -->
     <div class="container-fluid my-5">
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -67,10 +61,10 @@
  
 		                        <div class="mt-4 mb-3 me-5" style="text-align: right">
 		                            <button type="button" class="btn btn-light bg-secondary text-white " onclick="submitContents();">
-		                                ${mode=='update'?'수정완료':'등록'}
+		                                ${mode=='update'?'완료':'등록'}
 		                            </button>
 		                            <button type="button" class="btn border border-secondary ms-2" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/list';">
-		                                ${mode=='update'?'수정취소':'취소'}
+		                                취소
 		                            </button>
 		                            
 		                            <c:if test="${mode=='update'}">
@@ -89,7 +83,7 @@
     </div>
 
     <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fas fa-arrow-up"></i></a>
-    <!-- 푸터 영역 -->
+   
     <footer>
         <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
 	    <jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
@@ -149,8 +143,6 @@
 			form.submit();
 			
 		}
-		
-		
 	</script>
 </body>
 </html>

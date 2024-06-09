@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mealers.domain.MealColumnDTO;
+import com.mealers.domain.ColumnDTO;
 import com.mealers.domain.ReplyDTO;
 import com.mealers.util.DBConn;
 import com.mealers.util.DBUtil;
@@ -16,7 +16,7 @@ public class MealColumnDAO {
 	private Connection conn = DBConn.getConnection();
 	
 	// 식단 칼럼에 데이터 넣기
-	public void insertMealColumn(MealColumnDTO dto) throws SQLException {
+	public void insertMealColumn(ColumnDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 		
@@ -125,8 +125,8 @@ public class MealColumnDAO {
 	}
 	
 	// 리스트
-	public List<MealColumnDTO> listMealColumn(int offset, int size) {
-		List<MealColumnDTO> list = new ArrayList<MealColumnDTO>();
+	public List<ColumnDTO> listMealColumn(int offset, int size) {
+		List<ColumnDTO> list = new ArrayList<ColumnDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
@@ -137,7 +137,8 @@ public class MealColumnDAO {
 					+ " TO_CHAR(reg_date, 'YYYY-MM-DD') reg_date "
 					+ " FROM  mealcolumn n "
 					+ " JOIN member m ON n.userNum = m.userNum "
-					+ " JOIN mealcolumnFile f ON n.num = f.num "
+					+ " JOIN mealcolumnFile f ON n.num = f.num"
+					+ " ORDER BY reg_date DESC "
 					+ " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -148,7 +149,7 @@ public class MealColumnDAO {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				MealColumnDTO dto = new MealColumnDTO();
+				ColumnDTO dto = new ColumnDTO();
 				
 				dto.setNum(rs.getLong("num"));
 				dto.setUserNum(rs.getString("userNum"));
@@ -171,8 +172,8 @@ public class MealColumnDAO {
 	}
 	
 	// 검색했을때 리스트
-	public List<MealColumnDTO> listMealColumn(int offset, int size, String schType, String kwd) {
-		List<MealColumnDTO> list = new ArrayList<MealColumnDTO>();
+	public List<ColumnDTO> listMealColumn(int offset, int size, String schType, String kwd) {
+		List<ColumnDTO> list = new ArrayList<ColumnDTO>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
@@ -193,7 +194,7 @@ public class MealColumnDAO {
 				sql += " WHERE INSTR(" + schType + ", ?) >= 1 ";
 			}
 			
-			sql += " ORDER BY num DESC ";
+			sql += " ORDER BY reg_date DESC ";
 			sql += " OFFSET ? ROWS FETCH FIRST ? ROWS ONLY ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -212,7 +213,7 @@ public class MealColumnDAO {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				MealColumnDTO dto = new MealColumnDTO();
+				ColumnDTO dto = new ColumnDTO();
 				
 				dto.setNum(rs.getLong("num"));
 				dto.setUserNum(rs.getString("userNum"));
@@ -259,8 +260,8 @@ public class MealColumnDAO {
 	}
 	
 	// 해당 칼럼 보기
-	public MealColumnDTO findByColumn(long num) {
-		MealColumnDTO dto = null;
+	public ColumnDTO findByColumn(long num) {
+		ColumnDTO dto = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql;
@@ -283,7 +284,7 @@ public class MealColumnDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				dto = new MealColumnDTO();
+				dto = new ColumnDTO();
 				
 				dto.setNum(rs.getLong("num"));
 				dto.setUserNum(rs.getString("userNum"));
@@ -311,7 +312,7 @@ public class MealColumnDAO {
 	}
 	
 	// 칼럼 수정
-	public void updateMealColumn(MealColumnDTO dto) throws SQLException {
+	public void updateMealColumn(ColumnDTO dto) throws SQLException {
 		PreparedStatement pstmt = null;
 		String sql;
 

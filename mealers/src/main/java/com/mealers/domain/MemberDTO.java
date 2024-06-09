@@ -9,6 +9,7 @@ public class MemberDTO {
     private String sign_reg_date;
     private int enabled;
     private String modify_date;
+    private String fileName;
 
     public String getUserNum() {
         return userNum;
@@ -73,4 +74,12 @@ public class MemberDTO {
     public void setModify_date(String modify_date) {
         this.modify_date = modify_date;
     }
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 }

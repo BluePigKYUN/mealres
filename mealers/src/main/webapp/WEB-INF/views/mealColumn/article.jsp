@@ -29,7 +29,7 @@
 <body>
  	
  	<div class="container-fluid page-header-mealColumn py-5">
-            <h1 class="text-center text-white display-6">Mealers가 알려주는 건강 정보</h1>
+            <h1 class="text-center text-white display-6">Mealers가 알려주는 최신 건강 정보</h1>
      </div>
      
 	<div class="container">
@@ -48,7 +48,7 @@
 						<tbody>
 							<tr class="m-3">
 								<td class="p-3" align="left" style="text-align: left;">
-									이름 : 밀티쥬
+									이름 : 관리자
 								</td>
 								<td class="p-3 text-end">
 									 ${dto.reg_date}| 조회 ${dto.hitCount}
@@ -86,7 +86,7 @@
 						<td class="text-start">
 								<c:choose>
 									<c:when test="${sessionScope.member.userNum=='1'}">
-										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/mealColumn/update?num=${dto.num}&page=${page}';">수정</button>
+										<button type="button" class="btn btn-light" onclick="location.href='${pageContext.request.contextPath}/mealColumn/update?num=${dto.num}&page=${page}&size=${size}';">수정</button>
 									</c:when>
 									<c:otherwise>
 										<button type="button" class="btn border-primary m-2 py-2 rounded-pill text-primary" disabled>수정</button>
@@ -145,9 +145,9 @@
 		<script type="text/javascript">
 		function deleteMealColumn() {
 			if(confirm("게시글을 삭제 하시 겠습니까 ? ")) {
-				   let query = "num=${dto.num}&page=${page}";
-				   let url = "${pageContext.request.contextPath}/mealColumn/delete?" + query;
-				 location.href = url;
+				let q = '${query}&num=${dto.num}';
+				   let url = "${pageContext.request.contextPath}/mealColumn/delete";
+				   location.href = url + '?' + q;
 			
 			}
 		}
@@ -287,19 +287,20 @@
 		
 		// 댓글 삭제
 		$(function() {
-			$(".reply").on("click", ".deleteReplyAnswer", function(){
+			$("body").on("click", ".deleteReply", function(){
 				if( ! confirm('댓글을 삭제 하시겠습니까 ? ')) {
 					return false;
 				}
 				
 				let replyNum = $(this).attr("data-replyNum");
+				let page = $(this).attr("data-pageNo")
 				
 				let url = "${pageContext.request.contextPath}/mealColumn/deleteReply";
-				let query = "replyNum=" + replyNum;
+				let query = "replyNum="+replyNum+"&mode=reply";
 				
-				const fn = function(data) {
-					listReplyAnswer(answer);
-					countReplyAnswer(answer);
+				const fn = function(data){
+					// var state = data.state;
+					listPage(page);
 				};
 				
 				ajaxFun(url, "post", query, "json", fn);

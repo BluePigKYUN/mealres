@@ -1,201 +1,277 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>그룹 게시물</title>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
 <style>
-body {
-	background-color: #f5f8fa;
-	font-family: Arial, sans-serif;
+.custom-card {
+    max-width: 100%;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    animation: float 3s ease-in-out infinite;
 }
 
-.card {
-	border: none;
-	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+.custom-card-header {
+    background-color: #20c997;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
 }
 
-.card-footer a {
-	color: #6c757d;
-	text-decoration: none;
+.custom-card-body {
+    font-size: 0.9rem;
+    color: #555;
+    padding: 15px;
 }
 
-.card-footer a:hover {
-	color: #212529;
+.custom-card-footer {
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.8rem;
+    color: #777;
 }
 
-.bi {
-	font-size: 1.2rem;
-	vertical-align: middle;
+.container-fluid.page-header {
+    background-color: #343a40;
+    color: white;
+    padding: 50px 0;
+    text-align: center;
 }
 
-.list-group-item {
-	border: none;
-	padding: 0.5rem 0;
+.card-img-top {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
-.comment-list {
-	max-height: 200px;
-	overflow-y: auto;
+.card-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
 }
 
-.btn-sm {
-	padding: 0.25rem 0.5rem;
-	font-size: 0.875rem;
-	border-radius: 0.2rem;
+.card-text {
+    margin-bottom: 15px;
 }
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.modal-content {
+    border-radius: 15px;
+}
+
+.modal-header, .modal-footer {
+    border: none;
+}
+
+.modal-header .btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+}
+
+.modal-body .form-control {
+    border-radius: 5px;
+}
+
+.modal-body .form-label {
+    font-weight: bold;
+}
+
+.alert-primary {
+    background-color: #cce5ff;
+    color: #004085;
+    border: 1px solid #b8daff;
+}
+
 </style>
 </head>
 <header>
-	<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
+    <jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
 </header>
-
 <body>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8">
-				<div class="card mb-3">
-					<div class="card-body">
-						<textarea class="form-control" rows="3" placeholder="무슨 일이 있었나요?"
-							maxlength="140"></textarea>
-						<small id="charCount" class="form-text text-muted">0/140</small>
-						<div class="d-flex justify-content-between mt-2">
-							<div class="form-group">
-								<label for="uploadImage" class="form-label"> <i
-									class="bi-image me-2"></i>사진 첨부
-								</label> <input type="file" id="uploadImage" class="form-control"
-									accept="image/*">
-								<div id="preview" class="mt-2"></div>
-							</div>
-							<div class="g_btn_box">
-								<button class="btn btn-primary btn-sm">게시하기</button>
-							</div>
-						</div>
-					</div>
-				</div>
+    <div class="container-fluid page-header py-5">
+        <h1 class="text-center text-white display-6">그룹방</h1>
+    </div>
+    <!-- Page -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <c:forEach var="dto" items="${list}" varStatus="state">
+                    <div class="card mb-4 custom-card">
+                        <img class="card-img-top"
+                            src="${pageContext.request.contextPath}/uploads/group/${dto.fileName}"
+                            alt="Group Image" />
+                        <div class="card-body custom-card-body">
+                            <div class="small text-muted">정원</div>
+                            <h2 class="card-title">${dto.groupName}</h2>
+                            <p class="card-text">${dto.proFile}</p>
+                            <a class="btn btn-primary" href="#!">입장</a>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+            <!-- Side widgets-->
+            <div class="col-lg-4">
+                <!-- Search widget-->
+                <div class="card mb-4">
+                    <div class="card-header">Search</div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="그룹명 검색"
+                                aria-label="Enter search term..."
+                                aria-describedby="button-search" />
+                            <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Categories widget-->
+                <div class="card mb-4">
+                    <div class="card-header"></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="#" data-bs-toggle="modal"
+                                        data-bs-target="#createGroupModal">만들기</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Side widget-->
+                <div class="container mt-5">
+                    <button type="button" class="btn btn-secondary" id="popoverButton"
+                        data-bs-toggle="popover" title="공지사항"
+                        data-bs-content="다양한 그룹을 둘러보고 마음에 드는 그룹에 가입 신청하세요. 그룹장의 승인을 받으면 활동에 참여할 수 있습니다. 같은 목표를 가진 사람들과 소통하며 즐거운 시간을 보내세요!">
+                        공지사항 보기</button>
+                </div>
+            </div>
+        </div>
+        <!-- Create Group Modal -->
+        <div class="modal fade" id="createGroupModal" tabindex="-1"
+            aria-labelledby="createGroupModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createGroupModalLabel">그룹 만들기</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-primary" role="alert">그룹에 맞는 특성을
+                            표현해주세요!</div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <img id="imagePreview" class="img-fluid rounded shadow" src="#"
+                                        alt="Image Preview">
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <form name="groupForm" method="post"
+                                    enctype="multipart/form-data" class="form-horizontal">
+                                    <div class="form-group mb-3">
+                                        <label for="subject" class="form-label">그룹명</label> <input
+                                            type="text" name="groupName" id="groupName"
+                                            class="form-control" value="${dto.groupName}" required>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="author" class="form-label">닉네임</label> <input
+                                            type="text" id="author" class="form-control"
+                                            value="${sessionScope.member.userName}" readonly>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="content" class="form-label">내용</label>
+                                        <textarea name="proFile" id="proFile" class="form-control"
+                                            rows="8" required>${dto.proFile}</textarea>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="selectFile" class="form-label"> <i
+                                            class="bi-paperclip me-2"></i>첨부파일
+                                        </label> <input type="file" name="selectFile" id="selectFile"
+                                            class="form-control" onchange="previewImage(this);" required>
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <button type="button" class="btn btn-light shadow"
+                                            onclick="submitContents(this.form);">
+                                            등록&nbsp;<i class="bi-check2"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-light shadow"
+                                            data-bs-dismiss="modal">
+                                            취소&nbsp;<i class="bi-x"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Create Group Modal -->
+    </div>
+    <footer>
+        <jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
+    </footer>
+    <jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
-				<div class="card mb-3">
-					<div class="card-body">
-						<div class="d-flex">
-							<img src="https://via.placeholder.com/50"
-								class="rounded-circle me-2" alt="프로필 이미지">
-							<div>
-								<h5 class="mb-0">불꽃남자</h5>
-								<small class="text-muted">3분 전</small>
-							</div>
-						</div>
-						<p class="mt-2 mb-0">오예 금요일</p>
-					</div>
-					<div class="card-footer">
-						<a href="#" class="comment-btn me-3" data-bs-toggle="modal"
-							data-bs-target="#commentModal"><i class="bi bi-chat me-1"></i>댓글
-							달기</a> <a href="#" class="me-3"><i class="bi bi-heart me-1"></i>좋아요</a>
-						<a href="#"><i class="bi bi-share me-1"></i>공유하기</a>
-					</div>
-					<div class="card-footer">
-						<ul class="list-group list-group-flush comment-list">
-							<!-- 댓글 목록 -->
-						</ul>
-					</div>
-				</div>
-				<!-- 추가 게시물 -->
-			</div>
-		</div>
-	</div>
+        function validateForm() {
+            const form = document.forms['groupForm'];
+            const groupName = form['groupName'];
+            const proFile = form['proFile'];
+            const selectFile = form['selectFile'];
 
-	<!-- 댓글 모달창 -->
-	<div class="modal fade" id="commentModal" tabindex="-1"
-		aria-labelledby="commentModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="commentModalLabel">댓글 달기</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<textarea class="form-control" rows="3" placeholder="댓글을 입력하세요"></textarea>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-primary" id="submitComment">댓글
-						등록</button>
-				</div>
-			</div>
-		</div>
-	</div>
+            let isValid = true;
 
-	<script>
-		$('#charCount').text('0/140');
-		$('textarea').on('input', function() {
-			const maxLength = 140;
-			const currentLength = $(this).val().length;
-			const remainingChars = maxLength - currentLength;
+            if (!groupName.value.trim()) {
+                alert('그룹명을 입력해주세요.');
+                groupName.focus();
+                isValid = false;
+            } else if (!proFile.value.trim()) {
+                alert('내용을 입력해주세요.');
+                proFile.focus();
+                isValid = false;
+            } else if (!selectFile.value) {
+                alert('첨부파일을 선택해주세요.');
+                selectFile.focus();
+                isValid = false;
+            }
 
-			if (remainingChars < 0) {
-				$(this).val($(this).val().substr(0, maxLength));
-			}
+            form.action = "${pageContext.request.contextPath}/group/create";
+            return isValid;
+        }
 
-			$('#charCount').text(`${currentLength}/${maxLength}`);
-		});
-
-		// 사진 미리보기 기능
-		$('#uploadImage')
-				.on(
-						'change',
-						function() {
-							const file = this.files[0];
-							if (file) {
-								const reader = new FileReader();
-								reader.onload = function() {
-									$('#preview')
-											.html(
-													`<img src="${reader.result}" class="img-fluid">`);
-								}
-								reader.readAsDataURL(file);
-							} else {
-								$('#preview').empty();
-							}
-						});
-
-		// 댓글 달기
-		$('.comment-btn').click(function() {
-			$('#commentModal').modal('show');
-		});
-
-		// 댓글 등록
-		$('#submitComment').click(function() {
-			var commentText = $('#commentModal textarea').val();
-
-			$.ajax({
-				url : '/submit-comment',
-				type : 'POST',
-				data : {
-					comment : commentText
-				},
-				success : function(response) {
-
-					$('#commentModal').modal('hide');
-					// 댓글 목록을 업데이트
-				},
-				error : function() {
-
-					alert('댓글 등록에 실패했습니다.');
-				}
-			});
-		});
-	</script>
-	<footer>
-		<jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
-	</footer>
-	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
+        function submitContents(form) {
+            if (validateForm()) {
+                form.submit();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            var popoverTriggerEl = document.getElementById('popoverButton');
+            var popover = new bootstrap.Popover(popoverTriggerEl, {
+                placement : 'right',
+                trigger : 'click'
+            });
+        });
+    </script>
 </body>
 </html>

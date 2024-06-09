@@ -19,8 +19,10 @@ public abstract class MyUtil {
 	
 	public abstract String paging(int current_page, int total_page, String list_url);
 	public abstract String pagingMethod(int current_page, int total_page, String methodName);
+	public abstract String pagingMethodReply(int current_page, int total_page, String methodName);
 	
 	public abstract String pagingUrl(int current_page, int total_page, String list_url);
+	public abstract String mealersPagingUrl(int current_page, int total_page, String list_url);
 	public abstract String pagingFunc(int current_page, int total_page, String methodName);
 
     /**
