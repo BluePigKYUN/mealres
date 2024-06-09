@@ -40,24 +40,6 @@
 								</table>
                             </div>
                             <div>
-                                <table>
-									<tr>
-										<td rowspan = "2">
-										<h5>&nbsp;&nbsp;&nbsp;식단 기록</h5>
-											<a href = "${pageContext.request.contextPath}/log/foodi">
-											<img class="mScale" src="/mealers/resources/img/meal_logo.png"></img>
-											</a>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<h6>식단을 기록해봐요.</h6>
-											<p>먹은 음식을 매일매일 작성할 수 있어요.</p>
-										</td>
-									</tr>
-								</table>
-                            </div>
-                            <div>
                             	<table>
 									<tr>
 										<td rowspan = "2">
@@ -83,8 +65,6 @@
                     <button class="btn btn-secondary">일정</button></a>
                     <a href = "${pageContext.request.contextPath}/log/diary"> 
                     <button class="btn btn-secondary">일상</button></a>
-                    <a href = "${pageContext.request.contextPath}/log/foodi"> 
-                    <button class="btn btn-secondary">음식</button></a>
                 </div>
             </div>
             	</div>

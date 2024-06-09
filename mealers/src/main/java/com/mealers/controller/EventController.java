@@ -27,6 +27,7 @@ public class EventController {
 	@RequestMapping(value = "/log/event", method = RequestMethod.GET)
 	public ModelAndView logOfMain(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Calendar cal = Calendar.getInstance();
+		
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH) + 1;
 		int date = cal.get(Calendar.DATE);
@@ -34,9 +35,28 @@ public class EventController {
 		String today = String.format("%04d%02d%02d", year, month, date);
 		
 		ModelAndView mav = new ModelAndView("log/dailyEvent");
-		mav.addObject("today", today);
+		mav.addObject("today", EventDAO.formatDate(today));
 		return mav;
 	}
+	
+    // AJAX - 오늘 일정 가져오기(TEXT)
+    @RequestMapping(value = "/log/todaysEvent", method = RequestMethod.GET)
+    public ModelAndView getEvents(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    	ModelAndView mav = new ModelAndView("log/todaysEvent");
+    	EventDAO dao = new EventDAO();
+        HttpSession session = req.getSession();
+        SessionInfo info = (SessionInfo) session.getAttribute("member");
+
+        try {
+			List<EventDTO> list = dao.getTodayEvents(info.getUserNum());
+			
+			mav.addObject("list", list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+        return mav;
+    }
 	
 	// AJAX - Text
 		@RequestMapping(value = "/log/month", method = RequestMethod.GET)
@@ -128,14 +148,19 @@ public class EventController {
 							int cn8 = Integer.parseInt(s);
 							int cn4 = Integer.parseInt(s.substring(4));
 
-							if (cnt == 4) {
-								days[row][i] += "<span class='scheduleMore' data-date='" + s + "' >" + "more..." + "</span>";
+							if (cnt == 2) {
+								days[row][i] += "<span class='scheduleMore' data-date='" + s + "' >" + "더보기" + "</span>";
 								break;
 							}
 
 							if (((sd8 == cn8 || sd8 <= cn8 && ed8 >= cn8))
 									|| (sd4 == cn4)) {
-								days[row][i] += "<span class='scheduleSubject' style='max-width: 30px; font-color: white; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; background-color: " + dto.getColor() + ";' data-date='" + s + "' data-num='" + dto.getEvent_num()
+								days[row][i] += "<span class='scheduleSubject' "
+										+ "style='margin: 1px; max-width: 45px; color: white; display: block; "
+										+ "cursor: pointer; font-size: 8px; "
+										+ "text-overflow: ellipsis; white-space: nowrap; overflow: hidden; "
+										+ "border-radius: 8px; padding: 2px 4px; "
+										+ "background-color: " + hexToRGB(dto.getColor(), 0.5) + ";' data-date='" + s + "' data-num='" + dto.getEvent_num()
 								+ "' >" + dto.getTitle() + "</span>";
 								cnt++;
 							} else if (((sd8 > cn8 && ed8 < cn8))
@@ -153,7 +178,7 @@ public class EventController {
 				}
 
 				String today = String.format("%04d%02d%02d", todayYear, todayMonth, todayDate);
-
+				
 				mav.addObject("year", year);
 				mav.addObject("month", month);
 				mav.addObject("todayYear", todayYear);
@@ -168,6 +193,35 @@ public class EventController {
 
 			return mav;
 		}
+		
+		/**
+		 * hex 코드로 받아온 색상을 RGBA값으로 반환
+		 * @param hex
+		 * @param alpha
+		 * @return
+		 */
+		public static String hexToRGB(String hex, double alpha) {
+			if (hex.startsWith("#")) {
+	            hex = hex.substring(1);
+	        }
+			
+	        if (hex.length() == 3) {
+	            hex = "" + hex.charAt(0) + hex.charAt(0)
+	                      + hex.charAt(1) + hex.charAt(1)
+	                      + hex.charAt(2) + hex.charAt(2);
+	        }
+	        
+	        if (hex.length() != 6) {
+	            throw new IllegalArgumentException("잘못된 색상 확인: " + hex);
+	        }
+	        
+	        int r = Integer.parseInt(hex.substring(0, 2), 16);
+	        int g = Integer.parseInt(hex.substring(2, 4), 16);
+	        int b = Integer.parseInt(hex.substring(4, 6), 16);
+
+	        // RGBA 문자열 반환
+	        return String.format("rgba(%d, %d, %d, %.1f)", r, g, b, alpha);
+	    }
 
 		// AJAX - Text
 		@RequestMapping(value = "/log/day", method = RequestMethod.GET)
@@ -207,7 +261,7 @@ public class EventController {
 
 				// 테이블에서 일일 전체일정 리스트 가져오기
 				date = String.format("%04d%02d%02d", year, month, day);
-				List<EventDTO> list = dao.listDay(date, info.getUserId());
+				List<EventDTO> list = dao.listDay(info.getUserNum(), date);
 
 				long num = 0;
 				EventDTO dto = null;
@@ -251,13 +305,20 @@ public class EventController {
 					for (int i = week - 1; i < 7; i++) {
 						n++;
 						s = String.format("%04d%02d%02d", year, month, n);
-
+						
+						EventDTO isEvent = dao.findByEvent(info.getUserNum(), s);
+						String css = "";
+						
+		                if (isEvent != null) {
+		                	css = "text-warning"; // 일정이 있는 경우 적용할 CSS 클래스
+		                }
+		                
 						if (i == 0) {
-							days[row][i] = "<span class='textDate sundayDate' data-date='" + s + "' >" + n + "</span>";
+							days[row][i] = "<span class='textDate sundayDate " + css + "' data-date='" + s + "' >" + n + "</span>";
 						} else if (i == 6) {
-							days[row][i] = "<span class='textDate saturdayDate' data-date='" + s + "' >" + n + "</span>";
+							days[row][i] = "<span class='textDate saturdayDate " + css + "'  data-date='" + s + "' >" + n + "</span>";
 						} else {
-							days[row][i] = "<span class='textDate nowDate' data-date='" + s + "' >" + n + "</span>";
+							days[row][i] = "<span class='textDate nowDate " + css + "'  data-date='" + s + "' >" + n + "</span>";
 						}
 
 						if (n == cal.getActualMaximum(Calendar.DATE)) {
@@ -267,7 +328,7 @@ public class EventController {
 					}
 					week = 1;
 				}
-
+				
 				mav.addObject("year", year);
 				mav.addObject("month", month);
 				mav.addObject("day", day);
@@ -284,69 +345,6 @@ public class EventController {
 				e.printStackTrace();
 			}
 
-			return mav;
-		}
-
-		// AJAX - Text
-		@RequestMapping(value = "/log/year", method = RequestMethod.GET)
-		public ModelAndView yearSchedule(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-			ModelAndView mav = new ModelAndView("log/year");
-			
-			try {
-				String syear = req.getParameter("year");
-				
-				Calendar cal = Calendar.getInstance();
-				int year = cal.get(Calendar.YEAR);
-
-				int todayYear = cal.get(Calendar.YEAR);
-				String today = String.format("%04d%02d%02d", 
-						cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
-
-				if (syear != null) {
-					year = Integer.parseInt(syear);
-				}
-				if (year < 1900) {
-					year = cal.get(Calendar.YEAR);
-				}
-
-				String days[][][] = new String[12][6][7];
-
-				int row, col, month_of_day;
-				String s;
-				for (int m = 1; m <= 12; m++) {
-					cal.set(year, m - 1, 1);
-					row = 0;
-					col = cal.get(Calendar.DAY_OF_WEEK) - 1;
-					month_of_day = cal.getActualMaximum(Calendar.DATE);
-					for (int i = 1; i <= month_of_day; i++) {
-						s = String.format("%04d%02d%02d", year, m, i);
-
-						if (col == 0) {
-							days[m - 1][row][col] = "<span class='textDate sundayDate' data-date='" + s + "' >" + i + "</span>";
-						} else if (col == 6) {
-							days[m - 1][row][col] = "<span class='textDate saturdayDate' data-date='" + s + "' >" + i
-									+ "</span>";
-						} else {
-							days[m - 1][row][col] = "<span class='textDate nowDate' data-date='" + s + "' >" + i + "</span>";
-						}
-
-						col++;
-						if (col > 6) {
-							col = 0;
-							row++;
-						}
-					}
-				}
-
-				req.setAttribute("year", year);
-
-				req.setAttribute("todayYear", todayYear);
-				req.setAttribute("today", today);
-				req.setAttribute("days", days);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
 			return mav;
 		}
 
@@ -407,7 +405,7 @@ public class EventController {
 				dto.setUserNum(info.getUserNum());
 				dto.setEvent_num(Long.parseLong(req.getParameter("num")));
 				dto.setTitle(req.getParameter("subject"));
-				dto.setColor(req.getParameter("color"));
+				dto.setColor(req.getParameter("bgColor"));
 				dto.setEvent_date(req.getParameter("sday").replaceAll("-", ""));
 				dto.setEvent_start_time(req.getParameter("stime").replaceAll(":", ""));
 				dto.setEvent_end_time(req.getParameter("etime").replaceAll(":", ""));
@@ -445,7 +443,7 @@ public class EventController {
 			try {
 				long num = Long.parseLong(req.getParameter("num"));
 
-				dao.deleteSchedule(num, info.getUserId());
+				dao.deleteSchedule(num, info.getUserNum());
 				state = "true"; 
 			} catch (Exception e) {
 				e.printStackTrace();
