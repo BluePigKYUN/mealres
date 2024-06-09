@@ -107,8 +107,7 @@ public class OMemberCmntController {
 			}
 			
 			String level = dao.findLevel(info.getUserNum());
-			
-			
+
 			String query = "oMemberSort=" + oMemberSort ;
 			if(schContent.length() != 0) {
 				query += "&schCategory=" + schCategory + "&schContent=" + URLEncoder.encode(schContent, "utf-8");
@@ -166,10 +165,7 @@ public class OMemberCmntController {
 			
 			dto.setUserNum(info.getUserNum());
 			dto.setSubject(req.getParameter("subject"));
-			dto.setContent(req.getParameter("content"));
-			
-			String level = dao.findLevel(info.getUserNum());
-			dto.setLevel(level);
+			dto.setContent(req.getParameter("content"));	
 			
 			String filename = null;
 			Part p = req.getPart("photoSelect");
@@ -476,7 +472,7 @@ public class OMemberCmntController {
 				dto.setContent(dto.getContent().replace("\n", "<br>"));
 			}
 			
-			String paging = util.pagingMethod(current_page, total_page, "listPage");
+			String paging = util.pagingMethodReply(current_page, total_page, "listPage");
 			
 			ModelAndView mav = new ModelAndView("oMemberCmnt/replyList");
 			

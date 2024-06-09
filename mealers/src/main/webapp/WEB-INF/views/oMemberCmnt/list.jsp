@@ -81,7 +81,7 @@
 				<div class="col-lg-12">
 					<div class="row g-4">
 						<div class="d-flex justify-content-between">
-							<c:out value="${level}"></c:out>
+							
 							<div>
 								<h2>우수회원 커뮤니티</h2>
 							</div>	

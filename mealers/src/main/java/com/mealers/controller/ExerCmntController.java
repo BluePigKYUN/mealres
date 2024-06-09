@@ -465,7 +465,7 @@ public class ExerCmntController {
 				dto.setContent(dto.getContent().replace("\n", "<br>"));
 			}
 			
-			String paging = util.pagingMethod(current_page, total_page, "listPage");
+			String paging = util.pagingMethodReply(current_page, total_page, "listPage");
 			
 			ModelAndView mav = new ModelAndView("exerCmnt/replyList");
 			

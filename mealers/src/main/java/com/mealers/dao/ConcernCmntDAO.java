@@ -612,7 +612,7 @@ public class ConcernCmntDAO {
 		}	
 	}
 	
-	public boolean isAdopt(long num) {
+	public boolean isAdoptByNum(long num) {
 		boolean result = false;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -624,6 +624,35 @@ public class ConcernCmntDAO {
 					+ " WHERE num = ? AND replyAdopt = 1 ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setLong(1, num);
+
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = true;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(pstmt);
+			DBUtil.close(rs);
+		}
+		
+		return result;
+	}
+	
+	public boolean isAdopt(long replyNum) {
+		boolean result = false;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql;
+		
+		try {
+			sql = "SELECT replyNUm, num, userNum, content, replyAdopt  "
+					+ " FROM concernCmntReply  "
+					+ " WHERE replyAdopt = 1 AND replyNum = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1, replyNum);
 
 			rs = pstmt.executeQuery();
 			

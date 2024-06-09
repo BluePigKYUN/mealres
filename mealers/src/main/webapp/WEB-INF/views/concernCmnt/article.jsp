@@ -77,9 +77,6 @@
 	border: 1px solid #ff5b24;
 }
 
-
-
-
 </style>
 </head>
 
@@ -89,7 +86,7 @@
 		<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 	</header>
 
-	<div class="container-fluid page-header py-5">
+	<div class="container-fluid page-header-cmnt py-5">
 		<h1 class="text-center text-white display-6">커뮤니티</h1>
 	</div>
 	
@@ -131,7 +128,7 @@
 					<div>
 						<c:choose>
 							<c:when test="${sessionScope.member.userNum == dto.userNum}">
-								<button type="button" class="btn border border-secondary text-secondary rounded-pill" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/update?num=${dto.num}&page=${page}&mealSort=${mealSort}';">수정</button>
+								<button type="button" class="btn border border-secondary text-secondary rounded-pill" onclick="location.href='${pageContext.request.contextPath}/concernCmnt/update?num=${dto.num}&page=${page}&concernSort=${concernSort}';">수정</button>
 							</c:when>
 							<c:otherwise>
 								<button style="display: none"></button>
@@ -139,7 +136,7 @@
 						</c:choose>		
 						<c:choose>
 							<c:when test="${sessionScope.member.userNum == dto.userNum || sessionScope.member.userId == 'admin'}">		
-								<button type="button" class="btn border border-secondary text-secondary rounded-pill ms-1" onclick="deleteMeal();">삭제</button>						
+								<button type="button" class="btn border border-secondary text-secondary rounded-pill ms-1" onclick="deleteConcern();">삭제</button>						
 							</c:when>
 							<c:otherwise>
 								<button style="display: none"></button>
@@ -147,7 +144,7 @@
 						</c:choose>
 					</div>
 					<div>
-						<button type="button" class="btn text-white bg-secondary rounded-pill" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/list?${query}';">목록</button>
+						<button type="button" class="btn text-white bg-secondary rounded-pill" onclick="location.href='${pageContext.request.contextPath}/concernCmnt/list?${query}';">목록</button>
 					</div>
 				</div>
 			</div>
@@ -322,21 +319,22 @@
 			}
 				
 			let replyNum = $(this).attr("data-replyNum");
-			
+			const $replyContent = $(this).closest(".replyContent");
+			const $adoptLine = $replyContent.find(".adoptLine");
 			
 			
 			let url = "${pageContext.request.contextPath}/concernCmnt/adoptReply";
 			let query = "replyNum=" + replyNum;
 			
 			const fn = function(data) {
-				console.log(data);
 				let state = data.state;
+				console.log(state);
 				
 	            if(state === "ok") {
-	            	$(".adoptBtn").prop('disabled', true);
+	            	$(".adoptBtn").css("display", "none");
 	            	
-	            	$("[data-replyNum='"+replyNum+"']").closest(".reply").addClass("adoptLine");
-	               alert("성공");
+	            	$adoptLine.css("display", "block");
+	                
 	            } else {
 	                alert("댓글 채택에 실패했습니다.");
 	            }
