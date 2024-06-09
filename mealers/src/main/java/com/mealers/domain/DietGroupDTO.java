@@ -7,6 +7,11 @@ public class DietGroupDTO {
 	private String reg_Date;
 	private String fileName;
 	private String userNum;
+	
+	private String subject;
+	private String content;
+	private int num;
+	
 	public int getGroupNum() {
 		return groupNum;
 	}
@@ -45,6 +50,24 @@ public class DietGroupDTO {
 	}
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
+	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
 	}
 
 }

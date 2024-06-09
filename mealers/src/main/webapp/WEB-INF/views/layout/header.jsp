@@ -91,7 +91,7 @@
 				<!-- 로그인하지 않은 사용자에게만 표시 -->
 				<c:if test="${sessionScope.member == null}">
 					<div class="d-flex m-3 me-0">
-						</a> <a href="${pageContext.request.contextPath}/member/login"
+						<a href="${pageContext.request.contextPath}/member/login"
 							class="my-auto"> <i class="fas fa-user fa-2x"></i>
 						</a>
 					</div>
@@ -99,24 +99,33 @@
 
 				<!-- 로그인한 사용자에게만 표시 -->
 				<c:if test="${sessionScope.member != null}">
+					<c:choose>
+						<c:when test="${not empty sessionScope.member.fileName}">
+							<c:set var="profileImage"
+								value="${pageContext.request.contextPath}/uploads/member/${sessionScope.member.fileName}" />
+						</c:when>
+						<c:otherwise>
+							<c:set var="profileImage"
+								value="${pageContext.request.contextPath}/resources/images/default.png" />
+						</c:otherwise>
+					</c:choose>
+
 					<nav class="navbar navbar-light bg-light">
 						<div class="container-fluid">
 							<a class="navbar-brand" href="#"></a>
 							<div class="dropdown">
 								<a class="nav-link dropdown-toggle" href="#"
 									id="profileDropdown" role="button" data-bs-toggle="dropdown"
-									aria-expanded="false"> <img
-									src="${pageContext.request.contextPath}/uploads/member/${sessionScope.member.fileName}"
+									aria-expanded="false"> <img src="${profileImage}"
 									alt="Profile Picture" class="profile-pic">
 								</a>
 								<ul class="dropdown-menu dropdown-menu-end"
 									aria-labelledby="profileDropdown">
-									<li class="dropdown-header"><img
-										src="${pageContext.request.contextPath}/uploads/member/${sessionScope.member.fileName}"
+									<li class="dropdown-header"><img src="${profileImage}"
 										alt="Profile Picture" class="profile-pic">
 										<div class="user-info">
-											<span class="user-name">${sessionScope.member.userName}</span><span
-												class="user-points">포인트: 1000</span>
+											<span class="user-name">${sessionScope.member.userName}</span>
+											<span class="user-points">포인트: 1000</span>
 										</div></li>
 									<li><hr class="dropdown-divider"></li>
 									<li><a class="dropdown-item"
@@ -129,9 +138,8 @@
 										href="${pageContext.request.contextPath}/member/activity?mode=1"><i
 											class="fas fa-file-alt me-2"></i>작성한 게시물</a></li>
 									<li><a class="dropdown-item" href="#"
-										onclick="confirmLogout()"> <i
-											class="fas fa-sign-out-alt me-2"></i> 로그아웃
-									</a></li>
+										onclick="confirmLogout()"><i
+											class="fas fa-sign-out-alt me-2"></i> 로그아웃</a></li>
 								</ul>
 							</div>
 						</div>
@@ -141,10 +149,10 @@
 		</nav>
 	</div>
 </div>
-<!-- JavaScript Start -->
+<!-- JavaScript -->
 <script>
 	function confirmLogout() {
-		event.preventDefault(); 
+		event.preventDefault();
 		if (confirm("로그아웃 하시겠습니까?")) {
 			window.location.href = "${pageContext.request.contextPath}/member/logout";
 		}

@@ -28,7 +28,6 @@ public class MemberController {
 	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
 	public ModelAndView loginForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// 로그인 폼
 		return new ModelAndView("member/login");
 	}
 
@@ -62,7 +61,7 @@ public class MemberController {
 			String preLoginURI = (String)session.getAttribute("preLoginURI");
 			session.removeAttribute("preLoginURI");
 			if(preLoginURI != null) {
-				// 로그인 전페이지로 리다이렉트
+				
 				return new ModelAndView(preLoginURI);
 			} 
 			
@@ -79,13 +78,9 @@ public class MemberController {
 
 	@RequestMapping(value = "/member/logout", method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 로그아웃
 		HttpSession session = req.getSession();
 
-		// 세션에 저장된 정보를 지운다.
 		session.removeAttribute("member");
-
-		// 세션에 저장된 모든 정보를 지우고 세션을 초기화 한다.
 		session.invalidate();
 
 		return new ModelAndView("redirect:/");
@@ -102,35 +97,46 @@ public class MemberController {
 	 */
 	
 	//회원가입
-	@RequestMapping(value="/member/join",method = RequestMethod.POST)
-	  public ModelAndView memberSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	      MemberDAO dao = new MemberDAO();
-	        String message = "";	     
-	        	        
-	        try {
-	            MemberDTO dto = new MemberDTO();
-	            dto.setMemberId(req.getParameter("memberId"));
-	            dto.setMemberPwd(req.getParameter("memberPwd"));
-	            dto.setMem_Nick(req.getParameter("nickname"));
-	            dto.setMem_Email(req.getParameter("email"));
+	@RequestMapping(value = "/member/join", method = RequestMethod.POST)
+	public ModelAndView memberSubmit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	    MemberDAO dao = new MemberDAO();
+	    String message = "";
 
-	            dao.insertMember(dto);
-	            
-	            return new ModelAndView("redirect:/");
-	            
-	    
-	        } catch (SQLException e) {
-	            message = "회원 가입 실패";
-	            e.printStackTrace();
-	        }
+	    try {
+	        MemberDTO dto = new MemberDTO();
+	        dto.setMemberId(req.getParameter("memberId"));
+	        dto.setMemberPwd(req.getParameter("memberPwd"));
+	        dto.setMem_Nick(req.getParameter("nickname"));
+	        dto.setMem_Email(req.getParameter("email"));
 
-	        
-	        ModelAndView mav = new ModelAndView("member/join");
-	        mav.addObject("title", "회원 가입");
-	        mav.addObject("message", message);
+	        dao.insertMember(dto);
 
-	        return mav;
+	        // 회원가입 후 세션에 사용자 정보 저장
+	        HttpSession session = req.getSession();
+	        SessionInfo sessionInfo = new SessionInfo();
+	        sessionInfo.setUserId(dto.getMemberId());
+	        sessionInfo.setUserName(dto.getMem_Nick());
+
+	        session.setAttribute("member", sessionInfo);  
+
+	        // 로그인 처리
+	        session.setAttribute("isLoggedIn", true);
+
+	        return new ModelAndView("redirect:/");
+	    } catch (SQLException e) {
+	        message = "회원 가입 실패";
+	        e.printStackTrace();
 	    }
+
+	    ModelAndView mav = new ModelAndView("member/join");
+	    mav.addObject("title", "회원 가입");
+	    mav.addObject("message", message);
+
+	    return mav;
+	}
+
+
+
 
 	@ResponseBody
 	@RequestMapping(value="/member/userIdCheck",method = RequestMethod.POST)
@@ -184,7 +190,6 @@ public class MemberController {
 			}
 
 			if (mode.equals("delete")) {
-				// 회원탈퇴
 				
 				dao.deleteMember(info.getUserId());
 
@@ -196,7 +201,7 @@ public class MemberController {
 				return new ModelAndView("redirect:/main");
 			}
 
-			
+			//단순 정보 변경 & 비밀번호 업데이트 
 			if (mode.equals("update") || mode.equals("pwdupdate")) {
 
 				dto.setMemberId(req.getParameter("memberId"));
@@ -233,6 +238,7 @@ public class MemberController {
 		return new ModelAndView("redirect:/");
 	}
 	
+	//프로필사진 업데이트 
 	@RequestMapping(value = "/profile/update", method = RequestMethod.POST)
 	public ModelAndView updateProfile(HttpServletRequest req, HttpServletResponse resp)
 	        throws ServletException, IOException {

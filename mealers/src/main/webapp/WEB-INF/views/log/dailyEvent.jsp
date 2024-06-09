@@ -24,6 +24,12 @@
   border-radius: 30px;
   border: none;
 }
+
+.eventTitle, .daySubject{
+	cursor: pointer;
+}
+
+
 </style>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
 
@@ -32,8 +38,9 @@
 <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 
 	<div class="container-fluid py-3">
-		<div class="container py-5 my-5">
+		<div class="container py-2 my-3">
 			<div class="row">
+			
 				<div class="col-md-7">
 
 					<h2>일정관리</h2>
@@ -52,32 +59,13 @@
 					</div>
 
 				</div>
-
+				<!--    -->
 				<div class="col-md-4">
 					<h3>오늘일정</h3>
-					<ul class="list-group">
-						<li
-							class="list-group-item d-flex justify-content-between align-items-center">
-							새벽 <span class="badge bg-primary rounded-pill">5:00-6:00</span>
-						</li>
-						<li
-							class="list-group-item d-flex justify-content-between align-items-center">
-							아침 <span class="badge bg-primary rounded-pill">8:00-9:00</span>
-						</li>
-						<li
-							class="list-group-item d-flex justify-content-between align-items-center">
-							점심 <span class="badge bg-primary rounded-pill">12:00-13:00</span>
-						</li>
-						<li
-							class="list-group-item d-flex justify-content-between align-items-center">
-							물품구매 <span class="badge bg-primary rounded-pill">15:00-16:00</span>
-						</li>
-						<li
-							class="list-group-item d-flex justify-content-between align-items-center">
-							퇴근시간 <span class="badge bg-primary rounded-pill">17:00-18:00</span>
-						</li>
-					</ul>
-
+					<span>${totoday}</span><br><br>
+					<div id="todaysEvent">
+					
+					</div>
 
 					<div class="list-group my-3">
 						<ul class="list-group d-flex flex-row" id="myTab" role="tablist">
@@ -125,7 +113,7 @@
 						<tr>
 							<td class="col-2">배경색</td>
 							<td>
-								<input type="color" id="form-color" class="form-control deco">
+								<input type="color" name="bgColor" id="form-color" class="form-control deco">
 							</td>
 						</tr>
 						
@@ -230,8 +218,6 @@ $(function(){
             url = "${pageContext.request.contextPath}/log/month";
         } else if(tab === "2") {
             url = "${pageContext.request.contextPath}/log/day";
-        } else if(tab === "3") {
-            url = "${pageContext.request.contextPath}/log/year";
         }
 
         let query = "";
@@ -311,14 +297,6 @@ function changeDate(date) {
 	schedule(url, query, "#nav-2");
 }
 
-// 년도 - 년도를 변경하는 경우
-function changeYear(year) {
-	let url = "${pageContext.request.contextPath}/log/year";
-	let query = "year="+year;
-	
-	schedule(url, query, "#nav-3");
-}
-
 // 월별 - 스케쥴 제목을 클릭한 경우
 $(function(){
 	$("body").on("click", ".scheduleSubject", function(){
@@ -352,13 +330,32 @@ $(function(){
 
 // 월별 - 날짜를 클릭한 경우 : 일정 등록
 $(function(){
+    // 날짜를 클릭한 경우의 이벤트 핸들러
 	$("body").on("click", "#largeCalendar .textDate", function(){
+		resetAndShowModal($(this).attr("data-date"));
+	});
+	
+	// 일정 등록 버튼에 기능부여
+	$("body").on("click", "#addEventBtn", function(){
+		let today = new Date();
+		let year = today.getFullYear();
+		let month = ("0" + (today.getMonth() + 1)).slice(-2);
+		let day = ("0" + today.getDate()).slice(-2);
+		let date = year + "" + month + "" + day;
+		resetAndShowModal(date);
+	});
+
+    // 모달 초기화 및 표시 함수
+	function resetAndShowModal(date) {
 		// 폼 reset
 		$("form[name=scheduleForm]").each(function(){
 			this.reset();
 		});
 		
-		$("#form-repeat_cycle").hide();
+		disableKeyInput("#form-sday");
+		disableKeyInput("#form-stime");
+		disableKeyInput("#form-etime");
+		
 		$("#form-allDay").prop("checked", true);
 		$("#form-allDay").removeAttr("disabled");
 		$("#form-stime").hide();
@@ -367,7 +364,6 @@ $(function(){
 		$("#etime_Son").hide();
 		$("#form-eday").closest("tr").show();
 		
-		let date = $(this).attr("data-date");
 		date = date.substr(0,4) + "-" + date.substr(4,2) + "-" + date.substr(6,2);
 
 		$("form[name=scheduleForm] input[name=sday]").val(date);
@@ -379,8 +375,15 @@ $(function(){
 		$("#btnEventSendCancel").html(" 등록 취소 ");
 		
 		$("#eventModal").modal("show");
-	});
+	}
 });
+
+//키 입력 막기
+function disableKeyInput(selector) {
+    $(selector).on("keydown", function(e) {
+        e.preventDefault();
+    });
+}
 
 // 상세일정 - 날짜 클릭
 $(function(){
@@ -405,28 +408,33 @@ $(function(){
 	});
 });
 
-// 상세일정 - 수정 버튼
+//상세일정 - 수정
 $(function(){
 	$("body").on("click", "#btnUpdate", function(){
 		let date = $(this).attr("data-date");
 		let num = $(this).attr("data-num");
 
-		let subject = $(".date-schedule input[name=subject]").val();
-		let color = $(".date-schedule input[name=color]").val();
-		let allDay = $(".date-schedule input[name=allDay]").val();
-		let sday = $(".date-schedule input[name=sday]").val();
-		let stime = $(".date-schedule input[name=stime]").val();
-		let eday = $(".date-schedule input[name=eday]").val();
-		if(! eday ) eday = sday;
-		let etime = $(".date-schedule input[name=etime]").val();
-		let repeat = $(".date-schedule input[name=repeat]").val();
-		let repeat_cycle = $(".date-schedule input[name=repeat_cycle]").val();
-		let memo = $(".date-schedule input[name=memo]").val();
+		let subject = $("input[name=title]").val();
+		let color = $("input[name=color]").val();
+		let allDay = $("input[name=allDay]").val();
+		let eventDateTime = $("input[name=event_date]").val();
+		let stime = $("input[name=event_start_time]").val();
+		let etime = $("input[name=event_end_time]").val();
+		let memo = $("input[name=memo]").val();
+
+		// eday는 시작일과 동일하게 설정
+		let sday = eventDateTime.split(' ')[0]; // yyyy-mm-dd
+		let eday = sday;
 		
+		disableKeyInput("#form-sday");
+		disableKeyInput("#form-stime");
+		disableKeyInput("#form-etime");
+
+		// 폼에 데이터 채우기
 		$("#form-num").val(num);
 		$("#form-subject").val(subject);
 		$("#form-color").val(color);
-		if(allDay === "1") {
+		if (allDay === "1") {
 			$("#form-allDay").prop("checked", true);
 		} else {
 			$("#form-allDay").prop("checked", false);
@@ -435,33 +443,27 @@ $(function(){
 		$("#form-stime").val(stime);
 		$("#form-eday").val(eday);
 		$("#form-etime").val(etime);
-		if(stime) {
+		if (stime) {
 			$("#form-stime").show();
-			$("#form-etime").show()
+			$("#form-etime").show();
+			$("#stime_Son").show();
+			$("#etime_Son").show();
 		} else {
 			$("#form-stime").hide();
-			$("#form-etime").hide()
-		}		
-		$("#form-repeat").val(repeat);
-		$("#form-repeat_cycle").val(repeat_cycle);
-		if(repeat === "1") {
-			$("#form-repeat_cycle").show();
-			$("#form-eday").closest("tr").hide();
-		} else {
-			$("#form-repeat_cycle").val("");
-			$("#form-repeat_cycle").hide();
-			$("#form-eday").closest("tr").show();
-		}		
+			$("#form-etime").hide();
+			$("#stime_Son").hide();
+			$("#etime_Son").hide();
+		}
 		$("#form-memo").val(memo);
-		
+
 		$("#eventModalLabel").html("스케쥴 수정");
 		$("#btnEventSendOk").attr("data-mode", "update");
 		$("#btnEventSendOk").attr("data-num", num);
 		$("#btnEventSendOk").attr("data-date", date);
-		
+
 		$("#btnEventSendOk").html(" 수정 완료 ");
 		$("#btnEventSendCancel").html(" 수정 취소 ");
-		
+
 		$("#eventModal").modal("show");
 	});
 });
@@ -475,7 +477,7 @@ $(function(){
 		
 		let date = $(this).attr("data-date");
 		let num = $(this).attr("data-num");
-		let url = "${pageContext.request.contextPath}/schedule/delete";
+		let url = "${pageContext.request.contextPath}/log/delete";
 		let query = "num="+num;
 		
 		const fn = function(data) {
@@ -483,10 +485,43 @@ $(function(){
 				let url = "${pageContext.request.contextPath}/log/day";
 				let query = "date="+date;
 				schedule(url, query, "#nav-2");
+				loadTodaysEvents();
 			}
 		};
 		
 		ajaxFun(url, "post", query, "json", fn);
+	});
+});
+
+//오늘 일정 불러와주는 기능
+$(function() {
+	loadTodaysEvents();
+})
+
+function loadTodaysEvents() {
+	let url = "${pageContext.request.contextPath}/log/todaysEvent";
+	let selector = "#todaysEvent";
+	let query;
+
+	const fn = function(data) {
+		$(selector).html(data);
+	};
+
+	ajaxFun(url, "get", query, "text", fn);
+}
+
+//월별 - 스케쥴 제목을 클릭한 경우
+$(function(){
+	$("body").on("click", ".eventTitle", function(){
+		let num = $(this).attr("data-num");
+		let url = "${pageContext.request.contextPath}/log/day"
+		let query = "num=" + num;
+		
+		const tabEl = document.querySelector('#myTab #tab-2');
+		const tab = new bootstrap.Tab(tabEl);
+		tab.show();
+		
+		schedule(url, query, "#nav-2");
 	});
 });
 
@@ -537,6 +572,8 @@ $(function(){
 						
 					schedule(url, query, "#nav-2");
 				}
+				
+				loadTodaysEvents();
 			}
 			
 			$("#eventModal").modal("hide");
@@ -621,9 +658,6 @@ function check() {
 	
 	return true;
 }
-
-
-
 
 </script>
 

@@ -6,15 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>마이페이지</title>
-<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+<title>MEALERS</title>
 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
 
 <style type="text/css">
 .h4 {
-	font-size: 1.5rem;
-	font-weight: bold;
+	font-size: 1.2rem;
 }
 
 .hidden {
@@ -44,6 +42,11 @@
 	background-color: #baaeaf;
 	border-color: #080808;
 }
+
+.fw-bold.{
+	font-size: 1.3rem !important;
+	font-weight: 600 !important;
+}
 </style>
 </head>
 <body>
@@ -55,21 +58,35 @@
 					<div class="text-center mb-4">
 						<form id="profile-form" action="" method="post"
 							enctype="multipart/form-data">
+							<c:choose>
+								<c:when test="${not empty dto.fileName}">
+									<c:set var="profileImage"
+										value="${pageContext.request.contextPath}/uploads/member/${dto.fileName}" />
+								</c:when>
+								<c:otherwise>
+									<c:set var="profileImage"
+										value="${pageContext.request.contextPath}/resources/images/default.png" />
+								</c:otherwise>
+							</c:choose>
+
 							<div class="profile-picture-container">
-								<img id="profile-picture-preview" src="${pageContext.request.contextPath}/uploads/member/${dto.fileName}"
+								<img id="profile-picture-preview" src="${profileImage}"
 									alt="프로필" class="rounded-circle"
 									style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;"
-									onclick="triggerFileInput()"> 
-								<input type="file" name="profile-picture" id="profile-picture"
-									class="form-control mt-2" accept="image/*" style="display: none;" onchange="previewProfilePicture(event)">
+									onclick="triggerFileInput()"> <input type="file"
+									name="profile-picture" id="profile-picture"
+									class="form-control mt-2" accept="image/*"
+									style="display: none;" onchange="previewProfilePicture(event)">
 							</div>
+							<h1 class="text-primary text-center mt-4 mb-4">${dto.mem_Nick}</h1>
 							<div class="button-container">
-								<button type="button" class="btn btn-primary" onclick="submitForm()">프로필 변경</button>
+								<button type="button" class="btn btn-primary"
+									onclick="submitForm()">프로필 변경</button>
 							</div>
 						</form>
 					</div>
 
-					<h1 class="text-primary text-center mb-4">${dto.mem_Nick}</h1>
+					
 					<form action="" id="pwdForm" name="pwdForm" method="post">
 						<div class="mb-3">
 							<i class="bi bi-person-fill fa-2x text-primary me-4"></i> <label
@@ -85,7 +102,7 @@
 						</div>
 						<div class="mb-3">
 							<i class="fas fa-envelope fa-2x text-primary me-4"></i> <label
-								for="nickname" class="form-label fw-bold">이메일</label> <input
+								for="email" class="form-label fw-bold">이메일</label> <input
 								type="text" class="form-control" id="mem_Email" name="mem_Email"
 								value="${dto.mem_Email}">
 						</div>
@@ -116,7 +133,7 @@
 					</form>
 					<div class="text-center button-container">
 						<button type="submit" class="btn btn-primary" id="submit-btn"
-							onclick="sendOk(1)">변경</button>
+							onclick="validateForm(1)">변경</button>
 						<button type="button" class="btn btn-danger" onclick="sendOk(2)">회원
 							탈퇴</button>
 					</div>
@@ -135,7 +152,28 @@
 	</footer>
 
 	<script>
-	
+		//이메일 유효성 검사
+		function validateEmail(email) {
+		    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		    return emailPattern.test(email);
+		}
+
+		//폼 유효성 검사
+		function validateForm(flag) {
+		    if (flag === 1) { // 변경 시에만 이메일 유효성 검사
+		        const emailInput = document.getElementById('mem_Email');
+		        const email = emailInput.value;
+
+		        if (!validateEmail(email)) {
+		            alert('유효한 이메일 주소를 입력하세요.');
+		            emailInput.focus();
+		            return false;
+		        }
+		    }
+
+		    sendOk(flag);
+		}
+
 		//비밀번호 확인
 		function sendOk(flag) {
 			const f = document.pwdForm;
@@ -148,6 +186,22 @@
 			}
 
 			if (flag == 1) {
+				if (!document.getElementById('new-password-container').classList.contains('hidden')) {
+					let newPwd = document.getElementById('newpassword').value;
+					let confirmPwd = document.getElementById('confirmpassword').value;
+					
+					if (newPwd === "" || confirmPwd === "") {
+						alert("새 비밀번호와 확인 비밀번호를 모두 입력하세요.");
+						return;
+					}
+					
+					if (newPwd !== confirmPwd) {
+						alert("새 비밀번호가 일치하지 않습니다.");
+						return;
+					}
+
+					
+				}
 
 				let strpwd = f.confirmpassword.value;
 
@@ -170,11 +224,6 @@
 		}
 
 		$(document).ready(function() {
-			/* $('#submit-btn').click(function(event) {
-			    event.preventDefault();
-			    validatePassword();
-			}); */
-
 			$('#change-password-btn').click(function() {
 				$('#new-password-container').toggleClass('hidden');
 			});
@@ -183,8 +232,7 @@
 		function previewProfilePicture(event) {
 			const reader = new FileReader();
 			reader.onload = function() {
-				const output = document
-						.getElementById('profile-picture-preview');
+				const output = document.getElementById('profile-picture-preview');
 				output.src = reader.result;
 			};
 			reader.readAsDataURL(event.target.files[0]);
@@ -203,21 +251,18 @@
 				reader.readAsDataURL(event.target.files[0]);
 			});
 		});
-		 function submitForm() {
-		        const form = document.getElementById('profile-form');
-		        
-		        // 필요한 유효성 검사를 수행합니다.
-		        // 예를 들어, 파일 입력이 비어 있지 않은지 확인할 수 있습니다.
-		        const fileInput = document.getElementById('profile-picture');
-		        if (fileInput.files.length === 0) {
-		            alert('프로필 사진을 선택하세요.');
-		            return;
-		        }
-		        
-		        // 폼을 제출합니다.
-		        form.action = "${pageContext.request.contextPath}/profile/update";
-		        form.submit();
-		    }
+		
+		//프로필 업데이트 
+		function submitForm() {
+			const form = document.getElementById('profile-form');
+			const fileInput = document.getElementById('profile-picture');
+			if (fileInput.files.length === 0) {
+				alert('프로필 사진을 선택하세요.');
+				return;
+			}
+			form.action = "${pageContext.request.contextPath}/profile/update";
+			form.submit();
+		}
 	</script>
 </body>
 </html>

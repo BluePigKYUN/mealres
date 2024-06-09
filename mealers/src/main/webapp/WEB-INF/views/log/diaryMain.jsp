@@ -25,8 +25,8 @@
 <body>
 <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 
-<div class="container-fluid py-5">
-	<div class="container py-2">
+<div class="container-fluid py-2">
+	<div class="container py-2 my-3">
        
 		<div class="row">
 			<div class="col-lg-8">

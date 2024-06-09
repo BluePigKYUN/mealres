@@ -36,7 +36,7 @@
 				<c:forEach var="row" items="${days}" >
 					<tr>
 						<c:forEach var="d" items="${row}">
-							<td class="text-center">
+							<td class="text-center} ">
 								${d}
 							</td>
 						</c:forEach>
@@ -47,8 +47,8 @@
 		
 	</div>
 	
-	<div class="row ps-5">
-		<div class="row">
+	<div class="row pe-2">
+		<div class="row" style="width: ">
 			<div class="col fw-bold form-control-plaintext">
 				<span><i class="bi bi-calendar2-date"></i> ${year}년 ${month}월 ${day}일의 일정</span>
 			</div>
@@ -63,37 +63,31 @@
 				<table class="table table-border date-schedule">
 					<tr style="border-top: 2px solid #212529;">
 						<td class="col-2 table-light">제목</td>
-						<td>${dto.subject}</td>
+						<td>${dto.title}</td>
 					</tr>
 					<tr>
 						<td class="col-2 table-light">날짜</td>
-						<td>${dto.period}</td>
-					</tr>
-					<tr>
-						<td class="col-2 table-light">일정분류</td>
 						<td>
-							<c:choose>
-								<c:when test="${dto.color=='green'}">개인일정</c:when>
-								<c:when test="${dto.color=='blue'}">가족일정</c:when>
-								<c:when test="${dto.color=='tomato'}">회사일정</c:when>
-								<c:otherwise>기타일정</c:otherwise>
-							</c:choose>, ${empty dto.stime?"종일일정":"시간일정"}
+			        		<fmt:parseDate value="${dto.reg_date_event}" var="parsedRegDate" pattern="yyyy-MM-dd HH:mm:ss" />
+        					<fmt:formatDate value="${parsedRegDate}" pattern="yyyy-MM-dd" />
 						</td>
 					</tr>
 					<tr>
-						<td class="col-2 table-light">일정반복</td>
-						<td>
-							<c:if test="${dto.repeat !=0 && dto.repeat_cycle != 0}">
-								반복일정, 반복주기 ${dto.repeat_cycle}년
-							</c:if>
-							<c:if test="${dto.repeat == 0 || dto.repeat_cycle == 0}">
-								반복안함
-							</c:if>
-						</td>
+					    <td class="col-2 table-light">일정</td>
+					    <td>
+					        <c:choose>
+					            <c:when test="${empty dto.event_start_time}">
+					                하루종일
+					            </c:when>
+					            <c:otherwise>
+					                (${dto.event_start_time} - ${dto.event_end_time})
+					            </c:otherwise>
+					        </c:choose>
+					    </td>
 					</tr>
 					<tr>
-						<td class="col-2 table-light">등록일</td>
-						<td>${dto.reg_date}</td>
+						<td class="col-2 table-light">등록일시</td>
+						<td>${dto.reg_date_event}</td>
 					</tr>
 					<tr>
 						<td class="col-2 table-light">메모</td>
@@ -103,28 +97,25 @@
 					</tr>
 					<tr>
 						<td class="text-end" colspan="2" style="border-bottom: none;">
-							<button type="button" id="btnUpdate" class="btn btn-light" data-date="${date}" data-num="${dto.num}">수정</button>
-							<button type="button" id="btnDelete" class="btn btn-light" data-date="${date}" data-num="${dto.num}">삭제</button>
+							<button type="button" id="btnUpdate" class="btn btn-light" data-date="${date}" data-num="${dto.event_num}">수정</button>
+							<button type="button" id="btnDelete" class="btn btn-light" data-date="${date}" data-num="${dto.event_num}">삭제</button>
 							
-							<input type="hidden" name="subject" value="${dto.subject}">
+							<input type="hidden" name="title" value="${dto.title}">
 							<input type="hidden" name="color" value="${dto.color}">
-							<input type="hidden" name="allDay" value="${empty dto.stime?'1':'0'}">
-							<input type="hidden" name="sday" value="${dto.sday}">
-							<input type="hidden" name="stime" value="${dto.stime}">
-							<input type="hidden" name="eday" value="${dto.eday}">
-							<input type="hidden" name="etime" value="${dto.etime}">
-							<input type="hidden" name="repeat" value="${dto.repeat}">
-							<input type="hidden" name="repeat_cycle" value="${dto.repeat_cycle}">
+							<input type="hidden" name="allDay" value="${empty dto.event_start_time ? '1' : '0'}">
+							<input type="hidden" name="event_date" value="${dto.event_date}">
+							<input type="hidden" name="event_start_time" value="${dto.event_start_time}">
+							<input type="hidden" name="event_end_time" value="${dto.event_end_time}">
 							<input type="hidden" name="memo" value="${dto.memo}">
 						</td>
 					</tr>
 				</table>
 			</c:if>
 			
-			<c:if test="${list.size()>1}">
+			<c:if test="${list.size() > 1}">
 				<div class="row mb-1">
 					<div class="col fw-bold form-control-plaintext">
-						<span><i class="bi bi-calendar2-date"></i> ${year}年 ${month}月 ${day}日 다른 일정</span>
+						<span><i class="bi bi-calendar2-date"></i> 다른 일정</span>
 					</div>
 				</div>
 				
@@ -133,30 +124,23 @@
 						<tr class="text-center table-light"> 
 							<th class="col-2">분류</th>
 							<th>제목</th>
-							<th class="col-2">등록일</th>
 						</tr>
 					</thead>
 					
 					<tbody>
 						<c:forEach var="vo" items="${list}">
-							<c:if test="${dto.num != vo.num}">
-								<tr>
-									<td class="text-center">
-										<c:choose>
-											<c:when test="${vo.color=='green'}">개인일정</c:when>
-											<c:when test="${vo.color=='blue'}">가족일정</c:when>
-											<c:when test="${vo.color=='tomato'}">회사일정</c:when>
-											<c:otherwise>기타일정</c:otherwise>
-										</c:choose>
-									</td>
-									<td>
-										<div class="daySubject" data-date="${date}" data-num="${vo.num}">
-											${vo.subject}
-										</div>
-									</td>
-									<td class="text-center">${vo.reg_date}</td>
-								</tr>
-							</c:if>
+			<c:if test="${dto.event_num != vo.event_num}">
+			    <tr>
+			        <td class="text-center">
+			            ${empty vo.event_start_time ? "종일일정" : "시간일정"}
+			        </td>
+			        <td>
+			            <div class="daySubject" data-date="${date}" data-num="${vo.event_num}">
+			                ${vo.title}
+			            </div>
+			        </td>
+			    </tr>
+			</c:if>
 						</c:forEach>
 					</tbody>
 				</table>

@@ -15,7 +15,7 @@
 <jsp:include page="/WEB-INF/views/layout/header.jsp"/>
 
         <!-- Checkout Page Start -->
-        <div class="container-fluid py-5 my-5">
+        <div class="container-fluid py-2 my-3">
             <div class="container my-5">
                     <div class="row g-5">
                         <div class="col-md-12 col-lg-6 col-xl-7">
@@ -35,24 +35,6 @@
 										<td>
 											<h6>일기를 작성할 수 있어요.</h6>
 											<p>매일 매일을 작성해보세요.</p>
-										</td>
-									</tr>
-								</table>
-                            </div>
-                            <div>
-                                <table>
-									<tr>
-										<td rowspan = "2">
-										<h5>&nbsp;&nbsp;&nbsp;식단 기록</h5>
-											<a href = "${pageContext.request.contextPath}/log/foodi">
-											<img class="mScale" src="/mealers/resources/img/meal_logo.png"></img>
-											</a>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<h6>식단을 기록해봐요.</h6>
-											<p>먹은 음식을 매일매일 작성할 수 있어요.</p>
 										</td>
 									</tr>
 								</table>
@@ -83,8 +65,6 @@
                     <button class="btn btn-secondary">일정</button></a>
                     <a href = "${pageContext.request.contextPath}/log/diary"> 
                     <button class="btn btn-secondary">일상</button></a>
-                    <a href = "${pageContext.request.contextPath}/log/foodi"> 
-                    <button class="btn btn-secondary">음식</button></a>
                 </div>
             </div>
             	</div>
