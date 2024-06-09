@@ -55,16 +55,29 @@
 					<div class="text-center mb-4">
 						<form id="profile-form" action="" method="post"
 							enctype="multipart/form-data">
+							<c:choose>
+								<c:when test="${not empty dto.fileName}">
+									<c:set var="profileImage"
+										value="${pageContext.request.contextPath}/uploads/member/${dto.fileName}" />
+								</c:when>
+								<c:otherwise>
+									<c:set var="profileImage"
+										value="${pageContext.request.contextPath}/resources/images/default.png" />
+								</c:otherwise>
+							</c:choose>
+
 							<div class="profile-picture-container">
-								<img id="profile-picture-preview" src="${pageContext.request.contextPath}/uploads/member/${dto.fileName}"
+								<img id="profile-picture-preview" src="${profileImage}"
 									alt="프로필" class="rounded-circle"
 									style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;"
-									onclick="triggerFileInput()"> 
-								<input type="file" name="profile-picture" id="profile-picture"
-									class="form-control mt-2" accept="image/*" style="display: none;" onchange="previewProfilePicture(event)">
+									onclick="triggerFileInput()"> <input type="file"
+									name="profile-picture" id="profile-picture"
+									class="form-control mt-2" accept="image/*"
+									style="display: none;" onchange="previewProfilePicture(event)">
 							</div>
 							<div class="button-container">
-								<button type="button" class="btn btn-primary" onclick="submitForm()">프로필 변경</button>
+								<button type="button" class="btn btn-primary"
+									onclick="submitForm()">프로필 변경</button>
 							</div>
 						</form>
 					</div>
@@ -135,7 +148,6 @@
 	</footer>
 
 	<script>
-	
 		//비밀번호 확인
 		function sendOk(flag) {
 			const f = document.pwdForm;
@@ -203,21 +215,21 @@
 				reader.readAsDataURL(event.target.files[0]);
 			});
 		});
-		 function submitForm() {
-		        const form = document.getElementById('profile-form');
-		        
-		        // 필요한 유효성 검사를 수행합니다.
-		        // 예를 들어, 파일 입력이 비어 있지 않은지 확인할 수 있습니다.
-		        const fileInput = document.getElementById('profile-picture');
-		        if (fileInput.files.length === 0) {
-		            alert('프로필 사진을 선택하세요.');
-		            return;
-		        }
-		        
-		        // 폼을 제출합니다.
-		        form.action = "${pageContext.request.contextPath}/profile/update";
-		        form.submit();
-		    }
+		function submitForm() {
+			const form = document.getElementById('profile-form');
+
+			// 필요한 유효성 검사를 수행합니다.
+			// 예를 들어, 파일 입력이 비어 있지 않은지 확인할 수 있습니다.
+			const fileInput = document.getElementById('profile-picture');
+			if (fileInput.files.length === 0) {
+				alert('프로필 사진을 선택하세요.');
+				return;
+			}
+
+			// 폼을 제출합니다.
+			form.action = "${pageContext.request.contextPath}/profile/update";
+			form.submit();
+		}
 	</script>
 </body>
 </html>
