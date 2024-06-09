@@ -59,7 +59,7 @@ public class SearchController {
 			int dataCount = dao.dataCount(kwd);
 			
 			// 전체 페이지 수
-			int size = 8;
+			int size = 10;
 			int total_page = util.pageCount(dataCount, size);
 			if (current_page > total_page) {
 				current_page = total_page;
@@ -135,7 +135,7 @@ public class SearchController {
 				}
 			
 			// 전체 페이지 수
-			int size = 8;
+			int size = 10;
 			
 			// 게시물 가져오기
 			int offset = (current_page - 1) * size;
