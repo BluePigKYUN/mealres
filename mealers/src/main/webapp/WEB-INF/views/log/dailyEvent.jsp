@@ -94,7 +94,7 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content col-4">
 			<div class="modal-header">
-				<h5 class="modal-title" id="eventModalLabel">스케쥴 등록</h5>
+				<h5 class="modal-title" id="eventModalLabel">일정 등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body pt-0 pb-0">
@@ -297,7 +297,7 @@ function changeDate(date) {
 	schedule(url, query, "#nav-2");
 }
 
-// 월별 - 스케쥴 제목을 클릭한 경우
+// 월별 - 일정 제목을 클릭한 경우
 $(function(){
 	$("body").on("click", ".scheduleSubject", function(){
 		let date = $(this).attr("data-date");
@@ -369,7 +369,7 @@ $(function(){
 		$("form[name=scheduleForm] input[name=sday]").val(date);
 		$("form[name=scheduleForm] input[name=eday]").val(date);
 		
-		$("#eventModalLabel").html("스케쥴 등록");
+		$("#eventModalLabel").html("일정 등록");
 		$("#btnEventSendOk").attr("data-mode", "insert");
 		$("#btnEventSendOk").html(" 등록 완료 ");
 		$("#btnEventSendCancel").html(" 등록 취소 ");
@@ -456,7 +456,7 @@ $(function(){
 		}
 		$("#form-memo").val(memo);
 
-		$("#eventModalLabel").html("스케쥴 수정");
+		$("#eventModalLabel").html("일정 수정");
 		$("#btnEventSendOk").attr("data-mode", "update");
 		$("#btnEventSendOk").attr("data-num", num);
 		$("#btnEventSendOk").attr("data-date", date);
@@ -510,7 +510,7 @@ function loadTodaysEvents() {
 	ajaxFun(url, "get", query, "text", fn);
 }
 
-//월별 - 스케쥴 제목을 클릭한 경우
+//월별 - 일정 제목을 클릭한 경우
 $(function(){
 	$("body").on("click", ".eventTitle", function(){
 		let num = $(this).attr("data-num");

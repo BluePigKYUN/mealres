@@ -72,7 +72,7 @@
      </div>
         <!-- Checkout Page End -->
         
-    <script>
+    <script type="text/javascript">
         function toggle() {
             var buttons = document.querySelector("#right-buttons");
             if (buttons.classList.contains("hidden")) {
@@ -83,7 +83,7 @@
         }
     </script>
     
-<footer>
+		<footer>
         	<jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
         </footer>
 
