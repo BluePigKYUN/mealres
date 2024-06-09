@@ -54,6 +54,10 @@
     transition: 0.5s;
 }
 
+.sortbox {
+	border: 1px solid #BDBDBD;
+}
+
 
 
 </style>
@@ -69,19 +73,19 @@
 		<h1 class="text-center text-white display-6">커뮤니티</h1>
 	</div>
 
-	<div class="container-fluid fruite py-1">
+	<div class="container-fluid fruite">
 		<div class="container py-5">
 			<div class="row g-4">
 				<div class="col-lg-12">
-					<div class="row g-4 my-2">
+					<div class="row g-4">
 						<div class="d-flex justify-content-between">
 							<div>
 								<h2>식단 커뮤니티</h2>
 							</div>	
 							<form name="sortForm" action="${pageContext.request.contextPath}/mealCmnt/list" method="post">
-								<div class="bg-light ps-3 py-3 rounded mb-4">
+								<div class="ps-3 py-3 rounded mb-4 sortbox">
 									<label for="mealSort">정렬</label> 
-									<select name="mealSort" id="mealSort" class="border-0 form-select-md bg-light mx-3 mealSort">
+									<select name="mealSort" id="mealSort" class="border-0 form-select-md mx-3 mealSort">
 										<option value="recent" ${mealSort=="recent" ? "selected" : ""}>최신순</option>
 										<option value="hitcount" ${mealSort=="hitcount" ? "selected" : ""}>조회순</option>
 										<option value="popular" ${mealSort=="popular" ? "selected" : ""}>인기순</option>
@@ -108,7 +112,7 @@
 											<div class="col-md-4 col-lg-4 col-xl-3 pb-3 mb-3" style="max-height: 800px">
 												<div class="rounded position-relative meal-item content-box" onclick="location.href='${articleUrl}&num=${dto.num}';">
 													<div class="fruite-img ratio ratio-4x3">
-														<img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid  rounded-top">
+														<img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid rounded-top">
 													</div>
 													
 													<div>
@@ -117,9 +121,9 @@
 													
 													<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
 														<div class="d-flex justify-content-between mt-2">
-															
+													
 															<c:choose>
-																<c:when test="${dto.timeGap/60 < 24}">
+																<c:when test="${dto.timeGap/60 < 24.0}">
 																	<c:choose>
 																		<c:when test="${dto.timeGap == 0}">
 																			<p class="py-1 text-secondary">지금</p>
@@ -128,7 +132,7 @@
 																			<p class="py-1 text-secondary">${dto.timeGap}분전</p>
 																		</c:when>
 																		<c:otherwise>
-																			<p class="py-1 text-secondary">${Math.floor(dto.timeGap/60)}시간전</p>
+																			<p class="py-1 text-secondary">${(dto.timeGap/60).toString().substring(0,(dto.timeGap/60).toString().indexOf('.'))}시간전</p>
 																		</c:otherwise>
 																	</c:choose>	
 																</c:when>
@@ -136,13 +140,13 @@
 																	<p>&nbsp;</p>
 																</c:otherwise>
 															</c:choose>
-															<p class="py-1">${dto.reg_date}</p>
+															
 														</div>
 														<h4 class="pt-1 mb-4 subject-control fw-bold ">${dto.subject}</h4>
 														<div class="content-control mb-5" style="height: 50px">${dto.content}</div>
-														<div class="d-flex flex-lg-wrap position-relative start-25 ">
-															<span class="text-dark mb-2 pe-2">댓글10</span> 
-															<span class="text-dark mb-3">조회수${dto.hitCount}</span>
+														<div class="d-flex justify-content-between mb-3" >
+															<span ><i class="bi bi-eye"></i> ${dto.hitCount}</span>
+															<p class="mb-0">${dto.reg_date}</p>
 														</div>
 													</div>
 												</div>
@@ -157,13 +161,13 @@
 									<button type="button" class="text-white bg-secondary px-3 pt-1 rounded border-secondary" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/write';">글쓰기</button>
 								</div>
 								
-								<form name="searchForm" class="d-flex justify-content-center mt-5" action="${pageContext.request.contextPath}/mealCmnt/list" method="post">
+								<form name="searchForm" class="d-flex justify-content-center mt-5 mb-3" action="${pageContext.request.contextPath}/mealCmnt/list" method="post">
 									<div class="d-flex mt-3 w-50">
-										<select name="schCategory" class="form-select rounded drop-down w-25 me-2 ">
-											<option value="subcon" ${schType=="subcon"?"selected":""}>제목+내용</option>
-											<option value="subject" ${schType=="subject"?"selected":""}>제목</option>
-											<option value="content" ${schType=="content"?"selected":""}>내용</option>
-											<option value="mem_Nick" ${schType=="mem_Nick"?"selected":""}>작성자</option>
+										<select name="schCategory" class="form-select rounded drop-down w-25 me-2">
+											<option value="subcon" ${schCategory=="subcon"?"selected":""}>제목+내용</option>
+											<option value="subject" ${schCategory=="subject"?"selected":""}>제목</option>
+											<option value="content" ${schCategory=="content"?"selected":""}>내용</option>
+											<option value="mem_Nick" ${schCategory=="mem_Nick"?"selected":""}>작성자</option>
 										</select>
 											 
 										<div class="input-group w-75 d-flex">
@@ -176,20 +180,9 @@
 										</div>
 									</div>
 								</form>
-								
+
 								<nav aria-label="Page navigation example">
-									<ul class="pagination d-flex justify-content-center">
-										<li class="page-item m_prev"><a class="page-link" href="#"
-											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-										</a></li>
-										
-										<li class="page-item"><a class="page-link" href="#">1</a></li>
-										<li class="page-item"><a class="page-link" href="#">2</a></li>
-										<li class="page-item"><a class="page-link" href="#">3</a></li>
-										<li class="page-item m_next"><a class="page-link" href="#"
-											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-										</a></li>
-									</ul>
+									<c:if test="${dataCount > 0}">${paging}</c:if>
 								</nav>
 							</div>
 						</div>

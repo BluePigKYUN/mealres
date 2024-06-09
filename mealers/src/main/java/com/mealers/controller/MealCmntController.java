@@ -17,6 +17,7 @@ import com.mealers.annotation.RequestMethod;
 import com.mealers.annotation.ResponseBody;
 import com.mealers.dao.MealCmntDAO;
 import com.mealers.domain.CmntDTO;
+import com.mealers.domain.ReplyDTO;
 import com.mealers.domain.SessionInfo;
 import com.mealers.servlet.ModelAndView;
 import com.mealers.util.FileManager;
@@ -69,7 +70,7 @@ public class MealCmntController {
 				dataCount = dao.dataCount(schCategory, schContent);
 			}
 			
-			int size = 6;
+			int size = 8;
 			int total_page = util.pageCount(dataCount, size);
 			if(current_page > total_page) {
 				current_page = total_page;
@@ -111,7 +112,7 @@ public class MealCmntController {
 			String listUrl = cp + "/mealCmnt/list?" + query;
 			String articleUrl = cp + "/mealCmnt/article?page=" + current_page + "&" + query;
 			
-			String paging = util.paging(current_page, total_page, listUrl);
+			String paging = util.mealersPagingUrl(current_page, total_page, listUrl);
 			
 			mav.addObject("list", list);
 			mav.addObject("page", current_page);
@@ -123,6 +124,7 @@ public class MealCmntController {
 			mav.addObject("schCategory", schCategory);
 			mav.addObject("schContent", schContent);
 			mav.addObject("mealSort", mealSort);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -226,6 +228,7 @@ public class MealCmntController {
 			mav.addObject("query", query);
 			mav.addObject("isLikeCmnt", isLikeCmnt);
 			mav.addObject("likeCount", likeCount);
+			mav.addObject("mealSort", mealSort);
 
 			return mav;
 		} catch (Exception e) {
@@ -399,5 +402,107 @@ public class MealCmntController {
 			e.printStackTrace();
 		}
 		return new ModelAndView("redirect:/mealCmnt/list?" + query);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/mealCmnt/addReply", method = RequestMethod.POST)
+	public Map<String, Object> addReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		MealCmntDAO dao = new MealCmntDAO();
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+		
+		String state = "false";
+		
+		try {
+			ReplyDTO dto = new ReplyDTO();
+			
+			long num = Long.parseLong(req.getParameter("num"));
+			dto.setNum(num);
+			dto.setUserNum(info.getUserNum());
+			dto.setContent(req.getParameter("content"));
+			
+			dao.addReply(dto);
+			
+			state = "ok";
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		model.put("state", state);
+		
+		return model;
+	}
+	
+	@RequestMapping(value = "/mealCmnt/replyList", method = RequestMethod.GET)
+	public ModelAndView replyList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		MealCmntDAO dao = new MealCmntDAO();
+		MyUtil util = new MyUtilBootstrap();
+		
+		try {
+			long num = Long.parseLong(req.getParameter("num"));
+			String pageNo = req.getParameter("pageNo");
+			int current_page = 1;
+			if(pageNo != null) {
+				current_page = Integer.parseInt(pageNo);
+			}
+			
+			int size = 5;
+			
+			int replyCount = 0;
+			replyCount = dao.replyCount(num);
+			
+			int total_page = 0;
+			total_page = util.pageCount(replyCount, size);
+
+			int offset = (current_page - 1) * size;
+			if(offset < 0) offset = 0;
+			
+			List<ReplyDTO> replyList = dao.replyList(num, offset, size);
+			
+			for(ReplyDTO dto : replyList) {
+				dto.setContent(dto.getContent().replace("\n", "<br>"));
+			}
+			
+			String paging = util.pagingMethod(current_page, total_page, "listPage");
+			
+			ModelAndView mav = new ModelAndView("mealCmnt/replyList");
+			
+			mav.addObject("replyList", replyList);
+			mav.addObject("pageNo", current_page);
+			mav.addObject("replyCount", replyCount);
+			mav.addObject("total_page", total_page);
+			mav.addObject("paging", paging);
+			
+			return mav;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp.sendError(400);
+			throw e;
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/mealCmnt/removeReply", method = RequestMethod.POST)
+	public Map<String, Object> removeReply(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		MealCmntDAO dao = new MealCmntDAO();
+		
+		HttpSession session = req.getSession();
+		SessionInfo info = (SessionInfo)session.getAttribute("member");
+
+		try {
+			long replyNum = Long.parseLong(req.getParameter("replyNum"));
+			
+			dao.removeReply(replyNum, info.getUserNum());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return model;
 	}
 } 

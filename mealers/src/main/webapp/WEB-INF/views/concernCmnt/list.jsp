@@ -5,249 +5,185 @@
 <html lang="en">
 
 <head>
-	 <jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/layout/staticHeader.jsp"/>
+<script src="${pageContext.request.contextPath}/resources/jquery/js/jquery.min.js"></script>
+		 
+<style type="text/css">
+.ratio-4x3 {
+ 	position: relative;
+    width: 100%;
+    height: 0;
+    padding-top: 75%;
+}
+
+.ratio-4x3 img {   
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.input-group-text:hover, .content-box:hover {
+	cursor: pointer;
+}
+
+.content-control {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+.subject-control {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+}
+
+.concern-item:hover {
+	box-shadow: 0 0 55px rgba(0, 0, 0, 0.4);
+	
+}
+
+.concern-item {
+    transition: 0.5s;
+}
+
+.sortbox {
+	border: 1px solid #BDBDBD;
+}
+
+
+
+</style>
+
 </head>
 	
-<header>
-	<jsp:include page="/WEB-INF/views/layout/header.jsp"></jsp:include>
-</header>
-
 <body>
+	<header>
+		<jsp:include page="/WEB-INF/views/layout/header.jsp"/>
+	</header>
 
-	<!-- Single Page Header start -->
-	<div class="container-fluid page-header py-5">
+	<div class="container-fluid page-header-cmnt py-5">
 		<h1 class="text-center text-white display-6">커뮤니티</h1>
 	</div>
-	<!-- Single Page Header End -->
 
-
-	<!-- Fruits Shop Start-->
-	<div class="container-fluid fruite py-1">
+	<div class="container-fluid fruite">
 		<div class="container py-5">
 			<div class="row g-4">
 				<div class="col-lg-12">
 					<div class="row g-4">
-						<div class="col-xl-3">
+						<div class="d-flex justify-content-between">
 							<div>
 								<h2>고민상담 커뮤니티</h2>
 							</div>	
+							<form name="sortForm" action="${pageContext.request.contextPath}/concernCmnt/list" method="post">
+								<div class="ps-3 py-3 rounded mb-4 sortbox">
+									<label for="concernSort">정렬</label> 
+									<select name="concernSort" id="concernSort" class="border-0 form-select-md mx-3 concernSort">
+										<option value="recent" ${concernSort=="recent" ? "selected" : ""}>최신순</option>
+										<option value="hitcount" ${concernSort=="hitcount" ? "selected" : ""}>조회순</option>
+										<option value="popular" ${concernSort=="popular" ? "selected" : ""}>인기순</option>
+									</select>
+									<input type="hidden" name="concernSort" value="${concernSort}"> 
+									<input type="hidden" name="schCategory" value="${schCategory}">
+									<input type="hidden" name="schContent" value="${schContent}">
+								</div>
+							</form>
 						</div>
-						<div class="col-6"></div>
-						<div class="col-xl-3">
-							<div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-								<label for="meals ml-2">정렬</label> <select id="meals" name="meallist" class="border-0 form-select-md bg-light me-4" form="mealform">
-									<option value="recent">최신순</option>
-									<option value="hitcount">조회순</option>
-									<option value="popular">인기순</option>
-								</select>
-							</div>
-						</div>
+						<div class="mb-3">${dataCount}개 (${page}/${total_page}페이지)	</div>
 					</div>
 					<div class="row g-4">
-						<div class="col-lg-13">
-							<div class="row g-4 justify-content-center">
-								<div class="col-ms-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img h-50">
-											<img src="https://images.unsplash.com/photo-1619371042685-827b1c646923?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid w-100 rounded-top" alt="">
+						<div class="col-lg-12">
+							<div class="row g-4 justify-content-start">
+								<c:choose>
+									<c:when test="${empty list}">
+										<div class="d-flex justify-content-center">
+											<div class="fw-bold align-content-center" style="height: 500px">게시물이 존재하지 않습니다.</div>
 										</div>
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램</div>
-											
-										</div>
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="dto" items="${list}" varStatus="status">
+											<div class="col-md-4 col-lg-4 col-xl-3 pb-3 mb-3" style="max-height: 800px">
+												<div class="rounded position-relative concern-item content-box" onclick="location.href='${articleUrl}&num=${dto.num}';">
+													<div class="fruite-img ratio ratio-4x3">
+														<img src="${pageContext.request.contextPath}/uploads/concernCmnt/${dto.fileName}" class="img-fluid rounded-top">
+													</div>
+													
+													<div>
+														<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">${dto.mem_Nick}</div>
+													</div>
+													
+													<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
+														<div class="d-flex justify-content-between mt-2">
+													
+															<c:choose>
+																<c:when test="${dto.timeGap/60 < 24.0}">
+																	<c:choose>
+																		<c:when test="${dto.timeGap == 0}">
+																			<p class="py-1 text-secondary">지금</p>
+																		</c:when>
+																		<c:when test="${dto.timeGap < 60}">
+																			<p class="py-1 text-secondary">${dto.timeGap}분전</p>
+																		</c:when>
+																		<c:otherwise>
+																			<p class="py-1 text-secondary">${(dto.timeGap/60).toString().substring(0,(dto.timeGap/60).toString().indexOf('.'))}시간전</p>
+																		</c:otherwise>
+																	</c:choose>	
+																</c:when>
+																<c:otherwise>
+																	<p>&nbsp;</p>
+																</c:otherwise>
+															</c:choose>
+															
+														</div>
+														<h4 class="pt-1 mb-4 subject-control fw-bold ">${dto.subject}</h4>
+														<div class="content-control mb-5" style="height: 50px">${dto.content}</div>
+														<div class="d-flex justify-content-between mb-3" >
+															<span ><i class="bi bi-eye"></i> ${dto.hitCount}</span>
+															<p class="mb-0">${dto.reg_date}</p>
+														</div>
+													</div>
+												</div>
 											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img h-50">
-											<img src="https://images.unsplash.com/photo-1587116861219-230ac19df971?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-												class="img-fluid w-100 rounded-top">
-										</div>
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램</div>
-											
-										</div>
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
-											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img h-50">
-											<img src="https://images.unsplash.com/photo-1591814468924-caf88d1232e1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-												class="img-fluid w-100 rounded-top object-fit-cover">
-										</div>
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램</div>
-											
-										</div>
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
-											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img h-50">
-											<img src="https://images.unsplash.com/photo-1582716454502-f0925ab107aa?q=80&w=2075&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-												class="img-fluid w-100 rounded-top" alt="">
-										</div>
-										<div>
-											<div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">닉네임인데우짤램</div>
-											
-										</div>
-										<div class="px-4 pt-2 pb-0 border border-secondary border-top-0 rounded-bottom">
-											<div class="d-flex justify-content-between mt-2">
-												<p class="py-1">2시간전</p>
-												<p class="py-1">2024-05-29</p>
-											</div>
-											<h4 class="pb-2 pt-3 text-center">오늘 점심식단입니다</h4>
-											<p>내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.</p>
-											<div class="d-flex flex-lg-wrap position-relative start-25 mt-5">
-												<p class="text-dark mb-2 pe-2">댓글10</p> 
-												<p class="text-dark mb-2 pe-2">좋아요8</p>
-												<p class="text-dark mb-3">조회수20</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img">
-											<img src=""
-												class="img-fluid w-100 rounded-top" alt="">
-										</div>
-										<div
-											class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-											style="top: 10px; left: 10px;">Fruits</div>
-										<div
-											class="p-4 border border-secondary border-top-0 rounded-bottom">
-											<h4>Banana</h4>
-											<p>Lorem ipsum dolor sit amet consectetur adipisicing
-												elit sed do eiusmod te incididunt</p>
-											<div class="d-flex justify-content-between flex-lg-wrap">
-												<p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-												<!-- <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a> -->
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img">
-											<img src=""
-												class="img-fluid w-100 rounded-top" alt="">
-										</div>
-										<div
-											class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-											style="top: 10px; left: 10px;">Fruits</div>
-										<div
-											class="p-4 border border-secondary border-top-0 rounded-bottom">
-											<h4>Oranges</h4>
-											<p>Lorem ipsum dolor sit amet consectetur adipisicing
-												elit sed do eiusmod te incididunt</p>
-											<div class="d-flex justify-content-between flex-lg-wrap">
-												<p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-												<!-- <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a> -->
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img">
-											<img src=""
-												class="img-fluid w-100 rounded-top" alt="">
-										</div>
-										<div
-											class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-											style="top: 10px; left: 10px;">Fruits</div>
-										<div
-											class="p-4 border border-secondary border-top-0 rounded-bottom">
-											<h4>Raspberries</h4>
-											<p>Lorem ipsum dolor sit amet consectetur adipisicing
-												elit sed do eiusmod te incididunt</p>
-											<div class="d-flex justify-content-between flex-lg-wrap">
-												<p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-												<!-- <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a> -->
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6 col-xl-3">
-									<div class="rounded position-relative fruite-item">
-										<div class="fruite-img">
-											<img src=""
-												class="img-fluid w-100 rounded-top" alt="">
-										</div>
-										<div
-											class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-											style="top: 10px; left: 10px;">Fruits</div>
-										<div
-											class="p-4 border border-secondary border-top-0 rounded-bottom">
-											<h4>Grapes</h4>
-											<p>Lorem ipsum dolor sit amet consectetur adipisicing
-												elit sed do eiusmod te incididunt</p>
-											<div class="d-flex justify-content-between flex-lg-wrap">
-												<p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-												<!-- <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a> -->
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-12 d-flex justify-content-evenly">
-									<div class="input-group w-50 mx-auto d-flex">
-										<input type="search" class="form-control p-3 h-50" placeholder="검색" aria-describedby="search-icon-1"> 
-										<span id="search-icon-1" class="input-group-text p-3 h-50">
-											<i class="fa fa-search"></i>
-										</span>
-									</div>
+										</c:forEach>
+									</c:otherwise>
 								
-									<div class="pagination d-flex justify-content-center mt-5">
-										<a href="#" class="rounded">&laquo;</a> 
-										<a href="#" class="active rounded">1</a> 
-										<a href="#" class="rounded">2</a>
-										<a href="#" class="rounded">3</a> 
-										<a href="#" class="rounded">4</a>
-										<a href="#" class="rounded">5</a> 
-										<a href="#" class="rounded">6</a>
-										<a href="#" class="rounded">&raquo;</a>
-									</div>
+								</c:choose>
+								
+
+								<div style="text-align: right">
+									<button type="button" class="text-white bg-secondary px-3 pt-1 rounded border-secondary" onclick="location.href='${pageContext.request.contextPath}/concernCmnt/write';">글쓰기</button>
 								</div>
+								
+								<form name="searchForm" class="d-flex justify-content-center mt-5 mb-3" action="${pageContext.request.contextPath}/concernCmnt/list" method="post">
+									<div class="d-flex mt-3 w-50">
+										<select name="schCategory" class="form-select rounded drop-down w-25 me-2">
+											<option value="subcon" ${schCategory=="subcon"?"selected":""}>제목+내용</option>
+											<option value="subject" ${schCategory=="subject"?"selected":""}>제목</option>
+											<option value="content" ${schCategory=="content"?"selected":""}>내용</option>
+											<option value="mem_Nick" ${schCategory=="mem_Nick"?"selected":""}>작성자</option>
+										</select>
+											 
+										<div class="input-group w-75 d-flex">
+											<input type="text" name="schContent" value="${schContent}" class="form-control rounded " placeholder="검색"> 
+											<div class="col-auto p-1">
+												<input type="hidden" name="concernSort" value="${concernSort}"> 	
+												<button type="button" id="search-icon-1" class="input-group-text" onclick="searchList()"> <i class="fa fa-search search-icon"></i> </button>
+											</div>
+											
+										</div>
+									</div>
+								</form>
+
+								<nav aria-label="Page navigation example">
+									<c:if test="${dataCount > 0}">${paging}</c:if>
+								</nav>
 							</div>
 						</div>
 					</div>
@@ -255,40 +191,31 @@
 			</div>
 		</div>
 	</div>
-	<!-- Fruits Shop End-->
-
+	
+	<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
 
 	
-
-    <footer>
-        <jsp:include page="/WEB-INF/views/layout/footer.jsp"></jsp:include>
+	
+	 <footer>
+        <jsp:include page="/WEB-INF/views/layout/footer.jsp"/>
+        <jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"/>
     </footer>
+    
+    <script type="text/javascript">
+    function searchList() {
+    	const form = document.searchForm;
 
-	<!-- Back to Top -->
-	<a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
-	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
-
-	<!-- Copyright Start -->
-	<div class="container-fluid copyright bg-dark py-4">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-					<span class="text-light"><a href="#"><i
-							class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All
-						right reserved.</span>
-				</div>
-				<div class="col-md-6 my-auto text-center text-md-end text-white">
-					<!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-					<!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-					<!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-					Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML
-						Codex</a> Distributed By <a class="border-bottom"
-						href="https://themewagon.com">ThemeWagon</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Copyright End -->
+    	form.submit();
+    }
+    
+    $(function() {
+    	$(".concernSort").change(function() {
+    		const form = document.sortForm;
+    		form.submit();
+    	});
+    });
+    
+    </script>
 	
 </body>
 

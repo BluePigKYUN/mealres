@@ -10,6 +10,12 @@
 
 <style type="text/css">
 
+@keyframes heartMove {
+	0% {transform: scale(1)}
+	50% {transform: scale(1.3)}
+	100% {transform: scale(1)}
+}
+
 .content {
    margin: 0 auto;
 }
@@ -29,41 +35,44 @@
 	border-bottom: 1px solid black;
 }
 
-
-.replyContent {
-	border-bottom: 1px solid #EAEAEA;
-}
-
-.replyContent:last-child {
-	border-bottom: none;
-}
-
 .left-content, .right-content {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 }
 
-
-
 .content-box {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: -webkit-box;
-	-webkit-line-clamp: 5;
+	-webkit-line-clamp: 6;
 	-webkit-box-orient: vertical;
 }
+
+.subject-box {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+
 
 .likeheart {
 	font-size: 50px;
 	transition: 0.5s;
 	background: none;
 	border: none;
+	
 }
 
 .likeheart:hover {
 	cursor: pointer;
+	animation: heartMove 0.7s forwards;
 }
+
+
 
 </style>
 </head>
@@ -84,173 +93,77 @@
 			<div class="row g-4 content my-5 w-50" >
 				<div class="border border-3 border-secondary rounded px-0 position-relative" style="height: auto; min-height: 800px">
 					<div class="flex-grow-1" style="height: 50%">
-						<img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid rounded object-fit-cover" >
+						<img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid rounded object-fit-cover" style="max-height: 460px">
 					</div>
-						
-	 
-					
 					<div class="flex-grow-1" style="height: 50%">
 						 <div style="height: 75%">
-							<div class="d-flex flex-row justify-content-between pt-2 pb-3 px-3 d-flex justify-content-center align-items-center">
+							<div class="d-flex flex-row justify-content-center align-items-center pt-2 px-3">
 								<div class="d-flex w-50">
-									<p class="text-white bg-secondary px-2 rounded py-1 me-3 h-50 d-flex justify-content-center align-items-center" >${dto.mem_Nick}</p>
-									<c:choose>
-										<c:when test="${dto.timeGap/60 < 24}">
-											<c:choose>
-												<c:when test="${dto.timeGap == 0}">
-													<p class="py-1 text-secondary">지금</p>
-												</c:when>
-												<c:when test="${dto.timeGap < 60}">
-													<p class="py-1 text-secondary">${dto.timeGap}분전</p>
-												</c:when>
-												<c:otherwise>
-													<p class="py-1 text-secondary">${Math.floor(dto.timeGap/60)}시간전</p>
-												</c:otherwise>
-											</c:choose>	
-										</c:when>
-										<c:otherwise>
-											<p>&nbsp;</p>
-										</c:otherwise>
-									</c:choose>
+									<p class="text-white bg-secondary rounded px-2 py-1 text-center ">${dto.mem_Nick}</p>
 								</div>	
 								<div class="w-50 text-end">
 									<button type="button" class="px-2 py-1 likeheart" > <i class="bi bi-heart-fill" style=" color: ${isLikeCmnt?'rgb(255, 0, 0)':'rgb(234, 234, 234)'}"></i></button>
 								</div>
 							</div>
 
-							<h3 class="fw-bold ms-5 py-3 ps-1 mb-0 ">${dto.subject}</h3>
-							<div class="ms-5 w-75 ps-1 mt-2 content-box" style="max-height: 180px">${dto.content}</div>
+							<h3 class="fw-bold w-75 ms-5 mb-4 subject-box">${dto.subject}</h3>
+							<div class="mx-5 content-box" style="max-height: 180px">${dto.content}</div>
 						</div>
-						<div class="d-flex justify-content-between bottom-0 start-0 bottom-item pt-5 mb-1" style="height: 25%">
-							<p class="ms-4 mb-1">
-								<span>댓글10</span> 
+						<div class="d-flex justify-content-between pt-5 mx-4" style="height: 25%">
+							<p >
+								<span>댓글${dto.replyCount}</span> 
 								<span>조회수${dto.hitCount}</span>
 								<span>좋아요
 									<span id="cmntLikeCount">${likeCount}</span> 
 								</span> 
 							</p>
-							<p class="me-4">${dto.reg_date}</p>
+							<p>${dto.reg_date}</p>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-12 h-25 mt-4 px-0 d-flex justify-content-between">
+				<div class="col-lg-12 mt-4 px-0 d-flex justify-content-between">
 					<div>
 						<c:choose>
 							<c:when test="${sessionScope.member.userNum == dto.userNum}">
-								
-									<button type="button" class="btn border border-secondary text-secondary rounded-pill" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/update?num=${dto.num}&page=${page}&mealS mealSort}';">수정</button>
-								
+								<button type="button" class="btn border border-secondary text-secondary rounded-pill" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/update?num=${dto.num}&page=${page}&mealSort=${mealSort}';">수정</button>
 							</c:when>
 							<c:otherwise>
-								<div>&nbsp;</div>
-							</c:otherwise>
-							
-						</c:choose>
-						
+								<button style="display: none"></button>
+							</c:otherwise>	
+						</c:choose>		
 						<c:choose>
-							<c:when test="${sessionScope.member.userNum == dto.userNum || sessionScope.member.userNum == 'admin'}">
-								
-									<button type="button" class="btn border border-secondary text-secondary rounded-pill ms-1" onclick="deleteMeal();">삭제</button>
-								
+							<c:when test="${sessionScope.member.userNum == dto.userNum || sessionScope.member.userId == 'admin'}">		
+								<button type="button" class="btn border border-secondary text-secondary rounded-pill ms-1" onclick="deleteMeal();">삭제</button>						
 							</c:when>
 							<c:otherwise>
-								<div>&nbsp;</div>
+								<button style="display: none"></button>
 							</c:otherwise>
 						</c:choose>
 					</div>
-					<button type="button" class="btn text-white bg-secondary rounded-pill ms-1" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/list';">목록</button>
+					<div>
+						<button type="button" class="btn text-white bg-secondary rounded-pill" onclick="location.href='${pageContext.request.contextPath}/mealCmnt/list?${query}';">목록</button>
+					</div>
 				</div>
-			</div>	
-			<div class="row g-4 content mb-5 mt-2 pb-3 w-75" style="height: auto;">	
-				<form action="#" class="replywrite " style="height: 30%">
-					<div class="row g-4">
+			</div>
+				
+			<div class="row g-4 content mb-5 mt-2 w-75 reply">	
+				<form style="height: 30%">		
+					<div class="row g-4 reply-write">
 						<div class="col-lg-12">
 							<div class="rounded">
-								<textarea name="reply" class="form-control border" cols="30"
-									rows="4" placeholder="댓글을 입력하세요 *"></textarea>
+								<textarea name="reply" class="form-control border" cols="30" rows="4" placeholder="댓글을 입력하세요 *"></textarea>
 							</div>
 						</div>
 						<div class="col-lg-12 h-25 my-2">
 							<div class="d-flex justify-content-end mt-1">
-								<button type="button" class="btn text-white bg-primary text-primary rounded-pill">등록</button>
+								<button type="button" class="btn text-white bg-primary text-primary rounded-pill replySubmit">등록</button>
 							</div>
 						</div>
 					</div>
 				</form>
-				
-				<div class="replyBox mt-0" style="height: 70%">
-					<div class="col-lg-12 topContent" >
-						<h6>댓글 3개 </h6>
-					</div>
-							
-					<div class="replyContent pb-3">
-						<div class="d-flex justify-content-between fw-bold pt-3 pb-2 ">
-							<p>명수(닉네임)</p>
-							<div class="d-flex">
-								<p>2024-05-31 00:56</p>
-								<a class="mx-2">삭제</a>
-							</div>
-						</div>
-						<div>
-							<div>아버지나를낳으시고바지적삼다적시셨네</div>
-						</div>
-					</div>
-					<div class="replyContent pb-3">
-						<div class="d-flex justify-content-between fw-bold pt-4 pb-3 ">
-							<div>명수(닉네임)</div>
-							<div class="d-flex">
-								<div>2024-05-31 00:56</div>
-								<a class="mx-2">삭제</a>
-							</div>
-						</div>
-						<div>
-							<div>아버지나를낳으시고바지적삼다적시셨네</div>
-						</div>
-					</div>
-					
-					<div class="replyContent pb-3">
-						<div class="d-flex justify-content-between fw-bold pt-3 pb-2 ">
-							<p>명수(닉네임)</p>
-							<div class="d-flex">
-								<p>2024-05-31 00:56</p>
-								<a class="mx-2">삭제</a>
-							</div>
-						</div>
-						<div>
-							<div>아버지나를낳으시고바지적삼다적시셨네</div>
-						</div>
-					</div>
-					
-					<div class="replyContent pb-3">
-						<div class="d-flex justify-content-between fw-bold pt-3 pb-2 ">
-							<p>명수(닉네임)</p>
-							<div class="d-flex">
-								<p>2024-05-31 00:56</p>
-								<a class="mx-2">삭제</a>
-							</div>
-						</div>
-						<div>
-							<div>아버지나를낳으시고바지적삼다적시셨네</div>
-						</div>
-					</div>
-					
-					<div class="replyContent pb-3">
-						<div class="d-flex justify-content-between fw-bold pt-4 pb-3 ">
-							<div>명수(닉네임)</div>
-							<div class="d-flex">
-								<div>2024-05-31 00:56</div>
-								<a class="mx-2">삭제</a>
-							</div>
-						</div>
-						<div>
-							<div>아버지나를낳으시고바지적삼다적시셨네</div>
-						</div>
-					</div>
-						
-					<div class="sentinel" data-loading="false"></div>
-				</div>
-					
-				
+		
+				<div id="replyList" class="mt-3"></div>
+
 			</div>
 		</div>
 	</div>
@@ -323,27 +236,95 @@
 					}
 					$i.css("color", color);
 					
+					
 					let count = data.likeCount;
-					$("#cmntLikeCount").text(count); // text 사용..
+					$("#cmntLikeCount").text(count); 
 				}
 			};
 			ajaxFun(url, "post", query, "json", fn);
 		});
 	});
 	
+	$(function() {
+		listPage(1);
+	});
+	
+	function listPage(page) {
+		let url = "${pageContext.request.contextPath}/mealCmnt/replyList";
+		let query = "num=${dto.num}&pageNo=" + page;
+		let selector = "#replyList";
+		
+		const fn = function(data) {
+			$(selector).html(data);
+		}
+		
+		ajaxFun(url, "get", query, "text", fn);
+	}
+	
+	$(function() {
+		$(".replySubmit").click(function() {
+			let num = "${dto.num}";
+			const $d = $(this).closest(".reply-write");
+			let content = $d.find("textarea").val().trim();
+			
+			if(! content) {
+				$d.find("textarea").focus();
+				return false;
+			}
+			
+			content = encodeURIComponent(content);
+			
+			let url = "${pageContext.request.contextPath}/mealCmnt/addReply";
+			let query = "num=" + num + "&content=" + content;
+			
+			const fn = function(data) {
+				$d.find("textarea").val("");
+				let state = data.state;
+				if(state === "ok") {
+					listPage(1);
+				} else {
+					alert("댓글 등록에 실패했습니다.");
+				}
+			};
+			ajaxFun(url, "post", query, "json", fn);
+		});
+	});
+	
+	$(function() {
+		$(".reply").on("click", ".replyDelBtn", function() {
+			if(! confirm("댓글을 삭제하시겠습니까?")) {
+				return false;
+			}
+			
+			let replyNum = $(this).attr("data-replyNum");
+			let page = $(this).attr("data-pageNo");
+			
+			let url = "${pageContext.request.contextPath}/mealCmnt/removeReply";
+			let query = "replyNum=" + replyNum;
+			
+			const fn = function(data) {
+				listPage(page);
+			};
+			
+			ajaxFun(url, "post", query, "json", fn);
+		});
+	});
+	
 	</script>
 	
-	<c:if test="${sessionScope.member.userNum == dto.userNum || sessionScope.member.userNum == 'admin'}">
+	<c:if test="${sessionScope.member.userNum == dto.userNum || sessionScope.member.userId == 'admin'}">
 		<script type="text/javascript">
 			function deleteMeal() {
 				if(confirm("글을 삭제하시겠습니까?")) {
-					let query = "page=${page}&num=${num}";
+					let query = "${query}&num=${dto.num}";
 					let url = "${pageContext.request.contextPath}/mealCmnt/delete?" + query;
 					location.href = url;
 				}
 			}
 		</script>
 	</c:if>
+	
+	
 </body>
 
 </html>
