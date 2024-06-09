@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.json.JSONObject;
 
 import com.mealers.annotation.Controller;
 import com.mealers.annotation.RequestMapping;
@@ -29,6 +29,7 @@ import jakarta.servlet.http.Part;
 
 @Controller
 public class SearchController {
+	
 	@RequestMapping(value = "/search/main")
 	public ModelAndView searchMain(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		ModelAndView mav = new ModelAndView("search/main");
@@ -54,6 +55,7 @@ public class SearchController {
 				kwd = URLDecoder.decode(kwd, "utf-8");
 			}
 			
+			int totalCount = dao.totalCount();
 			int dataCount = dao.dataCount(kwd);
 			
 			// 전체 페이지 수
@@ -69,6 +71,9 @@ public class SearchController {
 			
 			List<SearchDTO> list = null;
 			list = dao.listFood(offset, size, kwd);
+			
+			List<SearchDTO> listUser = null;
+			listUser = dao.listFoodUser(offset, size, kwd);
 			
 			List<SearchDTO> listRank = null;
 			listRank = dao.listRank();
@@ -87,14 +92,16 @@ public class SearchController {
 				articleUrl += "&" + query;
 			}
 			
-			String paging = util.paging(current_page, total_page, listUrl);
+			String paging = util.mealersPagingUrl(current_page, total_page, listUrl);
 			
 			// 포워딩할 JSP에 전달할 속성
 			mav.addObject("list", list);
+			mav.addObject("listUser", listUser);
 			mav.addObject("listRank", listRank);
 			mav.addObject("page", current_page);
 			mav.addObject("total_page", total_page);
 			mav.addObject("dataCount", dataCount);
+			mav.addObject("totalCount", totalCount);
 			mav.addObject("size", size);
 			mav.addObject("articleUrl", articleUrl);
 			mav.addObject("paging", paging);
@@ -104,6 +111,52 @@ public class SearchController {
 			e.printStackTrace();
 		}
 		return mav;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/search/mainAjax")
+	public void searchAjax(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		SearchDAO dao = new SearchDAO();
+		
+		try {
+			String page = req.getParameter("page");
+			int current_page = Integer.parseInt(page);
+			
+			// 검색
+			String kwd = req.getParameter("kwd");
+			if (kwd == null) {
+				kwd = "";
+			}
+			
+			// GET 방식인 경우 디코딩
+			if (req.getMethod().equalsIgnoreCase("GET")) {
+				kwd = URLDecoder.decode(kwd, "utf-8");
+				}
+			
+			// 전체 페이지 수
+			int size = 8;
+			
+			// 게시물 가져오기
+			int offset = (current_page - 1) * size;
+			if(offset < 0) offset = 0;
+			
+			List<SearchDTO> list = null;
+			list = dao.listFood(offset, size, kwd);
+			
+			String query = "kwd=" + URLEncoder.encode(kwd, "utf-8");
+			String cp = req.getContextPath();
+			String articleUrl = cp + "/search/item?page=" + current_page + "&" + query;
+			
+		    JSONObject job = new JSONObject();
+	        job.put("list", list);
+	        job.put("articleUrl", articleUrl);
+	        resp.setContentType("application/json");
+	        resp.getWriter().write(job.toString());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 //	@ResponseBody
