@@ -280,8 +280,7 @@
                 	<c:forEach var="dto" items="${listMealCmnt}" varStatus="state">
                     <div class="border border-secondary rounded position-relative vesitable-item">
                         <div class="vesitable-img">
-                            <!--  <img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid w-100 rounded-top" alt=""> --> 
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdzcu5K55vm0QzxXsXf8j-XmOnJkc77sGhKw&s" class="img-fluid w-100 rounded-top" alt="">
+                             <img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid w-100 rounded-top" alt=""> 
                         </div>
                         <div class="p-4 rounded-bottom">
                             <h4 class="cmnt-subject">${dto.subject}</h4>
@@ -303,8 +302,7 @@
                 	<c:forEach var="dto" items="${listExerCmnt}" varStatus="state">
                     <div class="border border-primary rounded position-relative vesitable-item">
                         <div class="vesitable-img">
-                            <!--   <img src="${pageContext.request.contextPath}/uploads/exerCmnt/${dto.fileName}" class="img-fluid w-100 rounded-top" alt=""> -->
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdzcu5K55vm0QzxXsXf8j-XmOnJkc77sGhKw&s" class="img-fluid w-100 rounded-top" alt="">
+                           <img src="${pageContext.request.contextPath}/uploads/exerCmnt/${dto.fileName}" class="img-fluid w-100 rounded-top" alt=""> 
                         </div>
                         <div class="p-4 rounded-bottom">
                             <h4 class="cmnt-subject">${dto.subject}</h4>
