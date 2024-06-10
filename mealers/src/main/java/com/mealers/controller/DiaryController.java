@@ -88,7 +88,6 @@ public class DiaryController {
 	        }
 			
 			String cp = req.getContextPath();
-			//String listUrl = cp + "/log/diary";
 			String articleUrl = cp + "/log/diary?pageNo=" + current_page;
 			
 			mav.addObject("list", list);
