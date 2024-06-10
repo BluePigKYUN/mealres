@@ -263,15 +263,6 @@
                                     </div>
                                 </div>
                             </a>
-                            <a href="${pageContext.request.contextPath}/log/foodi" class="text-reset diary-item counter rounded p-5 col-md-6 col-lg-3 g-2 m-2" style="background-color: #F6F6F6; text-decoration: none;">
-                                <div class="featurs-item text-center rounded bg-light p-4" style="background-color: gray;">
-                                    <i class="bi bi-egg-fried fa-3x text-secondary"></i>
-                                    <div class="featurs-content text-center">
-                                        <h5 class="my-2 py-2 text-secondary">식단 기록</h5>
-                                        <p class="mt-1 mb-0">매일의 식단을<br>관리할 수 있어요</p>
-                                    </div>
-                                </div>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -289,8 +280,7 @@
                 	<c:forEach var="dto" items="${listMealCmnt}" varStatus="state">
                     <div class="border border-secondary rounded position-relative vesitable-item">
                         <div class="vesitable-img">
-                            <!--  <img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid w-100 rounded-top" alt=""> --> 
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdzcu5K55vm0QzxXsXf8j-XmOnJkc77sGhKw&s" class="img-fluid w-100 rounded-top" alt="">
+                             <img src="${pageContext.request.contextPath}/uploads/mealCmnt/${dto.fileName}" class="img-fluid w-100 rounded-top" alt=""> 
                         </div>
                         <div class="p-4 rounded-bottom">
                             <h4 class="cmnt-subject">${dto.subject}</h4>
@@ -312,8 +302,7 @@
                 	<c:forEach var="dto" items="${listExerCmnt}" varStatus="state">
                     <div class="border border-primary rounded position-relative vesitable-item">
                         <div class="vesitable-img">
-                            <!--   <img src="${pageContext.request.contextPath}/uploads/exerCmnt/${dto.fileName}" class="img-fluid w-100 rounded-top" alt=""> -->
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdzcu5K55vm0QzxXsXf8j-XmOnJkc77sGhKw&s" class="img-fluid w-100 rounded-top" alt="">
+                           <img src="${pageContext.request.contextPath}/uploads/exerCmnt/${dto.fileName}" class="img-fluid w-100 rounded-top" alt=""> 
                         </div>
                         <div class="p-4 rounded-bottom">
                             <h4 class="cmnt-subject">${dto.subject}</h4>
@@ -346,7 +335,6 @@
 
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
 		<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
     </body>
 

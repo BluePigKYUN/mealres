@@ -47,6 +47,11 @@ body {
 	border-radius: 0.2rem;
 }
 
+.rounded-circle{
+    width: 50px;
+    height: 50px;
+}
+
 
 </style>
 </head>
@@ -134,7 +139,6 @@ body {
             processData: false,
             contentType: false,
             success: function(response) {
-                console.log(response); // 서버 응답 데이터 확인
                 if (response.state === "true") {
                     let post = JSON.parse(response.post);
                     $('#postList').prepend(createPostHTML(post)); // append 대신 prepend 사용
