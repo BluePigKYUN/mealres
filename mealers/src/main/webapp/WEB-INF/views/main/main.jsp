@@ -263,15 +263,6 @@
                                     </div>
                                 </div>
                             </a>
-                            <a href="${pageContext.request.contextPath}/log/foodi" class="text-reset diary-item counter rounded p-5 col-md-6 col-lg-3 g-2 m-2" style="background-color: #F6F6F6; text-decoration: none;">
-                                <div class="featurs-item text-center rounded bg-light p-4" style="background-color: gray;">
-                                    <i class="bi bi-egg-fried fa-3x text-secondary"></i>
-                                    <div class="featurs-content text-center">
-                                        <h5 class="my-2 py-2 text-secondary">식단 기록</h5>
-                                        <p class="mt-1 mb-0">매일의 식단을<br>관리할 수 있어요</p>
-                                    </div>
-                                </div>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -346,7 +337,6 @@
 
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>   
 		<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp"></jsp:include>
     </body>
 
