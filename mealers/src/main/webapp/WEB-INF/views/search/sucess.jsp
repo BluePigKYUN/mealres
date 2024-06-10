@@ -29,7 +29,7 @@ function sendOk() {
 	</div>
 	
 	<div class="container-fluid py-5 mb-5 position-relative">
-		<h3 class="position-absolute top-50 start-50 translate-middle">등록에 성공했습니다!</h3>
+		<h3 class="position-absolute top-50 start-50 translate-middle"> [${kwd}] 등록에 성공했습니다!</h3>
 		<div class="position-absolute top-100 start-50 translate-middle d-flex">
 			<a href="${pageContext.request.contextPath}/search/main">검색페이지로 돌아가기</a>
 			<h5>&nbsp;/&nbsp;</h5>

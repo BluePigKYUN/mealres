@@ -87,7 +87,7 @@ function searchList() {
 						<input type="hidden" id="pageCount" name="page" value="${page}">
 						<input type="hidden" name="kwd" value="${kwd}">
 					</form>
-					<c:if test="${kwd.length() != 0}">
+					<c:if test="${list.size() >= 10}">
 						<a id="moreInfo" style="color: tomato; cursor: pointer;}">더보기</a>
 					</c:if>
 					
