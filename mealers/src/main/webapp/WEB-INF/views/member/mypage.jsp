@@ -43,9 +43,15 @@
 	border-color: #080808;
 }
 
-.fw-bold.{
+.fw-bold .{
 	font-size: 1.3rem !important;
 	font-weight: 600 !important;
+}
+
+.btn-delete2 {
+	content: "\f628";
+	color: #f88264c9;
+	font-size: 15px;
 }
 </style>
 </head>
@@ -86,7 +92,7 @@
 						</form>
 					</div>
 
-					
+
 					<form action="" id="pwdForm" name="pwdForm" method="post">
 						<div class="mb-3">
 							<i class="bi bi-person-fill fa-2x text-primary me-4"></i> <label
@@ -154,24 +160,24 @@
 	<script>
 		//이메일 유효성 검사
 		function validateEmail(email) {
-		    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		    return emailPattern.test(email);
+			const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			return emailPattern.test(email);
 		}
 
 		//폼 유효성 검사
 		function validateForm(flag) {
-		    if (flag === 1) { // 변경 시에만 이메일 유효성 검사
-		        const emailInput = document.getElementById('mem_Email');
-		        const email = emailInput.value;
+			if (flag === 1) { // 변경 시에만 이메일 유효성 검사
+				const emailInput = document.getElementById('mem_Email');
+				const email = emailInput.value;
 
-		        if (!validateEmail(email)) {
-		            alert('유효한 이메일 주소를 입력하세요.');
-		            emailInput.focus();
-		            return false;
-		        }
-		    }
+				if (!validateEmail(email)) {
+					alert('유효한 이메일 주소를 입력하세요.');
+					emailInput.focus();
+					return false;
+				}
+			}
 
-		    sendOk(flag);
+			sendOk(flag);
 		}
 
 		//비밀번호 확인
@@ -186,21 +192,21 @@
 			}
 
 			if (flag == 1) {
-				if (!document.getElementById('new-password-container').classList.contains('hidden')) {
+				if (!document.getElementById('new-password-container').classList
+						.contains('hidden')) {
 					let newPwd = document.getElementById('newpassword').value;
 					let confirmPwd = document.getElementById('confirmpassword').value;
-					
+
 					if (newPwd === "" || confirmPwd === "") {
 						alert("새 비밀번호와 확인 비밀번호를 모두 입력하세요.");
 						return;
 					}
-					
+
 					if (newPwd !== confirmPwd) {
 						alert("새 비밀번호가 일치하지 않습니다.");
 						return;
 					}
 
-					
 				}
 
 				let strpwd = f.confirmpassword.value;
@@ -232,7 +238,8 @@
 		function previewProfilePicture(event) {
 			const reader = new FileReader();
 			reader.onload = function() {
-				const output = document.getElementById('profile-picture-preview');
+				const output = document
+						.getElementById('profile-picture-preview');
 				output.src = reader.result;
 			};
 			reader.readAsDataURL(event.target.files[0]);
@@ -251,7 +258,7 @@
 				reader.readAsDataURL(event.target.files[0]);
 			});
 		});
-		
+
 		//프로필 업데이트 
 		function submitForm() {
 			const form = document.getElementById('profile-form');
