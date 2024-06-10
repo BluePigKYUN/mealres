@@ -102,8 +102,8 @@ body {
 									<p class="mt-2 mb-0">${post.content}</p>
 								</div>
 								<div class="card-footer">
-									<a href="#" class="comment-btn me-3" data-bs-toggle="modal"
-										data-bs-target="#commentModal"><i class="bi bi-chat me-1"></i>댓글
+									<a href="#" class="comment-btn me-3" ><!-- data-bs-toggle="modal"
+										data-bs-target="#commentModal" --><i class="bi bi-chat me-1"></i>댓글
 										달기</a> <a href="#" class="me-3"><i class="bi bi-heart me-1"></i>좋아요</a>
 									<a href="#"><i class="bi bi-share me-1"></i>공유하기</a>
 								</div>
@@ -121,29 +121,6 @@ body {
 		<jsp:include page="/WEB-INF/views/layout/footer.jsp" />
 	</footer>
 	<jsp:include page="/WEB-INF/views/layout/staticFooter.jsp" />
-
-	<!-- 모달 예시 -->
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-		data-bs-target="#exampleModal">Launch demo modal</button>
-
-	<div class="modal fade" id="exampleModal" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body">...</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>
 
 	<script>
     function submitForm() {

@@ -354,11 +354,11 @@ footer p a .fa-behance {
 		<form name="loginForm" id="loginForm" action="" method="post">
 			<div class="first-input input__block">
 				<input type="text" name="memberId" placeholder="아이디" class="input"
-					id="memberId" value="test2">
+					id="memberId" value="">
 			</div>
 			<div class="input__block">
 				<input type="password" name="memberPwd" placeholder="비밀번호"
-					class="input" id="password1" value="1234">
+					class="input" id="password1" value="">
 			</div>
 			<!-- 비밀번호 유무 -->
 			<p class="form-control-plaintext text-center">${message}</p>
