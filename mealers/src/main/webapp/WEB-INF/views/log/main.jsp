@@ -61,10 +61,10 @@
             <div class="fixed-button">
                 <button class="btn btn-primary" onclick="toggle()">바로가기</button>
                 <div id="right-buttons" class="hidden">
+                    <a href = "${pageContext.request.contextPath}/log/diary"> 
+                    <button class="btn btn-secondary">일기</button></a>
                     <a href = "${pageContext.request.contextPath}/log/event"> 
                     <button class="btn btn-secondary">일정</button></a>
-                    <a href = "${pageContext.request.contextPath}/log/diary"> 
-                    <button class="btn btn-secondary">일상</button></a>
                 </div>
             </div>
             	</div>

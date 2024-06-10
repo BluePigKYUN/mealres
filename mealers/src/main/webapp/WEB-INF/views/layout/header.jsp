@@ -66,14 +66,6 @@
 						</div>
 					</div>
 					<div class="nav-item dropdown">
-						<a href="#" class="nav-link dropdown-toggle"
-							data-bs-toggle="dropdown">목표</a>
-						<div class="dropdown-menu m-0 bg-secondary rounded-0">
-							<a href="mealers/member/login" class="dropdown-item">카테고리1</a> <a
-								href="mealers/member/login" class="dropdown-item">카테고리1</a>
-						</div>
-					</div>
-					<div class="nav-item dropdown">
 						<a href="contact.html" class="nav-link dropdown-toggle"
 							data-bs-toggle="dropdown">기록</a>
 						<div class="dropdown-menu m-0 bg-secondary rounded-0">
