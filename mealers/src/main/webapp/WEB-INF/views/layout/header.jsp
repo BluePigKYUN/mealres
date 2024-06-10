@@ -78,13 +78,11 @@
 							data-bs-toggle="dropdown">기록</a>
 						<div class="dropdown-menu m-0 bg-secondary rounded-0">
 							<a href="${pageContext.request.contextPath}/log/main"
-								class="dropdown-item">소개</a> <a
-								href="${pageContext.request.contextPath}/log/event"
-								class="dropdown-item">일정기록</a> <a
-								href="${pageContext.request.contextPath}/log/diary"
-								class="dropdown-item">일상기록</a> <a
-								href="${pageContext.request.contextPath}/log/foodi"
-								class="dropdown-item">음식기록</a>
+								class="dropdown-item">소개</a> 
+								<a href="${pageContext.request.contextPath}/log/diary"
+								class="dropdown-item">일상기록</a>
+								<a href="${pageContext.request.contextPath}/log/event"
+								class="dropdown-item">일정기록</a> 
 						</div>
 					</div>
 				</div>
