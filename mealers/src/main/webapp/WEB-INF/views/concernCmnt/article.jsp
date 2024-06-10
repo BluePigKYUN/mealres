@@ -328,7 +328,6 @@
 			
 			const fn = function(data) {
 				let state = data.state;
-				console.log(state);
 				
 	            if(state === "ok") {
 	            	$(".adoptBtn").css("display", "none");

@@ -152,7 +152,6 @@ function searchList() {
 		$("#moreInfo").click(function() {
 			let page = document.querySelector("#pageCount");
 			page.value++;
-			console.log(page.value);
 			
 			
 			$.ajax({
@@ -161,8 +160,6 @@ function searchList() {
 				data: $("#moreForm").serialize(),
 				dataType: "json",
 				success: function(data) {
-					console.log(data);
-					console.log(data.list.length);
 					
 					let content = "";
 					
@@ -172,7 +169,6 @@ function searchList() {
 					}
 					
 					for(let list of data.list) {
-						console.log(list.kcal);
 						
 						content += "<li class=\"list-group-item list-group-item-action d-flex gap-2\">"
 						content += "<div class=\"me-auto\">"

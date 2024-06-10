@@ -301,9 +301,7 @@ public class MypageDAO {
 			sql = "DELETE FROM "+ tableName + " WHERE REPLYNUM = ?";
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setLong(1, num);
-			System.out.println("댓글삭제");
-			System.out.println(tableName);
-			System.out.println("num:"+num);
+			
 			pstmt.executeUpdate();
 			
 		} catch (Exception e) {

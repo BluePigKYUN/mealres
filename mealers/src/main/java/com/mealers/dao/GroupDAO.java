@@ -137,9 +137,6 @@ public class GroupDAO {
 	            pstmt.setInt(2, offset);
 	            pstmt.setInt(3, size);
 	            
-	            //System.out.println(groupNum+":"+offset+":"+size);
-	            
-	            
 	            rs = pstmt.executeQuery();
 
 	            while (rs.next()) {
