@@ -47,6 +47,11 @@ body {
 	border-radius: 0.2rem;
 }
 
+.rounded-circle{
+    width: 50px;
+    height: 50px;
+}
+
 
 </style>
 </head>
